@@ -3,18 +3,12 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cf")
+@ObfuscatedName("ct")
 @Implements("NPC")
 public final class NPC extends Actor {
-	@ObfuscatedName("i")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "Lly;"
-	)
-	@Export("rightTitleSprite")
-	static Sprite rightTitleSprite;
-	@ObfuscatedName("q")
-	@ObfuscatedSignature(
-		signature = "Lij;"
+		signature = "Lia;"
 	)
 	@Export("definition")
 	NPCDefinition definition;
@@ -22,12 +16,12 @@ public final class NPC extends Actor {
 	NPC() {
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
 		signature = "(IBI)V",
-		garbageValue = "1156693210"
+		garbageValue = "-267690393"
 	)
-	final void method1974(int var1, byte var2) {
+	final void method2010(int var1, byte var2) {
 		int var3 = super.pathX[0];
 		int var4 = super.pathY[0];
 		if (var1 == 0) {
@@ -66,7 +60,7 @@ public final class NPC extends Actor {
 			--var4;
 		}
 
-		if (super.sequence != -1 && GrandExchangeEvent.getSequenceDefinition(super.sequence).field3532 == 1) {
+		if (super.sequence != -1 && class83.SequenceDefinition_get(super.sequence).field3501 == 1) {
 			super.sequence = -1;
 		}
 
@@ -85,13 +79,13 @@ public final class NPC extends Actor {
 		super.pathTraversed[0] = var2;
 	}
 
-	@ObfuscatedName("w")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(IIZS)V",
-		garbageValue = "128"
+		signature = "(IIZB)V",
+		garbageValue = "14"
 	)
-	final void method1963(int var1, int var2, boolean var3) {
-		if (super.sequence != -1 && GrandExchangeEvent.getSequenceDefinition(super.sequence).field3532 == 1) {
+	final void method2011(int var1, int var2, boolean var3) {
+		if (super.sequence != -1 && class83.SequenceDefinition_get(super.sequence).field3501 == 1) {
 			super.sequence = -1;
 		}
 
@@ -117,172 +111,92 @@ public final class NPC extends Actor {
 		}
 
 		super.pathLength = 0;
-		super.field1008 = 0;
-		super.field1007 = 0;
+		super.field969 = 0;
+		super.field975 = 0;
 		super.pathX[0] = var1;
 		super.pathY[0] = var2;
-		super.x = super.size * -1342954560 + super.pathX[0] * 128;
-		super.y = super.pathY[0] * 128 + super.size * -1342954560;
+		super.x = super.size * -294686528 + super.pathX[0] * -589373056;
+		super.y = super.size * 64 + super.pathY[0] * 128;
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("d")
 	@ObfuscatedSignature(
-		signature = "(I)Ldm;",
-		garbageValue = "759381421"
+		signature = "(B)Ldr;",
+		garbageValue = "-35"
 	)
 	@Export("getModel")
 	protected final Model getModel() {
 		if (this.definition == null) {
 			return null;
-		}
-		SequenceDefinition var1 = super.sequence != -1 && super.sequenceDelay == 0 ? GrandExchangeEvent.getSequenceDefinition(super.sequence) : null;
-		SequenceDefinition var2 = super.movementSequence != -1 && (super.readySequence != super.movementSequence || var1 == null) ? GrandExchangeEvent.getSequenceDefinition(super.movementSequence) : null;
-		Model var3 = this.definition.getModel(var1, super.sequenceFrame, var2, super.movementFrame);
-		if (var3 == null) {
-			return null;
-		}
-		var3.calculateBoundsCylinder();
-		super.defaultHeight = var3.height;
-		if (super.spotAnimation != -1 && super.spotAnimationFrame != -1) {
-			Model var4 = MusicPatch.getSpotAnimationDefinition(super.spotAnimation).getModel(super.spotAnimationFrame);
-			if (var4 != null) {
-				var4.offsetBy(0, -super.heightOffset, 0);
-				Model[] var5 = new Model[]{var3, var4};
-				var3 = new Model(var5, 2);
+		} else {
+			SequenceDefinition var1 = super.sequence != -1 && super.sequenceDelay == 0 ? class83.SequenceDefinition_get(super.sequence) : null;
+			SequenceDefinition var2 = super.movementSequence != -1 && (super.movementSequence != super.readySequence || var1 == null) ? class83.SequenceDefinition_get(super.movementSequence) : null;
+			Model var3 = this.definition.getModel(var1, super.sequenceFrame, var2, super.movementFrame);
+			if (var3 == null) {
+				return null;
+			} else {
+				var3.calculateBoundsCylinder();
+				super.defaultHeight = var3.height;
+				if (super.spotAnimation != -1 && super.spotAnimationFrame != -1) {
+					Model var4 = NetCache.SpotAnimationDefinition_get(super.spotAnimation).getModel(super.spotAnimationFrame);
+					if (var4 != null) {
+						var4.offsetBy(0, -super.heightOffset, 0);
+						Model[] var5 = new Model[]{var3, var4};
+						var3 = new Model(var5, 2);
+					}
+				}
+
+				if (this.definition.size == 1) {
+					var3.isSingleTile = true;
+				}
+
+				return var3;
 			}
 		}
-
-		if (this.definition.size == 1) {
-			var3.isSingleTile = true;
-		}
-
-		return var3;
 	}
 
-	@ObfuscatedName("v")
+	@ObfuscatedName("e")
 	@ObfuscatedSignature(
-		signature = "(I)Z",
-		garbageValue = "-1461786701"
+		signature = "(B)Z",
+		garbageValue = "93"
 	)
 	@Export("isVisible")
 	final boolean isVisible() {
 		return this.definition != null;
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("gv")
 	@ObfuscatedSignature(
-		signature = "(ILcx;ZI)I",
-		garbageValue = "-1435183788"
+		signature = "(IIIB)V",
+		garbageValue = "116"
 	)
-	static int method1977(int var0, Script var1, boolean var2) {
-		if (var0 < 1000) {
-			return Skeleton.method3064(var0, var1, var2);
+	@Export("worldToScreen")
+	static final void worldToScreen(int var0, int var1, int var2) {
+		if (var0 >= 128 && var1 >= 128 && var0 <= 13056 && var1 <= 13056) {
+			int var3 = WorldMapAreaData.getTileHeight(var0, var1, MouseRecorder.plane) - var2;
+			var0 -= ScriptFrame.cameraX;
+			var3 -= GrandExchangeOfferTotalQuantityComparator.cameraY;
+			var1 -= class14.cameraZ;
+			int var4 = Rasterizer3D.Rasterizer3D_sine[class319.cameraPitch];
+			int var5 = Rasterizer3D.Rasterizer3D_cosine[class319.cameraPitch];
+			int var6 = Rasterizer3D.Rasterizer3D_sine[Tile.cameraYaw];
+			int var7 = Rasterizer3D.Rasterizer3D_cosine[Tile.cameraYaw];
+			int var8 = var6 * var1 + var0 * var7 >> 16;
+			var1 = var7 * var1 - var0 * var6 >> 16;
+			var0 = var8;
+			var8 = var3 * var5 - var4 * var1 >> 16;
+			var1 = var5 * var1 + var4 * var3 >> 16;
+			if (var1 >= 50) {
+				Client.viewportTempX = var0 * Client.viewportZoom / var1 + Client.viewportWidth / 2;
+				Client.viewportTempY = var8 * Client.viewportZoom / var1 + Client.viewportHeight / 2;
+			} else {
+				Client.viewportTempX = -1;
+				Client.viewportTempY = -1;
+			}
+
+		} else {
+			Client.viewportTempX = -1;
+			Client.viewportTempY = -1;
 		}
-		if (var0 < 1100) {
-			return ModelData0.method3250(var0, var1, var2);
-		}
-		if (var0 < 1200) {
-			return class83.method1994(var0, var1, var2);
-		}
-		if (var0 < 1300) {
-			return WorldMapDecoration.method324(var0, var1, var2);
-		}
-		if (var0 < 1400) {
-			return UserComparator9.method3389(var0, var1, var2);
-		}
-		if (var0 < 1500) {
-			return GraphicsObject.method1943(var0, var1, var2);
-		}
-		if (var0 < 1600) {
-			return GrandExchangeOfferAgeComparator.method147(var0, var1, var2);
-		}
-		if (var0 < 1700) {
-			return MenuAction.method1992(var0, var1, var2);
-		}
-		if (var0 < 1800) {
-			return class169.method3501(var0, var1, var2);
-		}
-		if (var0 < 1900) {
-			return StudioGame.method4137(var0, var1, var2);
-		}
-		if (var0 < 2000) {
-			return ArchiveLoader.method1100(var0, var1, var2);
-		}
-		if (var0 < 2100) {
-			return ModelData0.method3250(var0, var1, var2);
-		}
-		if (var0 < 2200) {
-			return class83.method1994(var0, var1, var2);
-		}
-		if (var0 < 2300) {
-			return WorldMapDecoration.method324(var0, var1, var2);
-		}
-		if (var0 < 2400) {
-			return UserComparator9.method3389(var0, var1, var2);
-		}
-		if (var0 < 2500) {
-			return GraphicsObject.method1943(var0, var1, var2);
-		}
-		if (var0 < 2600) {
-			return ScriptEvent.method1127(var0, var1, var2);
-		}
-		if (var0 < 2700) {
-			return TextureProvider.method2743(var0, var1, var2);
-		}
-		if (var0 < 2800) {
-			return UrlRequester.method3306(var0, var1, var2);
-		}
-		if (var0 < 2900) {
-			return FloorUnderlayDefinition.method4433(var0, var1, var2);
-		}
-		if (var0 < 3000) {
-			return ArchiveLoader.method1100(var0, var1, var2);
-		}
-		if (var0 < 3200) {
-			return class30.method536(var0, var1, var2);
-		}
-		if (var0 < 3300) {
-			return AbstractArchive.method4172(var0, var1, var2);
-		}
-		if (var0 < 3400) {
-			return WorldMapID.method540(var0, var1, var2);
-		}
-		if (var0 < 3500) {
-			return class65.method1175(var0, var1, var2);
-		}
-		if (var0 < 3700) {
-			return class30.method535(var0, var1, var2);
-		}
-		if (var0 < 4000) {
-			return FriendSystem.method1817(var0, var1, var2);
-		}
-		if (var0 < 4100) {
-			return EnumDefinition.method4532(var0, var1, var2);
-		}
-		if (var0 < 4200) {
-			return class208.method3941(var0, var1, var2);
-		}
-		if (var0 < 4300) {
-			return FontName.method5316(var0, var1, var2);
-		}
-		if (var0 < 5100) {
-			return ClientPreferences.method1753(var0, var1, var2);
-		}
-		if (var0 < 5400) {
-			return UserComparator6.method3436(var0, var1, var2);
-		}
-		if (var0 < 5600) {
-			return WorldMapSectionType.method239(var0, var1, var2);
-		}
-		if (var0 < 5700) {
-			return WorldMapData_1.method696(var0, var1, var2);
-		}
-		if (var0 < 6300) {
-			return WorldMapSectionType.method242(var0, var1, var2);
-		}
-		if (var0 < 6600) {
-			return class197.method3703(var0, var1, var2);
-		}
-		return var0 < 6700 ? GrandExchangeOffer.method114(var0, var1, var2) : 2;
 	}
 }

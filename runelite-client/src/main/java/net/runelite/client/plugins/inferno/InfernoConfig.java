@@ -28,15 +28,88 @@ import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigTitleSection;
+import net.runelite.client.config.Title;
 
 @ConfigGroup("inferno")
 public interface InfernoConfig extends Config
 {
-	@ConfigItem(
+	@ConfigTitleSection(
+		keyName = "prayer",
 		position = 0,
+		name = "Prayer",
+		description = ""
+	)
+	default Title prayer()
+	{
+		return new Title();
+	}
+
+	@ConfigItem(
+		position = 1,
+		keyName = "Prayer Helper",
+		name = "Prayer Helper",
+		description = "Indicates the correct prayer",
+		titleSection = "prayer"
+	)
+	default boolean showPrayerHelp()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 2,
+		keyName = "prayerHelperMode",
+		name = "Prayer Helper Mode",
+		description = "Display prayer indicator in the prayer tab or in the bottom right corner of the screen",
+		titleSection = "prayer"
+	)
+	default InfernoPrayerOverlayMode prayerOverlayMode()
+	{
+		return InfernoPrayerOverlayMode.PRAYER_TAB;
+	}
+
+	@ConfigItem(
+		position = 3,
+		keyName = "descendingBoxes",
+		name = "Descending Boxes",
+		description = "Draws timing boxes above the prayer icons, as if you were playing Piano Tiles",
+		titleSection = "prayer"
+	)
+	default boolean descendingBoxes()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 4,
+		keyName = "indicateWhenPrayingCorrectly",
+		name = "Indicate When Praying Correctly",
+		description = "Indicate the correct prayer, even if you are already praying that prayer",
+		titleSection = "prayer"
+	)
+	default boolean indicateWhenPrayingCorrectly()
+	{
+		return false;
+	}
+
+	@ConfigTitleSection(
+		keyName = "monsters",
+		position = 5,
+		name = "Monsters",
+		description = ""
+	)
+	default Title monsters()
+	{
+		return new Title();
+	}
+
+	@ConfigItem(
+		position = 6,
 		keyName = "Nibbler Overlay",
 		name = "Nibbler Overlay",
-		description = "Shows if there are any Nibblers left"
+		description = "Shows if there are any Nibblers left",
+		titleSection = "monsters"
 	)
 	default boolean displayNibblerOverlay()
 	{
@@ -44,21 +117,34 @@ public interface InfernoConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 1,
-		keyName = "Prayer Helper",
-		name = "Prayer Helper",
-		description = "Tells you what to flick in how many ticks"
+		position = 7,
+		keyName = "indicateActiveHealers",
+		name = "Indicate Active Healers",
+		description = "Indicate healers that are still healing Jad",
+		titleSection = "monsters"
 	)
-	default boolean showPrayerHelp()
+	default boolean indicateActiveHealers()
 	{
-		return false;
+		return true;
+	}
+
+	@ConfigTitleSection(
+		keyName = "waves",
+		position = 8,
+		name = "Waves",
+		description = ""
+	)
+	default Title waves()
+	{
+		return new Title();
 	}
 
 	@ConfigItem(
-		position = 2,
+		position = 9,
 		keyName = "waveDisplay",
 		name = "Wave display",
-		description = "Shows monsters that will spawn on the selected wave(s)."
+		description = "Shows monsters that will spawn on the selected wave(s).",
+		titleSection = "waves"
 	)
 	default InfernoWaveDisplayMode waveDisplay()
 	{
@@ -66,10 +152,11 @@ public interface InfernoConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
+		position = 10,
 		keyName = "getWaveOverlayHeaderColor",
 		name = "Wave Header",
-		description = "Color for Wave Header"
+		description = "Color for Wave Header",
+		titleSection = "waves"
 	)
 	default Color getWaveOverlayHeaderColor()
 	{
@@ -77,10 +164,11 @@ public interface InfernoConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 4,
+		position = 11,
 		keyName = "getWaveTextColor",
 		name = "Wave Text Color",
-		description = "Color for Wave Texts"
+		description = "Color for Wave Texts",
+		titleSection = "waves"
 	)
 	default Color getWaveTextColor()
 	{

@@ -1,3 +1,5 @@
+import java.io.IOException;
+import java.net.Socket;
 import java.util.HashMap;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
@@ -7,26 +9,24 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ku")
 @Implements("Fonts")
 public class Fonts {
-	@ObfuscatedName("r")
-	static int[] field3689;
-	@ObfuscatedName("q")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "Lhp;"
+		signature = "Lhz;"
 	)
 	@Export("spritesArchive")
 	AbstractArchive spritesArchive;
-	@ObfuscatedName("w")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "Lhp;"
+		signature = "Lhz;"
 	)
 	@Export("fontsArchive")
 	AbstractArchive fontsArchive;
-	@ObfuscatedName("e")
+	@ObfuscatedName("t")
 	@Export("map")
 	HashMap map;
 
 	@ObfuscatedSignature(
-		signature = "(Lhp;Lhp;)V"
+		signature = "(Lhz;Lhz;)V"
 	)
 	public Fonts(AbstractArchive var1, AbstractArchive var2) {
 		this.spritesArchive = var1;
@@ -34,10 +34,10 @@ public class Fonts {
 		this.map = new HashMap();
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "([Lkd;I)Ljava/util/HashMap;",
-		garbageValue = "-354104614"
+		signature = "([Lkn;B)Ljava/util/HashMap;",
+		garbageValue = "-84"
 	)
 	@Export("createMap")
 	public HashMap createMap(FontName[] var1) {
@@ -49,7 +49,7 @@ public class Fonts {
 			if (this.map.containsKey(var5)) {
 				var2.put(var5, this.map.get(var5));
 			} else {
-				Font var6 = class287.SpriteBuffer_getFontByName(this.spritesArchive, this.fontsArchive, var5.name, "");
+				Font var6 = Skeleton.SpriteBuffer_getFontByName(this.spritesArchive, this.fontsArchive, var5.name, "");
 				if (var6 != null) {
 					this.map.put(var5, var6);
 					var2.put(var5, var6);
@@ -58,5 +58,14 @@ public class Fonts {
 		}
 
 		return var2;
+	}
+
+	@ObfuscatedName("an")
+	@ObfuscatedSignature(
+		signature = "(Ljava/net/Socket;III)Lks;",
+		garbageValue = "1860750557"
+	)
+	public static AbstractSocket method5293(Socket var0, int var1, int var2) throws IOException {
+		return new BufferedNetSocket(var0, var1, var2);
 	}
 }

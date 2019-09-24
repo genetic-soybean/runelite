@@ -4,25 +4,18 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gv")
+@ObfuscatedName("gm")
 @Implements("Calendar")
 public class Calendar {
-	@ObfuscatedName("q")
+	@ObfuscatedName("c")
 	@Export("MONTH_NAMES_ENGLISH_GERMAN")
-	public static final String[][] MONTH_NAMES_ENGLISH_GERMAN;
-	@ObfuscatedName("w")
-	@Export("DAYS_OF_THE_WEEK")
-	public static final String[] DAYS_OF_THE_WEEK;
-	@ObfuscatedName("e")
-	@Export("Calendar_calendar")
-	public static java.util.Calendar Calendar_calendar;
+	static final String[][] MONTH_NAMES_ENGLISH_GERMAN;
 	@ObfuscatedName("x")
-	@ObfuscatedSignature(
-		signature = "Lhj;"
-	)
-	static Widget field2507;
-	@ObfuscatedName("ch")
-	public static char field2508;
+	@Export("DAYS_OF_THE_WEEK")
+	static final String[] DAYS_OF_THE_WEEK;
+	@ObfuscatedName("t")
+	@Export("Calendar_calendar")
+	static java.util.Calendar Calendar_calendar;
 
 	static {
 		MONTH_NAMES_ENGLISH_GERMAN = new String[][]{{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"}, {"Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"}, {"jan", "fév", "mars", "avr", "mai", "juin", "juil", "août", "sept", "oct", "nov", "déc"}, {"jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"}, {"jan", "feb", "mrt", "apr", "mei", "jun", "jul", "aug", "sep", "okt", "nov", "dec"}, {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"}, {"ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"}};
@@ -31,16 +24,22 @@ public class Calendar {
 		Calendar_calendar = java.util.Calendar.getInstance(TimeZone.getTimeZone("GMT"));
 	}
 
-	@ObfuscatedName("g")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "-50"
+		signature = "(II)Z",
+		garbageValue = "-283445433"
 	)
-	@Export("Widget_clearCached")
-	public static void Widget_clearCached() {
-		Widget.Widget_cachedSprites.clear();
-		Widget.Widget_cachedModels.clear();
-		Widget.Widget_cachedFonts.clear();
-		Widget.Widget_cachedSpriteMasks.clear();
+	@Export("isWorldMapEvent")
+	public static boolean isWorldMapEvent(int var0) {
+		return var0 == 10 || var0 == 11 || var0 == 12 || var0 == 13 || var0 == 14 || var0 == 15 || var0 == 16 || var0 == 17;
+	}
+
+	@ObfuscatedName("z")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/String;B)V",
+		garbageValue = "121"
+	)
+	static final void method3933(String var0) {
+		WorldMapSection2.method283(var0 + " is already on your friend list");
 	}
 }

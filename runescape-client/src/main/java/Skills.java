@@ -4,27 +4,20 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hz")
+@ObfuscatedName("hu")
 @Implements("Skills")
 public class Skills {
-	@ObfuscatedName("w")
+	@ObfuscatedName("x")
 	@Export("Skills_enabled")
 	public static final boolean[] Skills_enabled;
-	@ObfuscatedName("e")
+	@ObfuscatedName("t")
 	@Export("Skills_experienceTable")
 	public static int[] Skills_experienceTable;
-	@ObfuscatedName("f")
+	@ObfuscatedName("l")
 	@ObfuscatedGetter(
-		intValue = 1622531909
+		intValue = 209893551
 	)
-	@Export("Interpreter_stringStackSize")
-	static int Interpreter_stringStackSize;
-	@ObfuscatedName("gz")
-	@ObfuscatedSignature(
-		signature = "[Lly;"
-	)
-	@Export("mapDotSprites")
-	static Sprite[] mapDotSprites;
+	public static int field2723;
 
 	static {
 		Skills_enabled = new boolean[]{true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, false, false};
@@ -40,15 +33,12 @@ public class Skills {
 
 	}
 
-	@ObfuscatedName("iz")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(IIIIIIII)V",
-		garbageValue = "-1917255225"
+		signature = "(I)Lgj;",
+		garbageValue = "1350642398"
 	)
-	@Export("updateRootInterface")
-	static final void updateRootInterface(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-		if (class162.loadInterface(var0)) {
-			class2.updateInterface(Widget.Widget_interfaceComponents[var0], -1, var1, var2, var3, var4, var5, var6);
-		}
+	public static PacketBufferNode method4100() {
+		return PacketBufferNode.PacketBufferNode_packetBufferNodeCount == 0 ? new PacketBufferNode() : PacketBufferNode.PacketBufferNode_packetBufferNodes[--PacketBufferNode.PacketBufferNode_packetBufferNodeCount];
 	}
 }

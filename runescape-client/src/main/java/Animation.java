@@ -3,51 +3,51 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("da")
+@ObfuscatedName("dx")
 @Implements("Animation")
 public class Animation {
-	@ObfuscatedName("q")
-	static int[] field1638;
-	@ObfuscatedName("w")
-	static int[] field1639;
-	@ObfuscatedName("e")
-	static int[] field1636;
-	@ObfuscatedName("p")
-	static int[] field1635;
-	@ObfuscatedName("k")
+	@ObfuscatedName("c")
+	static int[] field1603;
+	@ObfuscatedName("x")
+	static int[] field1612;
+	@ObfuscatedName("t")
+	static int[] field1604;
+	@ObfuscatedName("g")
+	static int[] field1602;
+	@ObfuscatedName("l")
 	@ObfuscatedSignature(
-		signature = "Lej;"
+		signature = "Len;"
 	)
 	@Export("skeleton")
 	Skeleton skeleton;
-	@ObfuscatedName("l")
+	@ObfuscatedName("u")
 	@Export("transformCount")
 	int transformCount;
-	@ObfuscatedName("b")
+	@ObfuscatedName("j")
 	@Export("transformSkeletonLabels")
 	int[] transformSkeletonLabels;
-	@ObfuscatedName("i")
+	@ObfuscatedName("v")
 	@Export("transformXs")
 	int[] transformXs;
-	@ObfuscatedName("c")
+	@ObfuscatedName("d")
 	@Export("transformYs")
 	int[] transformYs;
-	@ObfuscatedName("f")
+	@ObfuscatedName("z")
 	@Export("transformZs")
 	int[] transformZs;
-	@ObfuscatedName("m")
+	@ObfuscatedName("n")
 	@Export("hasAlphaTransform")
 	boolean hasAlphaTransform;
 
 	static {
-		field1638 = new int[500];
-		field1639 = new int[500];
-		field1636 = new int[500];
-		field1635 = new int[500];
+		field1603 = new int[500];
+		field1612 = new int[500];
+		field1604 = new int[500];
+		field1602 = new int[500];
 	}
 
 	@ObfuscatedSignature(
-		signature = "([BLej;)V"
+		signature = "([BLen;)V"
 	)
 	Animation(byte[] var1, Skeleton var2) {
 		this.skeleton = null;
@@ -69,38 +69,38 @@ public class Animation {
 				if (this.skeleton.transformTypes[var8] != 0) {
 					for (int var10 = var8 - 1; var10 > var6; --var10) {
 						if (this.skeleton.transformTypes[var10] == 0) {
-							field1638[var7] = var10;
-							field1639[var7] = 0;
-							field1636[var7] = 0;
-							field1635[var7] = 0;
+							field1603[var7] = var10;
+							field1612[var7] = 0;
+							field1604[var7] = 0;
+							field1602[var7] = 0;
 							++var7;
 							break;
 						}
 					}
 				}
 
-				field1638[var7] = var8;
+				field1603[var7] = var8;
 				short var11 = 0;
 				if (this.skeleton.transformTypes[var8] == 3) {
 					var11 = 128;
 				}
 
 				if ((var9 & 1) != 0) {
-					field1639[var7] = var4.readShortSmart();
+					field1612[var7] = var4.readShortSmart();
 				} else {
-					field1639[var7] = var11;
+					field1612[var7] = var11;
 				}
 
 				if ((var9 & 2) != 0) {
-					field1636[var7] = var4.readShortSmart();
+					field1604[var7] = var4.readShortSmart();
 				} else {
-					field1636[var7] = var11;
+					field1604[var7] = var11;
 				}
 
 				if ((var9 & 4) != 0) {
-					field1635[var7] = var4.readShortSmart();
+					field1602[var7] = var4.readShortSmart();
 				} else {
-					field1635[var7] = var11;
+					field1602[var7] = var11;
 				}
 
 				var6 = var8;
@@ -113,19 +113,20 @@ public class Animation {
 
 		if (var1.length != var4.offset) {
 			throw new RuntimeException();
-		}
-		this.transformCount = var7;
-		this.transformSkeletonLabels = new int[var7];
-		this.transformXs = new int[var7];
-		this.transformYs = new int[var7];
-		this.transformZs = new int[var7];
+		} else {
+			this.transformCount = var7;
+			this.transformSkeletonLabels = new int[var7];
+			this.transformXs = new int[var7];
+			this.transformYs = new int[var7];
+			this.transformZs = new int[var7];
 
-		for (var8 = 0; var8 < var7; ++var8) {
-			this.transformSkeletonLabels[var8] = field1638[var8];
-			this.transformXs[var8] = field1639[var8];
-			this.transformYs[var8] = field1636[var8];
-			this.transformZs[var8] = field1635[var8];
-		}
+			for (var8 = 0; var8 < var7; ++var8) {
+				this.transformSkeletonLabels[var8] = field1603[var8];
+				this.transformXs[var8] = field1612[var8];
+				this.transformYs[var8] = field1604[var8];
+				this.transformZs[var8] = field1602[var8];
+			}
 
+		}
 	}
 }

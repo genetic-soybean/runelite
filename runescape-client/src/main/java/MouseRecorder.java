@@ -1,37 +1,47 @@
+import java.net.MalformedURLException;
+import java.net.URL;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bs")
+@ObfuscatedName("bt")
 @Implements("MouseRecorder")
 public class MouseRecorder implements Runnable {
-	@ObfuscatedName("ix")
+	@ObfuscatedName("n")
+	@Export("musicTrackBoolean")
+	public static boolean musicTrackBoolean;
+	@ObfuscatedName("bt")
 	@ObfuscatedGetter(
-		intValue = -2050629733
+		intValue = -2032808157
 	)
-	@Export("selectedItemWidget")
-	static int selectedItemWidget;
-	@ObfuscatedName("q")
+	static int field565;
+	@ObfuscatedName("jx")
+	@ObfuscatedGetter(
+		intValue = -1873727163
+	)
+	@Export("plane")
+	static int plane;
+	@ObfuscatedName("c")
 	@Export("isRunning")
 	boolean isRunning;
-	@ObfuscatedName("w")
+	@ObfuscatedName("x")
 	@Export("lock")
 	Object lock;
-	@ObfuscatedName("e")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = -944219323
+		intValue = 675918873
 	)
 	@Export("index")
 	int index;
-	@ObfuscatedName("p")
+	@ObfuscatedName("g")
 	@Export("xs")
 	int[] xs;
-	@ObfuscatedName("k")
+	@ObfuscatedName("l")
 	@Export("ys")
 	int[] ys;
-	@ObfuscatedName("l")
+	@ObfuscatedName("u")
 	@Export("millis")
 	long[] millis;
 
@@ -45,7 +55,7 @@ public class MouseRecorder implements Runnable {
 	}
 
 	public void run() {
-		for (; this.isRunning; EnumDefinition.method4550(50L)) {
+		for (; this.isRunning; FriendsList.sleepMillis(50L)) {
 			synchronized(this.lock) {
 				if (this.index < 500) {
 					this.xs[this.index] = MouseHandler.MouseHandler_x;
@@ -58,80 +68,44 @@ public class MouseRecorder implements Runnable {
 
 	}
 
-	@ObfuscatedName("i")
-	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "5"
-	)
-	@Export("WorldMapElement_clearCached")
-	public static void WorldMapElement_clearCached() {
-		WorldMapElement.WorldMapElement_cachedSprites.clear();
-	}
-
 	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "234130562"
+		signature = "(Ljava/lang/String;I)Z",
+		garbageValue = "-1211827795"
 	)
-	static final void method1138() {
-		Object var10000 = null;
-		String var0 = "Your friend list is full. Max of 200 for free users, and 400 for members";
-		ScriptEvent.addGameMessage(30, "", var0);
-	}
-
-	@ObfuscatedName("x")
-	@ObfuscatedSignature(
-		signature = "(II)V",
-		garbageValue = "1823729833"
-	)
-	static void method1137(int var0) {
-		Login.loginIndex = 12;
-		Login.field1182 = var0;
-	}
-
-	@ObfuscatedName("fu")
-	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "-1953240154"
-	)
-	static final void method1141() {
-		for (int var0 = 0; var0 < Client.npcCount; ++var0) {
-			int var1 = Client.npcIndices[var0];
-			NPC var2 = Client.npcs[var1];
-			if (var2 != null) {
-				StructDefinition.calculateActorPosition(var2, var2.definition.size);
+	@Export("isValidURL")
+	static boolean isValidURL(String var0) {
+		if (var0 == null) {
+			return false;
+		} else {
+			try {
+				new URL(var0);
+				return true;
+			} catch (MalformedURLException var2) {
+				return false;
 			}
 		}
+	}
 
+	@ObfuscatedName("u")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "1986117019"
+	)
+	public static void method1139() {
+		FloorOverlayDefinition.FloorOverlayDefinition_cached.clear();
 	}
 
 	@ObfuscatedName("fl")
 	@ObfuscatedSignature(
-		signature = "(Lbd;IIB)V",
-		garbageValue = "-124"
+		signature = "(I)V",
+		garbageValue = "-1208312235"
 	)
-	@Export("performPlayerAnimation")
-	static void performPlayerAnimation(Player var0, int var1, int var2) {
-		if (var0.sequence == var1 && var1 != -1) {
-			int var3 = GrandExchangeEvent.getSequenceDefinition(var1).field3529;
-			if (var3 == 1) {
-				var0.sequenceFrame = 0;
-				var0.sequenceFrameCycle = 0;
-				var0.sequenceDelay = var2;
-				var0.field985 = 0;
-			}
-
-			if (var3 == 2) {
-				var0.field985 = 0;
-			}
-		} else if (var1 == -1 || var0.sequence == -1 || GrandExchangeEvent.getSequenceDefinition(var1).field3533 >= GrandExchangeEvent.getSequenceDefinition(var0.sequence).field3533) {
-			var0.sequence = var1;
-			var0.sequenceFrame = 0;
-			var0.sequenceFrameCycle = 0;
-			var0.sequenceDelay = var2;
-			var0.field985 = 0;
-			var0.field1008 = var0.pathLength;
-		}
-
+	static void method1145() {
+		PacketBufferNode var0 = MenuAction.getPacketBufferNode(ClientPacket.field2270, Client.packetWriter.isaacCipher);
+		var0.packetBuffer.writeByte(class43.getWindowedMode());
+		var0.packetBuffer.writeShort(GraphicsDefaults.canvasWidth);
+		var0.packetBuffer.writeShort(GameShell.canvasHeight);
+		Client.packetWriter.addNode(var0);
 	}
 }

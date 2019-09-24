@@ -6,53 +6,52 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("dc")
 @Implements("TileItemPile")
-public final class TileItemPile
-{
-	@ObfuscatedName("q")
+public final class TileItemPile {
+	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		intValue = -706647707
+		intValue = -2023976075
 	)
 	@Export("tileHeight")
 	int tileHeight;
-	@ObfuscatedName("w")
+	@ObfuscatedName("x")
 	@ObfuscatedGetter(
-		intValue = -1749434399
-	)
-	@Export("x")
-	int x;
-	@ObfuscatedName("e")
-	@ObfuscatedGetter(
-		intValue = 1687183849
+		intValue = -1848174955
 	)
 	@Export("y")
 	int y;
-	@ObfuscatedName("p")
+	@ObfuscatedName("t")
+	@ObfuscatedGetter(
+		intValue = -957349888
+	)
+	@Export("x")
+	int x;
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "Leo;"
+		signature = "Lel;"
 	)
 	@Export("first")
 	Entity first;
-	@ObfuscatedName("k")
+	@ObfuscatedName("l")
 	@ObfuscatedSignature(
-		signature = "Leo;"
+		signature = "Lel;"
 	)
 	@Export("second")
 	Entity second;
-	@ObfuscatedName("l")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "Leo;"
+		signature = "Lel;"
 	)
 	@Export("third")
 	Entity third;
-	@ObfuscatedName("b")
+	@ObfuscatedName("j")
 	@ObfuscatedGetter(
-		longValue = -6836359089398778317L
+		longValue = 7030774088402658829L
 	)
 	@Export("tag")
 	long tag;
-	@ObfuscatedName("i")
+	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = -1167512637
+		intValue = -1955777995
 	)
 	@Export("height")
 	int height;
@@ -60,50 +59,46 @@ public final class TileItemPile
 	TileItemPile() {
 	}
 
-	@ObfuscatedName("k")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "(III)I",
-		garbageValue = "-989207473"
+		signature = "(IIB)Lbj;",
+		garbageValue = "126"
 	)
-	public static int method2767(int var0, int var1) {
-		int var2 = var0 >>> 31;
-		return (var0 + var2) / var1 - var2;
+	@Export("Messages_getByChannelAndID")
+	static Message Messages_getByChannelAndID(int var0, int var1) {
+		ChatChannel var2 = (ChatChannel)Messages.Messages_channels.get(var0);
+		return var2.getMessage(var1);
 	}
 
 	@ObfuscatedName("l")
 	@ObfuscatedSignature(
 		signature = "(IB)V",
-		garbageValue = "-23"
+		garbageValue = "-75"
 	)
-	static void method2764(int var0) {
-		ItemContainer var1 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
-		if (var1 != null) {
-			var1.remove();
+	public static void method2728(int var0) {
+		if (var0 != -1) {
+			if (UserComparator3.Widget_loadedInterfaces[var0]) {
+				ArchiveDiskActionHandler.Widget_archive.clearFilesGroup(var0);
+				if (class289.Widget_interfaceComponents[var0] != null) {
+					boolean var1 = true;
+
+					for (int var2 = 0; var2 < class289.Widget_interfaceComponents[var0].length; ++var2) {
+						if (class289.Widget_interfaceComponents[var0][var2] != null) {
+							if (class289.Widget_interfaceComponents[var0][var2].type != 2) {
+								class289.Widget_interfaceComponents[var0][var2] = null;
+							} else {
+								var1 = false;
+							}
+						}
+					}
+
+					if (var1) {
+						class289.Widget_interfaceComponents[var0] = null;
+					}
+
+					UserComparator3.Widget_loadedInterfaces[var0] = false;
+				}
+			}
 		}
-	}
-
-	@ObfuscatedName("v")
-	@ObfuscatedSignature(
-		signature = "(III)I",
-		garbageValue = "1314012151"
-	)
-	static final int method2765(int var0, int var1) {
-		int var2 = MouseHandler.method1021(var0 - 1, var1 - 1) + MouseHandler.method1021(1 + var0, var1 - 1) + MouseHandler.method1021(var0 - 1, 1 + var1) + MouseHandler.method1021(1 + var0, 1 + var1);
-		int var3 = MouseHandler.method1021(var0 - 1, var1) + MouseHandler.method1021(var0 + 1, var1) + MouseHandler.method1021(var0, var1 - 1) + MouseHandler.method1021(var0, var1 + 1);
-		int var4 = MouseHandler.method1021(var0, var1);
-		return var2 / 16 + var3 / 8 + var4 / 4;
-	}
-
-	@ObfuscatedName("y")
-	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "76"
-	)
-	@Export("ObjectDefinition_clearCached")
-	public static void ObjectDefinition_clearCached() {
-		ObjectDefinition.ObjectDefinition_cached.clear();
-		ObjectDefinition.ObjectDefinition_cachedModelData.clear();
-		ObjectDefinition.ObjectDefinition_cachedEntities.clear();
-		ObjectDefinition.ObjectDefinition_cachedModels.clear();
 	}
 }

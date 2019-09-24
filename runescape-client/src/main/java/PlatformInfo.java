@@ -4,188 +4,194 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("lo")
+@ObfuscatedName("la")
 @Implements("PlatformInfo")
 public class PlatformInfo extends Node {
-	@ObfuscatedName("ar")
-	@ObfuscatedGetter(
-		intValue = 1707055259
+	@ObfuscatedName("gp")
+	@ObfuscatedSignature(
+		signature = "[Lli;"
 	)
-	int field3938;
-	@ObfuscatedName("ax")
-	boolean field3939;
-	@ObfuscatedName("az")
+	@Export("headIconPkSprites")
+	static Sprite[] headIconPkSprites;
+	@ObfuscatedName("as")
 	@ObfuscatedGetter(
-		intValue = -2001152495
+		intValue = 1262166811
 	)
-	int field3953;
-	@ObfuscatedName("ae")
-	@ObfuscatedGetter(
-		intValue = -695975343
-	)
-	int field3941;
-	@ObfuscatedName("ao")
-	@ObfuscatedGetter(
-		intValue = -1607985897
-	)
-	int field3942;
-	@ObfuscatedName("aj")
-	@ObfuscatedGetter(
-		intValue = 2094714279
-	)
-	int field3961;
-	@ObfuscatedName("at")
-	@ObfuscatedGetter(
-		intValue = -861639539
-	)
-	int field3944;
-	@ObfuscatedName("ac")
-	boolean field3945;
+	int field3910;
+	@ObfuscatedName("ad")
+	boolean field3918;
 	@ObfuscatedName("ap")
 	@ObfuscatedGetter(
-		intValue = 2056129
+		intValue = -233370459
 	)
-	int field3962;
-	@ObfuscatedName("aq")
+	int field3912;
+	@ObfuscatedName("ax")
 	@ObfuscatedGetter(
-		intValue = -1736431355
+		intValue = -643959755
 	)
-	int field3943;
-	@ObfuscatedName("an")
+	int field3913;
+	@ObfuscatedName("aj")
 	@ObfuscatedGetter(
-		intValue = -233301775
+		intValue = 368561611
 	)
-	int field3948;
-	@ObfuscatedName("au")
-	@ObfuscatedGetter(
-		intValue = 847094315
-	)
-	int field3949;
-	@ObfuscatedName("ai")
-	String field3934;
-	@ObfuscatedName("ak")
-	String field3951;
-	@ObfuscatedName("ah")
-	String field3952;
-	@ObfuscatedName("am")
-	String field3946;
-	@ObfuscatedName("ay")
-	@ObfuscatedGetter(
-		intValue = -1073737943
-	)
-	int field3936;
-	@ObfuscatedName("af")
-	@ObfuscatedGetter(
-		intValue = 1191319899
-	)
-	int field3955;
+	int field3914;
 	@ObfuscatedName("ab")
 	@ObfuscatedGetter(
-		intValue = 1715941693
+		intValue = -1553931981
 	)
-	int field3956;
-	@ObfuscatedName("bp")
+	int field3915;
+	@ObfuscatedName("af")
 	@ObfuscatedGetter(
-		intValue = 1742476945
+		intValue = 401263417
 	)
-	int field3957;
-	@ObfuscatedName("bz")
-	String field3947;
-	@ObfuscatedName("bi")
-	String field3959;
+	int field3903;
+	@ObfuscatedName("ak")
+	boolean field3917;
+	@ObfuscatedName("ay")
+	@ObfuscatedGetter(
+		intValue = -569350389
+	)
+	int field3908;
+	@ObfuscatedName("ae")
+	@ObfuscatedGetter(
+		intValue = 337511837
+	)
+	int field3925;
+	@ObfuscatedName("aa")
+	@ObfuscatedGetter(
+		intValue = 1464874395
+	)
+	int field3916;
+	@ObfuscatedName("aq")
+	@ObfuscatedGetter(
+		intValue = 1301497237
+	)
+	int field3922;
+	@ObfuscatedName("ar")
+	String field3923;
+	@ObfuscatedName("ac")
+	String field3921;
+	@ObfuscatedName("az")
+	String field3904;
+	@ObfuscatedName("ai")
+	String field3926;
+	@ObfuscatedName("am")
+	@ObfuscatedGetter(
+		intValue = -1840491471
+	)
+	int field3927;
+	@ObfuscatedName("aw")
+	@ObfuscatedGetter(
+		intValue = 1377986557
+	)
+	int field3928;
+	@ObfuscatedName("au")
+	@ObfuscatedGetter(
+		intValue = -1434416475
+	)
+	int field3929;
 	@ObfuscatedName("bg")
-	int[] field3960;
-	@ObfuscatedName("bh")
 	@ObfuscatedGetter(
-		intValue = -1399141483
+		intValue = 549391923
 	)
-	int field3935;
-	@ObfuscatedName("bm")
-	String field3931;
+	int field3931;
+	@ObfuscatedName("bn")
+	String field3911;
+	@ObfuscatedName("bk")
+	String field3932;
+	@ObfuscatedName("bp")
+	int[] field3933;
+	@ObfuscatedName("bu")
+	@ObfuscatedGetter(
+		intValue = -419981447
+	)
+	int field3934;
+	@ObfuscatedName("bi")
+	String field3935;
 
 	PlatformInfo(int var1, boolean var2, int var3, int var4, int var5, int var6, int var7, boolean var8, int var9, int var10, int var11, int var12, String var13, String var14, String var15, String var16, int var17, int var18, int var19, int var20, String var21, String var22, int[] var23, int var24, String var25) {
-		this.field3960 = new int[3];
-		this.field3938 = var1;
-		this.field3939 = var2;
-		this.field3953 = var3;
-		this.field3941 = var4;
-		this.field3942 = var5;
-		this.field3961 = var6;
-		this.field3944 = var7;
-		this.field3945 = var8;
-		this.field3962 = var9;
-		this.field3943 = var10;
-		this.field3948 = var11;
-		this.field3949 = var12;
-		this.field3934 = var13;
-		this.field3951 = var14;
-		this.field3952 = var15;
-		this.field3946 = var16;
-		this.field3936 = var17;
-		this.field3955 = var18;
-		this.field3956 = var19;
-		this.field3957 = var20;
-		this.field3947 = var21;
-		this.field3959 = var22;
-		this.field3960 = var23;
-		this.field3935 = var24;
-		this.field3931 = var25;
+		this.field3933 = new int[3];
+		this.field3910 = var1;
+		this.field3918 = var2;
+		this.field3912 = var3;
+		this.field3913 = var4;
+		this.field3914 = var5;
+		this.field3915 = var6;
+		this.field3903 = var7;
+		this.field3917 = var8;
+		this.field3908 = var9;
+		this.field3925 = var10;
+		this.field3916 = var11;
+		this.field3922 = var12;
+		this.field3923 = var13;
+		this.field3921 = var14;
+		this.field3904 = var15;
+		this.field3926 = var16;
+		this.field3927 = var17;
+		this.field3928 = var18;
+		this.field3929 = var19;
+		this.field3931 = var20;
+		this.field3911 = var21;
+		this.field3932 = var22;
+		this.field3933 = var23;
+		this.field3934 = var24;
+		this.field3935 = var25;
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(Lkf;I)V",
-		garbageValue = "-1667072289"
+		signature = "(Lkz;I)V",
+		garbageValue = "-712263030"
 	)
 	@Export("write")
 	public void write(Buffer var1) {
 		var1.writeByte(8);
-		var1.writeByte(this.field3938);
-		var1.writeByte(this.field3939 ? 1 : 0);
-		var1.writeShort(this.field3953);
-		var1.writeByte(this.field3941);
-		var1.writeByte(this.field3942);
-		var1.writeByte(this.field3961);
-		var1.writeByte(this.field3944);
-		var1.writeByte(this.field3945 ? 1 : 0);
-		var1.writeShort(this.field3962);
-		var1.writeByte(this.field3943);
-		var1.writeMedium(this.field3948);
-		var1.writeShort(this.field3949);
-		var1.writeStringCp1252NullCircumfixed(this.field3934);
-		var1.writeStringCp1252NullCircumfixed(this.field3951);
-		var1.writeStringCp1252NullCircumfixed(this.field3952);
-		var1.writeStringCp1252NullCircumfixed(this.field3946);
-		var1.writeByte(this.field3955);
-		var1.writeShort(this.field3936);
-		var1.writeStringCp1252NullCircumfixed(this.field3947);
-		var1.writeStringCp1252NullCircumfixed(this.field3959);
-		var1.writeByte(this.field3956);
-		var1.writeByte(this.field3957);
+		var1.writeByte(this.field3910);
+		var1.writeByte(this.field3918 ? 1 : 0);
+		var1.writeShort(this.field3912);
+		var1.writeByte(this.field3913);
+		var1.writeByte(this.field3914);
+		var1.writeByte(this.field3915);
+		var1.writeByte(this.field3903);
+		var1.writeByte(this.field3917 ? 1 : 0);
+		var1.writeShort(this.field3908);
+		var1.writeByte(this.field3925);
+		var1.writeMedium(this.field3916);
+		var1.writeShort(this.field3922);
+		var1.writeStringCp1252NullCircumfixed(this.field3923);
+		var1.writeStringCp1252NullCircumfixed(this.field3921);
+		var1.writeStringCp1252NullCircumfixed(this.field3904);
+		var1.writeStringCp1252NullCircumfixed(this.field3926);
+		var1.writeByte(this.field3928);
+		var1.writeShort(this.field3927);
+		var1.writeStringCp1252NullCircumfixed(this.field3911);
+		var1.writeStringCp1252NullCircumfixed(this.field3932);
+		var1.writeByte(this.field3929);
+		var1.writeByte(this.field3931);
 
-		for (int var2 = 0; var2 < this.field3960.length; ++var2) {
-			var1.writeInt(this.field3960[var2]);
+		for (int var2 = 0; var2 < this.field3933.length; ++var2) {
+			var1.writeInt(this.field3933[var2]);
 		}
 
-		var1.writeInt(this.field3935);
-		var1.writeStringCp1252NullCircumfixed(this.field3931);
+		var1.writeInt(this.field3934);
+		var1.writeStringCp1252NullCircumfixed(this.field3935);
 	}
 
-	@ObfuscatedName("w")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(B)I",
-		garbageValue = "-5"
+		signature = "(S)I",
+		garbageValue = "-16149"
 	)
 	@Export("size")
 	public int size() {
 		byte var1 = 39;
-		int var2 = var1 + class13.method152(this.field3934);
-		var2 += class13.method152(this.field3951);
-		var2 += class13.method152(this.field3952);
-		var2 += class13.method152(this.field3946);
-		var2 += class13.method152(this.field3947);
-		var2 += class13.method152(this.field3959);
-		var2 += class13.method152(this.field3931);
+		int var2 = var1 + GrandExchangeOfferOwnWorldComparator.method1245(this.field3923);
+		var2 += GrandExchangeOfferOwnWorldComparator.method1245(this.field3921);
+		var2 += GrandExchangeOfferOwnWorldComparator.method1245(this.field3904);
+		var2 += GrandExchangeOfferOwnWorldComparator.method1245(this.field3926);
+		var2 += GrandExchangeOfferOwnWorldComparator.method1245(this.field3911);
+		var2 += GrandExchangeOfferOwnWorldComparator.method1245(this.field3932);
+		var2 += GrandExchangeOfferOwnWorldComparator.method1245(this.field3935);
 		return var2;
 	}
 }

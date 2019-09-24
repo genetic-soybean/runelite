@@ -4,40 +4,26 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kt")
+@ObfuscatedName("ke")
 @Implements("DefaultsGroup")
 public class DefaultsGroup {
-	@ObfuscatedName("q")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "Lkt;"
+		signature = "Lke;"
 	)
-	static final DefaultsGroup field3821;
-	@ObfuscatedName("go")
+	static final DefaultsGroup field3792;
+	@ObfuscatedName("x")
 	@ObfuscatedGetter(
-		intValue = -909445377
-	)
-	static int field3819;
-	@ObfuscatedName("w")
-	@ObfuscatedGetter(
-		intValue = 1207021413
+		intValue = -1766167295
 	)
 	@Export("group")
 	final int group;
 
 	static {
-		field3821 = new DefaultsGroup(3);
+		field3792 = new DefaultsGroup(3);
 	}
 
 	DefaultsGroup(int var1) {
 		this.group = var1;
-	}
-
-	@ObfuscatedName("w")
-	@ObfuscatedSignature(
-		signature = "(Lkf;B)Ljava/lang/String;",
-		garbageValue = "39"
-	)
-	public static String method5898(Buffer var0) {
-		return WorldMapIcon_0.method194(var0, 32767);
 	}
 }

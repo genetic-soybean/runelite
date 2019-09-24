@@ -3,31 +3,42 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("z")
+@ObfuscatedName("b")
 @Implements("WorldMapDecoration")
 public class WorldMapDecoration {
-	@ObfuscatedName("am")
-	@ObfuscatedGetter(
-		intValue = -1778683289
+	@ObfuscatedName("s")
+	@ObfuscatedSignature(
+		signature = "Llt;"
 	)
-	static int field212;
-	@ObfuscatedName("q")
+	static IndexedSprite field202;
+	@ObfuscatedName("di")
+	@ObfuscatedSignature(
+		signature = "Lio;"
+	)
+	@Export("archive6")
+	static Archive archive6;
+	@ObfuscatedName("dc")
+	@ObfuscatedSignature(
+		signature = "Lio;"
+	)
+	@Export("archive8")
+	static Archive archive8;
+	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		intValue = -1500590687
+		intValue = 1850288081
 	)
 	@Export("objectDefinitionId")
 	final int objectDefinitionId;
-	@ObfuscatedName("w")
+	@ObfuscatedName("x")
 	@ObfuscatedGetter(
-		intValue = -1614020575
+		intValue = -20995345
 	)
 	@Export("decoration")
 	final int decoration;
-	@ObfuscatedName("e")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = -1580531439
+		intValue = 563692881
 	)
 	@Export("rotation")
 	final int rotation;
@@ -38,106 +49,82 @@ public class WorldMapDecoration {
 		this.rotation = var3;
 	}
 
-	@ObfuscatedName("b")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(ILcx;ZB)I",
-		garbageValue = "-119"
+		signature = "(CI)C",
+		garbageValue = "1722829704"
 	)
-	static int method324(int var0, Script var1, boolean var2) {
-		Widget var3;
-		if (var0 >= 2000) {
-			var0 -= 1000;
-			var3 = class80.getWidget(Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize]);
-		} else {
-			var3 = var2 ? Interpreter.field1111 : Calendar.field2507;
-		}
-
-		Strings.method4120(var3);
-		if (var0 == ScriptOpcodes.CC_SETOBJECT || var0 == ScriptOpcodes.CC_SETOBJECT_NONUM || var0 == ScriptOpcodes.CC_SETOBJECT_ALWAYS_NUM) {
-			HealthBarUpdate.Interpreter_intStackSize -= 2;
-			int var4 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
-			int var5 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
-			var3.itemId = var4;
-			var3.itemQuantity = var5;
-			ItemDefinition var6 = WorldMapArea.getItemDefinition(var4);
-			var3.modelAngleX = var6.xan2d;
-			var3.modelAngleY = var6.yan2d;
-			var3.modelAngleZ = var6.zan2d;
-			var3.modelOffsetX = var6.offsetX2d;
-			var3.modelOffsetY = var6.offsetY2d;
-			var3.modelZoom = var6.zoom2d;
-			if (var0 == ScriptOpcodes.CC_SETOBJECT_NONUM) {
-				var3.itemQuantityMode = 0;
-			} else if (var0 == ScriptOpcodes.CC_SETOBJECT_ALWAYS_NUM | var6.isStackable == 1) {
-				var3.itemQuantityMode = 1;
-			} else {
-				var3.itemQuantityMode = 2;
-			}
-
-			if (var3.field2619 > 0) {
-				var3.modelZoom = var3.modelZoom * 32 / var3.field2619;
-			} else if (var3.rawWidth > 0) {
-				var3.modelZoom = var3.modelZoom * 32 / var3.rawWidth;
-			}
-
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CC_SETNPCHEAD) {
-			var3.modelType = 2;
-			var3.modelId = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CC_SETPLAYERHEAD_SELF) {
-			var3.modelType = 3;
-			var3.modelId = Client.localPlayer.appearance.getChatHeadId();
-			return 1;
-		}
-		return 2;
+	static char method302(char var0) {
+		return var0 != 181 && var0 != 402 ? Character.toTitleCase(var0) : var0;
 	}
 
-	@ObfuscatedName("kv")
+	@ObfuscatedName("jg")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;ZB)V",
-		garbageValue = "-125"
+		signature = "([Lhy;II)V",
+		garbageValue = "2021423451"
 	)
-	@Export("findItemDefinitions")
-	static void findItemDefinitions(String var0, boolean var1) {
-		var0 = var0.toLowerCase();
-		short[] var2 = new short[16];
-		int var3 = 0;
-
-		for (int var4 = 0; var4 < ItemDefinition.ItemDefinition_fileCount; ++var4) {
-			ItemDefinition var5 = WorldMapArea.getItemDefinition(var4);
-			if ((!var1 || var5.isTradable) && var5.noteTemplate == -1 && var5.name.toLowerCase().indexOf(var0) != -1) {
-				if (var3 >= 250) {
-					FloorOverlayDefinition.foundItemIdCount = -1;
-					WorldMapData_1.foundItemIds = null;
-					return;
-				}
-
-				if (var3 >= var2.length) {
-					short[] var6 = new short[var2.length * 2];
-
-					for (int var7 = 0; var7 < var3; ++var7) {
-						var6[var7] = var2[var7];
+	@Export("drawModelComponents")
+	static final void drawModelComponents(Widget[] var0, int var1) {
+		for (int var2 = 0; var2 < var0.length; ++var2) {
+			Widget var3 = var0[var2];
+			if (var3 != null && var3.parentId == var1 && (!var3.isIf3 || !NetCache.isComponentHidden(var3))) {
+				int var5;
+				if (var3.type == 0) {
+					if (!var3.isIf3 && NetCache.isComponentHidden(var3) && var3 != class32.mousedOverWidgetIf1) {
+						continue;
 					}
 
-					var2 = var6;
+					drawModelComponents(var0, var3.id);
+					if (var3.children != null) {
+						drawModelComponents(var3.children, var3.id);
+					}
+
+					InterfaceParent var4 = (InterfaceParent)Client.interfaceParents.get((long)var3.id);
+					if (var4 != null) {
+						var5 = var4.group;
+						if (TaskHandler.loadInterface(var5)) {
+							drawModelComponents(class289.Widget_interfaceComponents[var5], -1);
+						}
+					}
 				}
 
-				var2[var3++] = (short)var4;
+				if (var3.type == 6) {
+					if (var3.sequenceId != -1 || var3.sequenceId2 != -1) {
+						boolean var7 = Tile.runCs1(var3);
+						if (var7) {
+							var5 = var3.sequenceId2;
+						} else {
+							var5 = var3.sequenceId;
+						}
+
+						if (var5 != -1) {
+							SequenceDefinition var6 = class83.SequenceDefinition_get(var5);
+
+							for (var3.modelFrameCycle += Client.field683; var3.modelFrameCycle > var6.frameLengths[var3.modelFrame]; WorldMapID.invalidateWidget(var3)) {
+								var3.modelFrameCycle -= var6.frameLengths[var3.modelFrame];
+								++var3.modelFrame;
+								if (var3.modelFrame >= var6.frameIds.length) {
+									var3.modelFrame -= var6.frameCount;
+									if (var3.modelFrame < 0 || var3.modelFrame >= var6.frameIds.length) {
+										var3.modelFrame = 0;
+									}
+								}
+							}
+						}
+					}
+
+					if (var3.field2594 != 0 && !var3.isIf3) {
+						int var8 = var3.field2594 >> 16;
+						var5 = var3.field2594 << 16 >> 16;
+						var8 *= Client.field683;
+						var5 *= Client.field683;
+						var3.modelAngleX = var8 + var3.modelAngleX & 2047;
+						var3.modelAngleY = var5 + var3.modelAngleY & 2047;
+						WorldMapID.invalidateWidget(var3);
+					}
+				}
 			}
 		}
 
-		WorldMapData_1.foundItemIds = var2;
-		class32.foundItemIndex = 0;
-		FloorOverlayDefinition.foundItemIdCount = var3;
-		String[] var8 = new String[FloorOverlayDefinition.foundItemIdCount];
-
-		for (int var9 = 0; var9 < FloorOverlayDefinition.foundItemIdCount; ++var9) {
-			var8[var9] = WorldMapArea.getItemDefinition(var2[var9]).name;
-		}
-
-		MenuAction.startSortingItemsByName(var8, WorldMapData_1.foundItemIds);
 	}
 }

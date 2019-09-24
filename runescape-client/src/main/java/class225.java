@@ -2,78 +2,68 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hf")
+@ObfuscatedName("hb")
 public class class225 {
-	@ObfuscatedName("bo")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "[Llx;"
+		signature = "(IB)Liv;",
+		garbageValue = "-97"
 	)
-	@Export("worldSelectArrows")
-	static IndexedSprite[] worldSelectArrows;
-
-	@ObfuscatedName("ji")
-	@ObfuscatedSignature(
-		signature = "([Lhj;II)V",
-		garbageValue = "-1666853879"
-	)
-	static final void method4122(Widget[] var0, int var1) {
-		for (int var2 = 0; var2 < var0.length; ++var2) {
-			Widget var3 = var0[var2];
-			if (var3 != null && var3.parentId == var1 && (!var3.isIf3 || !ScriptEvent.isComponentHidden(var3))) {
-				if (var3.type == 0) {
-					if (!var3.isIf3 && ScriptEvent.isComponentHidden(var3) && var3 != LoginScreenAnimation.mousedOverWidgetIf1) {
-						continue;
-					}
-
-					method4122(var0, var3.id);
-					if (var3.children != null) {
-						method4122(var3.children, var3.id);
-					}
-
-					InterfaceParent var4 = (InterfaceParent)Client.interfaceParents.get((long)var3.id);
-					if (var4 != null) {
-						Archive.method4269(var4.group);
-					}
-				}
-
-				if (var3.type == 6) {
-					int var5;
-					if (var3.sequenceId != -1 || var3.sequenceId2 != -1) {
-						boolean var7 = ChatChannel.runCs1(var3);
-						if (var7) {
-							var5 = var3.sequenceId2;
-						} else {
-							var5 = var3.sequenceId;
-						}
-
-						if (var5 != -1) {
-							SequenceDefinition var6 = GrandExchangeEvent.getSequenceDefinition(var5);
-
-							for (var3.modelFrameCycle += Client.field718; var3.modelFrameCycle > var6.frameLengths[var3.modelFrame]; Strings.method4120(var3)) {
-								var3.modelFrameCycle -= var6.frameLengths[var3.modelFrame];
-								++var3.modelFrame;
-								if (var3.modelFrame >= var6.frameIds.length) {
-									var3.modelFrame -= var6.frameCount;
-									if (var3.modelFrame < 0 || var3.modelFrame >= var6.frameIds.length) {
-										var3.modelFrame = 0;
-									}
-								}
-							}
-						}
-					}
-
-					if (var3.field2575 != 0 && !var3.isIf3) {
-						int var8 = var3.field2575 >> 16;
-						var5 = var3.field2575 << 16 >> 16;
-						var8 *= Client.field718;
-						var5 *= Client.field718;
-						var3.modelAngleX = var8 + var3.modelAngleX & 2047;
-						var3.modelAngleY = var5 + var3.modelAngleY & 2047;
-						Strings.method4120(var3);
-					}
-				}
+	@Export("StructDefinition_getStructDefinition")
+	public static StructDefinition StructDefinition_getStructDefinition(int var0) {
+		StructDefinition var1 = (StructDefinition)StructDefinition.StructDefinition_cached.get((long)var0);
+		if (var1 != null) {
+			return var1;
+		} else {
+			byte[] var2 = StructDefinition.StructDefinition_archive.takeFile(34, var0);
+			var1 = new StructDefinition();
+			if (var2 != null) {
+				var1.decode(new Buffer(var2));
 			}
-		}
 
+			var1.postDecode();
+			StructDefinition.StructDefinition_cached.put(var1, (long)var0);
+			return var1;
+		}
+	}
+
+	@ObfuscatedName("p")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "-1647752784"
+	)
+	static final void method4105() {
+		if (!ViewportMouse.ViewportMouse_false0) {
+			int var0 = Scene.Scene_cameraPitchSine;
+			int var1 = Scene.Scene_cameraPitchCosine;
+			int var2 = Scene.Scene_cameraYawSine;
+			int var3 = Scene.Scene_cameraYawCosine;
+			byte var4 = 50;
+			short var5 = 3500;
+			int var6 = (ViewportMouse.ViewportMouse_x - Rasterizer3D.Rasterizer3D_clipMidX) * var4 / Rasterizer3D.Rasterizer3D_zoom;
+			int var7 = (ViewportMouse.ViewportMouse_y - Rasterizer3D.Rasterizer3D_clipMidY) * var4 / Rasterizer3D.Rasterizer3D_zoom;
+			int var8 = (ViewportMouse.ViewportMouse_x - Rasterizer3D.Rasterizer3D_clipMidX) * var5 / Rasterizer3D.Rasterizer3D_zoom;
+			int var9 = (ViewportMouse.ViewportMouse_y - Rasterizer3D.Rasterizer3D_clipMidY) * var5 / Rasterizer3D.Rasterizer3D_zoom;
+			int var10 = Rasterizer3D.method2983(var7, var4, var1, var0);
+			int var11 = Rasterizer3D.method3000(var7, var4, var1, var0);
+			var7 = var10;
+			var10 = Rasterizer3D.method2983(var9, var5, var1, var0);
+			int var12 = Rasterizer3D.method3000(var9, var5, var1, var0);
+			var9 = var10;
+			var10 = Rasterizer3D.method3026(var6, var11, var3, var2);
+			var11 = Rasterizer3D.method2964(var6, var11, var3, var2);
+			var6 = var10;
+			var10 = Rasterizer3D.method3026(var8, var12, var3, var2);
+			var12 = Rasterizer3D.method2964(var8, var12, var3, var2);
+			ViewportMouse.field1711 = (var10 + var6) / 2;
+			Ignored.field3577 = (var9 + var7) / 2;
+			class222.field2726 = (var12 + var11) / 2;
+			class4.field20 = (var10 - var6) / 2;
+			ViewportMouse.field1712 = (var9 - var7) / 2;
+			ServerBuild.field3079 = (var12 - var11) / 2;
+			ArchiveLoader.field510 = Math.abs(class4.field20);
+			GrandExchangeOfferUnitPriceComparator.field75 = Math.abs(ViewportMouse.field1712);
+			class222.field2724 = Math.abs(ServerBuild.field3079);
+		}
 	}
 }

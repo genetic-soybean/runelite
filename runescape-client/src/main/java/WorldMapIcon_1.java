@@ -1,72 +1,69 @@
-import java.security.SecureRandom;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("d")
+@ObfuscatedName("o")
 @Implements("WorldMapIcon_1")
 public class WorldMapIcon_1 extends AbstractWorldMapIcon {
-	@ObfuscatedName("nc")
+	@ObfuscatedName("ql")
 	@ObfuscatedSignature(
-		signature = "[Lhj;"
+		signature = "Ldh;"
 	)
-	static Widget[] field188;
-	@ObfuscatedName("ew")
-	@Export("secureRandom")
-	static SecureRandom secureRandom;
-	@ObfuscatedName("fp")
+	@Export("pcmPlayer0")
+	static PcmPlayer pcmPlayer0;
+	@ObfuscatedName("gf")
 	@ObfuscatedSignature(
-		signature = "Lke;"
+		signature = "Lep;"
 	)
-	@Export("fontBold12")
-	static Font fontBold12;
-	@ObfuscatedName("ld")
-	@ObfuscatedGetter(
-		intValue = 1201486385
+	@Export("scene")
+	static Scene scene;
+	@ObfuscatedName("gx")
+	@ObfuscatedSignature(
+		signature = "[Llt;"
 	)
-	@Export("selectedItemSlot")
-	static int selectedItemSlot;
-	@ObfuscatedName("q")
+	@Export("scrollBarSprites")
+	static IndexedSprite[] scrollBarSprites;
+	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		intValue = -2025919285
+		intValue = 638368553
 	)
 	@Export("objectDefId")
 	final int objectDefId;
-	@ObfuscatedName("w")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "Law;"
+		signature = "Lav;"
 	)
 	@Export("region")
 	final WorldMapRegion region;
-	@ObfuscatedName("e")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = 1988411639
+		intValue = 815655685
 	)
 	@Export("element")
 	int element;
-	@ObfuscatedName("p")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "Las;"
+		signature = "Lao;"
 	)
 	@Export("label")
 	WorldMapLabel label;
-	@ObfuscatedName("k")
+	@ObfuscatedName("l")
 	@ObfuscatedGetter(
-		intValue = -727022115
+		intValue = 1653555009
 	)
 	@Export("subWidth")
 	int subWidth;
-	@ObfuscatedName("l")
+	@ObfuscatedName("u")
 	@ObfuscatedGetter(
-		intValue = -119069051
+		intValue = -499996175
 	)
 	@Export("subHeight")
 	int subHeight;
 
 	@ObfuscatedSignature(
-		signature = "(Lhv;Lhv;ILaw;)V"
+		signature = "(Lhj;Lhj;ILav;)V"
 	)
 	WorldMapIcon_1(Coord var1, Coord var2, int var3, WorldMapRegion var4) {
 		super(var1, var2);
@@ -75,56 +72,56 @@ public class WorldMapIcon_1 extends AbstractWorldMapIcon {
 		this.init();
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
 		signature = "(I)I",
-		garbageValue = "-229566020"
+		garbageValue = "861849893"
 	)
 	@Export("getElement")
 	public int getElement() {
 		return this.element;
 	}
 
-	@ObfuscatedName("w")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(I)Las;",
-		garbageValue = "1426074195"
+		signature = "(I)Lao;",
+		garbageValue = "1066707711"
 	)
 	@Export("getLabel")
 	WorldMapLabel getLabel() {
 		return this.label;
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(B)I",
-		garbageValue = "14"
+		signature = "(I)I",
+		garbageValue = "-1386026878"
 	)
 	@Export("getSubWidth")
 	int getSubWidth() {
 		return this.subWidth;
 	}
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "(B)I",
-		garbageValue = "1"
+		signature = "(I)I",
+		garbageValue = "174908718"
 	)
 	@Export("getSubHeight")
 	int getSubHeight() {
 		return this.subHeight;
 	}
 
-	@ObfuscatedName("a")
+	@ObfuscatedName("w")
 	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "1"
+		signature = "(S)V",
+		garbageValue = "3174"
 	)
 	@Export("init")
 	void init() {
-		this.element = ViewportMouse.getObjectDefinition(this.objectDefId).transform().mapIconId;
-		this.label = this.region.createMapLabel(class222.getWorldMapElement(this.element));
-		WorldMapElement var1 = class222.getWorldMapElement(this.getElement());
+		this.element = WallDecoration.getObjectDefinition(this.objectDefId).transform().mapIconId;
+		this.label = this.region.createMapLabel(WorldMapSection1.WorldMapElement_get(this.element));
+		WorldMapElement var1 = WorldMapSection1.WorldMapElement_get(this.getElement());
 		Sprite var2 = var1.getSpriteBool(false);
 		if (var2 != null) {
 			this.subWidth = var2.subWidth;
@@ -136,125 +133,63 @@ public class WorldMapIcon_1 extends AbstractWorldMapIcon {
 
 	}
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(II)Z",
-		garbageValue = "1515733926"
+		signature = "(IIIZII)J",
+		garbageValue = "583805703"
 	)
-	public static boolean method295(int var0) {
-		return (var0 >> 20 & 1) != 0;
-	}
-
-	@ObfuscatedName("k")
-	@ObfuscatedSignature(
-		signature = "(II)Lbj;",
-		garbageValue = "377219115"
-	)
-	static Message method297(int var0) {
-		return (Message)Messages.Messages_hashTable.get((long)var0);
-	}
-
-	@ObfuscatedName("l")
-	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "536238322"
-	)
-	@Export("HealthBarDefinition_clearCached")
-	public static void HealthBarDefinition_clearCached() {
-		HealthBarDefinition.HealthBarDefinition_cached.clear();
-		HealthBarDefinition.HealthBarDefinition_cachedSprites.clear();
-	}
-
-	@ObfuscatedName("ey")
-	@ObfuscatedSignature(
-		signature = "(IB)V",
-		garbageValue = "-42"
-	)
-	static void method296(int var0) {
-		if (var0 == -3) {
-			class268.setLoginResponseString("Connection timed out.", "Please try using a different world.", "");
-		} else if (var0 == -2) {
-			class268.setLoginResponseString("", "Error connecting to server.", "");
-		} else if (var0 == -1) {
-			class268.setLoginResponseString("No response from server.", "Please try using a different world.", "");
-		} else if (var0 == 3) {
-			Login.loginIndex = 3;
-			Login.field1212 = 1;
-		} else if (var0 == 4) {
-			MouseRecorder.method1137(0);
-		} else if (var0 == 5) {
-			Login.field1212 = 2;
-			class268.setLoginResponseString("Your account has not logged out from its last", "session or the server is too busy right now.", "Please try again in a few minutes.");
-		} else if (var0 == 68 || !Client.onMobile && var0 == 6) {
-			class268.setLoginResponseString("RuneScape has been updated!", "Please reload this page.", "");
-		} else if (var0 == 7) {
-			class268.setLoginResponseString("This world is full.", "Please use a different world.", "");
-		} else if (var0 == 8) {
-			class268.setLoginResponseString("Unable to connect.", "Login server offline.", "");
-		} else if (var0 == 9) {
-			class268.setLoginResponseString("Login limit exceeded.", "Too many connections from your address.", "");
-		} else if (var0 == 10) {
-			class268.setLoginResponseString("Unable to connect.", "Bad session id.", "");
-		} else if (var0 == 11) {
-			class268.setLoginResponseString("We suspect someone knows your password.", "Press 'change your password' on front page.", "");
-		} else if (var0 == 12) {
-			class268.setLoginResponseString("You need a members account to login to this world.", "Please subscribe, or use a different world.", "");
-		} else if (var0 == 13) {
-			class268.setLoginResponseString("Could not complete login.", "Please try using a different world.", "");
-		} else if (var0 == 14) {
-			class268.setLoginResponseString("The server is being updated.", "Please wait 1 minute and try again.", "");
-		} else if (var0 == 16) {
-			class268.setLoginResponseString("Too many login attempts.", "Please wait a few minutes before trying again.", "");
-		} else if (var0 == 17) {
-			class268.setLoginResponseString("You are standing in a members-only area.", "To play on this world move to a free area first", "");
-		} else if (var0 == 18) {
-			MouseRecorder.method1137(1);
-		} else if (var0 == 19) {
-			class268.setLoginResponseString("This world is running a closed Beta.", "Sorry invited players only.", "Please use a different world.");
-		} else if (var0 == 20) {
-			class268.setLoginResponseString("Invalid loginserver requested.", "Please try using a different world.", "");
-		} else if (var0 == 22) {
-			class268.setLoginResponseString("Malformed login packet.", "Please try again.", "");
-		} else if (var0 == 23) {
-			class268.setLoginResponseString("No reply from loginserver.", "Please wait 1 minute and try again.", "");
-		} else if (var0 == 24) {
-			class268.setLoginResponseString("Error loading your profile.", "Please contact customer support.", "");
-		} else if (var0 == 25) {
-			class268.setLoginResponseString("Unexpected loginserver response.", "Please try using a different world.", "");
-		} else if (var0 == 26) {
-			class268.setLoginResponseString("This computers address has been blocked", "as it was used to break our rules.", "");
-		} else if (var0 == 27) {
-			class268.setLoginResponseString("", "Service unavailable.", "");
-		} else if (var0 == 31) {
-			class268.setLoginResponseString("Your account must have a displayname set", "in order to play the game.  Please set it", "via the website, or the main game.");
-		} else if (var0 == 32) {
-			class268.setLoginResponseString("Your attempt to log into your account was", "unsuccessful.  Don't worry, you can sort", "this out by visiting the billing system.");
-		} else if (var0 == 37) {
-			class268.setLoginResponseString("Your account is currently inaccessible.", "Please try again in a few minutes.", "");
-		} else if (var0 == 38) {
-			class268.setLoginResponseString("You need to vote to play!", "Visit runescape.com and vote,", "and then come back here!");
-		} else if (var0 == 55) {
-			Login.loginIndex = 8;
-		} else {
-			if (var0 == 56) {
-				class268.setLoginResponseString("Enter the 6-digit code generated by your", "authenticator app.", "");
-				class96.updateGameState(11);
-				return;
-			}
-
-			if (var0 == 57) {
-				class268.setLoginResponseString("The code you entered was incorrect.", "Please try again.", "");
-				class96.updateGameState(11);
-				return;
-			}
-
-			if (var0 == 61) {
-				Login.loginIndex = 7;
-			} else {
-				class268.setLoginResponseString("Unexpected server response", "Please try using a different world.", "");
-			}
+	@Export("calculateTag")
+	public static long calculateTag(int var0, int var1, int var2, boolean var3, int var4) {
+		long var5 = (long)((var0 & 127) << 0 | (var1 & 127) << 7 | (var2 & 3) << 14) | ((long)var4 & 4294967295L) << 17;
+		if (var3) {
+			var5 |= 65536L;
 		}
 
-		class96.updateGameState(10);
+		return var5;
+	}
+
+	@ObfuscatedName("is")
+	@ObfuscatedSignature(
+		signature = "(IIIIIIB)V",
+		garbageValue = "-116"
+	)
+	static final void method278(int var0, int var1, int var2, int var3, int var4, int var5) {
+		int var6 = var2 - var0;
+		int var7 = var3 - var1;
+		int var8 = var6 >= 0 ? var6 : -var6;
+		int var9 = var7 >= 0 ? var7 : -var7;
+		int var10 = var8;
+		if (var8 < var9) {
+			var10 = var9;
+		}
+
+		if (var10 != 0) {
+			int var11 = (var6 << 16) / var10;
+			int var12 = (var7 << 16) / var10;
+			if (var12 <= var11) {
+				var11 = -var11;
+			} else {
+				var12 = -var12;
+			}
+
+			int var13 = var5 * var12 >> 17;
+			int var14 = var5 * var12 + 1 >> 17;
+			int var15 = var5 * var11 >> 17;
+			int var16 = var5 * var11 + 1 >> 17;
+			var0 -= Rasterizer2D.Rasterizer2D_xClipStart;
+			var1 -= Rasterizer2D.Rasterizer2D_yClipStart;
+			int var17 = var0 + var13;
+			int var18 = var0 - var14;
+			int var19 = var0 + var6 - var14;
+			int var20 = var0 + var6 + var13;
+			int var21 = var15 + var1;
+			int var22 = var1 - var16;
+			int var23 = var7 + var1 - var16;
+			int var24 = var7 + var15 + var1;
+			Rasterizer3D.method2970(var17, var18, var19);
+			Rasterizer3D.method2990(var21, var22, var23, var17, var18, var19, var4);
+			Rasterizer3D.method2970(var17, var19, var20);
+			Rasterizer3D.method2990(var21, var23, var24, var17, var19, var20, var4);
+		}
 	}
 }

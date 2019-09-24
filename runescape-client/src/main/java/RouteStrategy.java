@@ -4,36 +4,54 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fl")
+@ObfuscatedName("fw")
 @Implements("RouteStrategy")
 public abstract class RouteStrategy {
-	@ObfuscatedName("pi")
+	@ObfuscatedName("sk")
 	@ObfuscatedSignature(
-		signature = "Lly;"
+		signature = "Lkx;"
 	)
-	@Export("sceneMinimapSprite")
-	static Sprite sceneMinimapSprite;
-	@ObfuscatedName("q")
+	@Export("masterDisk")
+	static ArchiveDisk masterDisk;
+	@ObfuscatedName("z")
+	@ObfuscatedSignature(
+		signature = "Leq;"
+	)
+	@Export("World_request")
+	static UrlRequest World_request;
+	@ObfuscatedName("fy")
+	@ObfuscatedSignature(
+		signature = "Led;"
+	)
+	@Export("urlRequester")
+	static UrlRequester urlRequester;
+	@ObfuscatedName("gc")
+	@ObfuscatedSignature(
+		signature = "[Lli;"
+	)
+	@Export("headIconPrayerSprites")
+	static Sprite[] headIconPrayerSprites;
+	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		intValue = 1876567169
+		intValue = -2040361911
 	)
 	@Export("approxDestinationX")
 	public int approxDestinationX;
-	@ObfuscatedName("w")
+	@ObfuscatedName("x")
 	@ObfuscatedGetter(
-		intValue = 1051805723
+		intValue = 1007393083
 	)
 	@Export("approxDestinationY")
 	public int approxDestinationY;
-	@ObfuscatedName("e")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = -1586804307
+		intValue = -462526133
 	)
 	@Export("approxDestinationSizeX")
 	public int approxDestinationSizeX;
-	@ObfuscatedName("p")
+	@ObfuscatedName("g")
 	@ObfuscatedGetter(
-		intValue = 775131021
+		intValue = -1078511921
 	)
 	@Export("approxDestinationSizeY")
 	public int approxDestinationSizeY;
@@ -41,81 +59,40 @@ public abstract class RouteStrategy {
 	protected RouteStrategy() {
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(IIILfv;I)Z",
-		garbageValue = "-1217489379"
+		signature = "(IIILfj;I)Z",
+		garbageValue = "2030512647"
 	)
-	public abstract boolean vmethod3594(int var1, int var2, int var3, CollisionMap var4);
+	@Export("hasArrived")
+	protected abstract boolean hasArrived(int var1, int var2, int var3, CollisionMap var4);
 
-	@ObfuscatedName("ec")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "1403573360"
+		signature = "(S)[Lli;",
+		garbageValue = "-22640"
 	)
-	static final void method3593() {
-		Client.packetWriter.close();
-		class197.FloorUnderlayDefinition_clearCached();
-		FloorUnderlayDefinition.FloorUnderlayDefinition_cached.clear();
-		KitDefinition.KitDefinition_cached.clear();
-		TileItemPile.ObjectDefinition_clearCached();
-		AbstractWorldMapIcon.NpcDefinition_clearCached();
-		ItemDefinition.ItemDefinition_cached.clear();
-		ItemDefinition.ItemDefinition_cachedModels.clear();
-		ItemDefinition.ItemDefinition_cachedSprites.clear();
-		SequenceDefinition.SequenceDefinition_cached.clear();
-		SequenceDefinition.SequenceDefinition_cachedFrames.clear();
-		SpotAnimationDefinition.SpotAnimationDefinition_cached.clear();
-		SpotAnimationDefinition.SpotAnimationDefinition_cachedModels.clear();
-		MusicPatch.method3888();
-		SecureRandomCallable.method1093();
-		HitSplatDefinition.HitSplatDefinition_cached.clear();
-		HitSplatDefinition.HitSplatDefinition_cachedSprites.clear();
-		HitSplatDefinition.HitSplatDefinition_cachedFonts.clear();
-		WorldMapIcon_1.HealthBarDefinition_clearCached();
-		StructDefinition.StructDefinition_cached.clear();
-		Coord.ParamDefinition_clearCached();
-		MouseRecorder.WorldMapElement_clearCached();
-		PlayerAppearance.PlayerAppearance_cachedModels.clear();
-		Calendar.Widget_clearCached();
-		((TextureProvider)Rasterizer3D.Rasterizer3D_textureLoader).clear();
-		Script.Script_cached.clear();
-		class197.archive0.clearFiles();
-		class167.archive1.clearFiles();
-		class43.archive3.clearFiles();
-		class13.archive4.clearFiles();
-		WorldMapCacheName.archive5.clearFiles();
-		WorldMapRegion.archive6.clearFiles();
-		NPCDefinition.archive7.clearFiles();
-		Client.archive8.clearFiles();
-		class4.archive9.clearFiles();
-		WorldMapLabelSize.archive10.clearFiles();
-		class32.archive11.clearFiles();
-		UserComparator4.archive12.clearFiles();
-		GrandExchangeOfferWorldComparator.scene.clear();
+	static Sprite[] method3578() {
+		Sprite[] var0 = new Sprite[class325.SpriteBuffer_spriteCount];
 
-		for (int var0 = 0; var0 < 4; ++var0) {
-			Client.collisionMaps[var0].clear();
-		}
+		for (int var1 = 0; var1 < class325.SpriteBuffer_spriteCount; ++var1) {
+			Sprite var2 = var0[var1] = new Sprite();
+			var2.width = class325.SpriteBuffer_spriteWidth;
+			var2.height = class325.SpriteBuffer_spriteHeight;
+			var2.xOffset = class325.SpriteBuffer_xOffsets[var1];
+			var2.yOffset = SecureRandomCallable.SpriteBuffer_yOffsets[var1];
+			var2.subWidth = class325.SpriteBuffer_spriteWidths[var1];
+			var2.subHeight = SoundSystem.SpriteBuffer_spriteHeights[var1];
+			int var3 = var2.subHeight * var2.subWidth;
+			byte[] var4 = InvDefinition.SpriteBuffer_pixels[var1];
+			var2.pixels = new int[var3];
 
-		System.gc();
-		class40.method729(2);
-		Client.field889 = -1;
-		Client.field699 = false;
-
-		for (ObjectSound var1 = (ObjectSound)ObjectSound.objectSounds.last(); var1 != null; var1 = (ObjectSound)ObjectSound.objectSounds.previous()) {
-			if (var1.stream1 != null) {
-				SecureRandomCallable.pcmStreamMixer.removeSubStream(var1.stream1);
-				var1.stream1 = null;
-			}
-
-			if (var1.stream2 != null) {
-				SecureRandomCallable.pcmStreamMixer.removeSubStream(var1.stream2);
-				var1.stream2 = null;
+			for (int var5 = 0; var5 < var3; ++var5) {
+				var2.pixels[var5] = class325.SpriteBuffer_spritePalette[var4[var5] & 255];
 			}
 		}
 
-		ObjectSound.objectSounds.clear();
-		class96.updateGameState(10);
+		class192.SpriteBuffer_clear();
+		return var0;
 	}
 }

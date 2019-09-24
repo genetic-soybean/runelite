@@ -4,36 +4,36 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hv")
+@ObfuscatedName("hj")
 @Implements("Coord")
 public class Coord {
-	@ObfuscatedName("fy")
+	@ObfuscatedName("aw")
+	@Export("client")
 	@ObfuscatedSignature(
-		signature = "Lke;"
+		signature = "Lclient;"
 	)
-	@Export("fontPlain11")
-	static Font fontPlain11;
-	@ObfuscatedName("q")
+	static Client client;
+	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		intValue = -618740747
+		intValue = -275324431
 	)
 	@Export("plane")
 	public int plane;
-	@ObfuscatedName("w")
+	@ObfuscatedName("x")
 	@ObfuscatedGetter(
-		intValue = -224554023
-	)
-	@Export("x")
-	public int x;
-	@ObfuscatedName("e")
-	@ObfuscatedGetter(
-		intValue = 1025191447
+		intValue = 1946522259
 	)
 	@Export("y")
 	public int y;
+	@ObfuscatedName("t")
+	@ObfuscatedGetter(
+		intValue = 212884917
+	)
+	@Export("x")
+	public int x;
 
 	@ObfuscatedSignature(
-		signature = "(Lhv;)V"
+		signature = "(Lhj;)V"
 	)
 	public Coord(Coord var1) {
 		this.plane = var1.plane;
@@ -58,74 +58,76 @@ public class Coord {
 
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(I)I",
-		garbageValue = "-1529444039"
+		signature = "(B)I",
+		garbageValue = "94"
 	)
 	@Export("packed")
 	public int packed() {
 		return this.plane << 28 | this.x << 14 | this.y;
 	}
 
-	@ObfuscatedName("w")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(Lhv;I)Z",
-		garbageValue = "2096599249"
+		signature = "(Lhj;I)Z",
+		garbageValue = "49953005"
 	)
 	@Export("equalsCoord")
 	boolean equalsCoord(Coord var1) {
 		if (this.plane != var1.plane) {
 			return false;
-		}
-		if (this.x != var1.x) {
+		} else if (this.x != var1.x) {
 			return false;
+		} else {
+			return this.y == var1.y;
 		}
-		return this.y == var1.y;
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
 		signature = "(Ljava/lang/String;I)Ljava/lang/String;",
-		garbageValue = "-1242820641"
+		garbageValue = "-2113109490"
 	)
 	@Export("toString")
 	String toString(String var1) {
 		return this.plane + var1 + (this.x >> 6) + var1 + (this.y >> 6) + var1 + (this.x & 63) + var1 + (this.y & 63);
 	}
 
+	public boolean equals(Object var1) {
+		if (this == var1) {
+			return true;
+		} else {
+			return !(var1 instanceof Coord) ? false : this.equalsCoord((Coord)var1);
+		}
+	}
+
 	public int hashCode() {
 		return this.packed();
 	}
 
-	public boolean equals(Object var1) {
-		if (this == var1) {
-			return true;
-		}
-		return !(var1 instanceof Coord) ? false : this.equalsCoord((Coord)var1);
+	public String aai() {
+		return this.toString(",");
+	}
+
+	public String aar() {
+		return this.toString(",");
+	}
+
+	public String aan() {
+		return this.toString(",");
 	}
 
 	public String toString() {
 		return this.toString(",");
 	}
 
-	@ObfuscatedName("b")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "1626401232"
+		signature = "(B)[Lcl;",
+		garbageValue = "69"
 	)
-	@Export("ParamDefinition_clearCached")
-	public static void ParamDefinition_clearCached() {
-		ParamDefinition.ParamDefinition_cached.clear();
-	}
-
-	@ObfuscatedName("y")
-	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "-40"
-	)
-	static void method3990() {
-		Login.loginIndex = 24;
-		class268.setLoginResponseString("", "You were disconnected from the server.", "");
+	static AttackOption[] method3981() {
+		return new AttackOption[]{AttackOption.AttackOption_leftClickWhereAvailable, AttackOption.AttackOption_hidden, AttackOption.AttackOption_alwaysRightClick, AttackOption.AttackOption_dependsOnCombatLevels};
 	}
 }

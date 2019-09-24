@@ -1,38 +1,56 @@
-import java.lang.management.GarbageCollectorMXBean;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("an")
+@ObfuscatedName("aa")
 public final class class43 {
-	@ObfuscatedName("w")
+	@ObfuscatedName("bu")
 	@ObfuscatedSignature(
-		signature = "Lhp;"
+		signature = "Lht;"
 	)
-	@Export("SpotAnimationDefinition_modelArchive")
-	public static AbstractArchive SpotAnimationDefinition_modelArchive;
-	@ObfuscatedName("i")
-	@Export("ByteArrayPool_altSizeArrayCounts")
-	public static int[] ByteArrayPool_altSizeArrayCounts;
-	@ObfuscatedName("ak")
-	@Export("garbageCollector")
-	static GarbageCollectorMXBean garbageCollector;
-	@ObfuscatedName("dx")
+	static StudioGame field359;
+	@ObfuscatedName("bm")
 	@ObfuscatedSignature(
-		signature = "Liu;"
+		signature = "Lgf;"
 	)
-	@Export("archive3")
-	static Archive archive3;
-	@ObfuscatedName("hj")
+	@Export("clientLanguage")
+	static Language clientLanguage;
+	@ObfuscatedName("ce")
 	@ObfuscatedGetter(
-		intValue = 2040004627
+		intValue = 121062689
 	)
-	@Export("cameraY")
-	static int cameraY;
+	public static int field361;
 
-	@ObfuscatedName("l")
-	public static int method770(long var0) {
-		return (int)(var0 >>> 17 & 4294967295L);
+	@ObfuscatedName("t")
+	@ObfuscatedSignature(
+		signature = "(Lkt;I)I",
+		garbageValue = "-1826944981"
+	)
+	@Export("decode")
+	static int decode(PacketBuffer var0) {
+		int var1 = var0.readBits(2);
+		int var2;
+		if (var1 == 0) {
+			var2 = 0;
+		} else if (var1 == 1) {
+			var2 = var0.readBits(5);
+		} else if (var1 == 2) {
+			var2 = var0.readBits(8);
+		} else {
+			var2 = var0.readBits(11);
+		}
+
+		return var2;
+	}
+
+	@ObfuscatedName("fw")
+	@ObfuscatedSignature(
+		signature = "(I)I",
+		garbageValue = "-980502076"
+	)
+	@Export("getWindowedMode")
+	static int getWindowedMode() {
+		return Client.isResizable ? 2 : 1;
 	}
 }

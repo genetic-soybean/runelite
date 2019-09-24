@@ -27,6 +27,8 @@ package net.runelite.client.plugins.grounditems;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.LoadingCache;
+import com.google.common.collect.EvictingQueue;
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.Rectangle;
@@ -40,6 +42,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
@@ -54,14 +57,15 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemDefinition;
 import net.runelite.api.ItemID;
-import net.runelite.api.TileItemPile;
-import net.runelite.api.MenuAction;
+import static net.runelite.api.ItemID.*;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.MenuOpcode;
 import net.runelite.api.Node;
 import net.runelite.api.Player;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
+import net.runelite.api.TileItemPile;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.ConfigChanged;
@@ -72,6 +76,8 @@ import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemQuantityChanged;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.util.Text;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
@@ -95,7 +101,6 @@ import net.runelite.client.plugins.grounditems.config.ValueCalculationMode;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.StackFormatter;
-import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Ground Items",
@@ -121,16 +126,266 @@ public class GroundItemsPlugin extends Plugin
 	private static final int NORMAL_DURATION_MILLIS = 60 * 1000;
 	private static final int NORMAL_DURATION_TICKS = (int) floor(60 / 0.6);
 	// Ground item menu options
-	private static final int FIRST_OPTION = MenuAction.GROUND_ITEM_FIRST_OPTION.getId();
-	private static final int SECOND_OPTION = MenuAction.GROUND_ITEM_SECOND_OPTION.getId();
-	private static final int THIRD_OPTION = MenuAction.GROUND_ITEM_THIRD_OPTION.getId(); // this is Take
-	private static final int FOURTH_OPTION = MenuAction.GROUND_ITEM_FOURTH_OPTION.getId();
-	private static final int FIFTH_OPTION = MenuAction.GROUND_ITEM_FIFTH_OPTION.getId();
-	private static final int EXAMINE_ITEM = MenuAction.EXAMINE_ITEM_GROUND.getId();
-	private static final int WALK = MenuAction.WALK.getId();
-	private static final int CAST_ON_ITEM = MenuAction.SPELL_CAST_ON_GROUND_ITEM.getId();
+	private static final int FIRST_OPTION = MenuOpcode.GROUND_ITEM_FIRST_OPTION.getId();
+	private static final int SECOND_OPTION = MenuOpcode.GROUND_ITEM_SECOND_OPTION.getId();
+	private static final int THIRD_OPTION = MenuOpcode.GROUND_ITEM_THIRD_OPTION.getId(); // this is Take
+	private static final int FOURTH_OPTION = MenuOpcode.GROUND_ITEM_FOURTH_OPTION.getId();
+	private static final int FIFTH_OPTION = MenuOpcode.GROUND_ITEM_FIFTH_OPTION.getId();
+	private static final int EXAMINE_ITEM = MenuOpcode.EXAMINE_ITEM_GROUND.getId();
+	private static final int WALK = MenuOpcode.WALK.getId();
+	private static final int CAST_ON_ITEM = MenuOpcode.SPELL_CAST_ON_GROUND_ITEM.getId();
 	private static final String TELEGRAB_TEXT = ColorUtil.wrapWithColorTag("Telekinetic Grab", Color.GREEN) + ColorUtil.prependColorTag(" -> ", Color.WHITE);
 	private final Map<Integer, Color> priceChecks = new LinkedHashMap<>();
+	private final Queue<Integer> droppedItemQueue = EvictingQueue.create(16); // recently dropped items
+	boolean highlightHerblore;
+	boolean highlightPrayer;
+	LoadingCache<String, Boolean> hiddenItems;
+	static final ImmutableSet<Integer> herbloreItems = ImmutableSet.of
+		(
+			//Grimy Herbs
+			GRIMY_GUAM_LEAF,
+			GRIMY_GUAM_LEAF + 1,
+			GRIMY_MARRENTILL,
+			GRIMY_MARRENTILL + 1,
+			GRIMY_TARROMIN,
+			GRIMY_TARROMIN + 1,
+			GRIMY_HARRALANDER,
+			GRIMY_HARRALANDER + 1,
+			GRIMY_RANARR_WEED,
+			GRIMY_RANARR_WEED + 1,
+			GRIMY_TOADFLAX,
+			GRIMY_TOADFLAX + 1,
+			GRIMY_IRIT_LEAF,
+			GRIMY_IRIT_LEAF + 1,
+			GRIMY_AVANTOE,
+			GRIMY_AVANTOE + 1,
+			GRIMY_KWUARM,
+			GRIMY_KWUARM + 1,
+			GRIMY_SNAPDRAGON,
+			GRIMY_SNAPDRAGON + 1,
+			GRIMY_CADANTINE,
+			GRIMY_CADANTINE + 1,
+			GRIMY_LANTADYME,
+			GRIMY_LANTADYME + 1,
+			GRIMY_DWARF_WEED,
+			GRIMY_DWARF_WEED + 1,
+			GRIMY_TORSTOL,
+			GRIMY_TORSTOL + 1,
+
+			//Clean Herbs
+			GUAM_LEAF,
+			GUAM_LEAF + 1,
+			MARRENTILL,
+			MARRENTILL + 1,
+			TARROMIN,
+			TARROMIN + 1,
+			HARRALANDER,
+			HARRALANDER + 1,
+			RANARR_WEED,
+			RANARR_WEED + 1,
+			TOADFLAX,
+			TOADFLAX + 1,
+			IRIT_LEAF,
+			IRIT_LEAF + 1,
+			AVANTOE,
+			AVANTOE + 1,
+			KWUARM,
+			KWUARM + 1,
+			SNAPDRAGON,
+			SNAPDRAGON + 1,
+			CADANTINE,
+			CADANTINE + 1,
+			LANTADYME,
+			LANTADYME + 1,
+			DWARF_WEED,
+			DWARF_WEED + 1,
+			TORSTOL,
+			TORSTOL + 1,
+
+			//Secondary ingredients
+			EYE_OF_NEWT,
+			EYE_OF_NEWT + 1,
+			UNICORN_HORN,
+			UNICORN_HORN + 1,
+			UNICORN_HORN_DUST,
+			UNICORN_HORN_DUST + 1,
+			LIMPWURT_ROOT,
+			LIMPWURT_ROOT + 1,
+			RED_SPIDERS_EGGS,
+			RED_SPIDERS_EGGS + 1,
+			CHOCOLATE_BAR,
+			CHOCOLATE_BAR + 1,
+			CHOCOLATE_DUST,
+			CHOCOLATE_DUST + 1,
+			TOADS_LEGS,
+			TOADS_LEGS + 1,
+			GOAT_HORN_DUST,
+			GOAT_HORN_DUST + 1,
+			DESERT_GOAT_HORN,
+			DESERT_GOAT_HORN + 1,
+			SNAPE_GRASS,
+			SNAPE_GRASS + 1,
+			MORT_MYRE_FUNGUS,
+			MORT_MYRE_FUNGUS + 1,
+			WHITE_BERRIES,
+			WHITE_BERRIES + 1,
+			BLUE_DRAGON_SCALE,
+			BLUE_DRAGON_SCALE + 1,
+			DRAGON_SCALE_DUST,
+			DRAGON_SCALE_DUST + 1,
+			WINE_OF_ZAMORAK,
+			WINE_OF_ZAMORAK + 1,
+			POTATO_CACTUS,
+			POTATO_CACTUS + 1,
+			BIRD_NEST,
+			BIRD_NEST + 1,
+			BIRD_NEST_5071,
+			BIRD_NEST_5072,
+			BIRD_NEST_5073,
+			BIRD_NEST_5074,
+			BIRD_NEST_5075,
+			BIRD_NEST_7413,
+			BIRD_NEST_13653,
+			BIRD_NEST_22798,
+			BIRD_NEST_22800,
+			LAVA_SCALE,
+			LAVA_SCALE + 1,
+			LAVA_SCALE_SHARD,
+			LAVA_SCALE_SHARD + 1,
+			TORSTOL,
+			TORSTOL + 1,
+			SUPERIOR_DRAGON_BONES,
+			SUPERIOR_DRAGON_BONES + 1,
+			CRUSHED_SUPERIOR_DRAGON_BONES,
+			CRUSHED_SUPERIOR_DRAGON_BONES + 1,
+			AMYLASE_CRYSTAL,
+			GARLIC,
+			GARLIC + 1,
+
+			//Jungle Potion herbs
+			GRIMY_ARDRIGAL,
+			GRIMY_ROGUES_PURSE,
+			GRIMY_SITO_FOIL,
+			GRIMY_SNAKE_WEED,
+			GRIMY_VOLENCIA_MOSS,
+
+			//Herb seeds
+			GUAM_SEED,
+			MARRENTILL_SEED,
+			TARROMIN_SEED,
+			HARRALANDER_SEED,
+			GOUT_TUBER,
+			RANARR_SEED,
+			TOADFLAX_SEED,
+			IRIT_SEED,
+			AVANTOE_SEED,
+			KWUARM_SEED,
+			SNAPDRAGON_SEED,
+			CADANTINE_SEED,
+			LANTADYME_SEED,
+			DWARF_WEED_SEED,
+			TORSTOL_SEED,
+
+			//Secondary seeds
+			LIMPWURT_SEED,
+			SNAPE_GRASS_SEED,
+			POTATO_CACTUS_SEED,
+			JANGERBERRY_SEED,
+			POISON_IVY_SEED,
+			BELLADONNA_SEED
+		);
+	static final ImmutableSet<Integer> prayerItems = ImmutableSet.of
+		(
+			//Bones
+			BONES,
+			BONES + 1,
+			WOLF_BONES,
+			WOLF_BONES + 1,
+			BURNT_BONES,
+			BURNT_BONES + 1,
+			MONKEY_BONES,
+			MONKEY_BONES + 1,
+			BAT_BONES,
+			BAT_BONES + 1,
+			BIG_BONES,
+			BIG_BONES + 1,
+			JOGRE_BONES,
+			JOGRE_BONES + 1,
+			ZOGRE_BONES,
+			ZOGRE_BONES + 1,
+			SHAIKAHAN_BONES,
+			SHAIKAHAN_BONES + 1,
+			BABYDRAGON_BONES,
+			BABYDRAGON_BONES + 1,
+			WYRM_BONES,
+			WYRM_BONES + 1,
+			WYVERN_BONES,
+			WYVERN_BONES + 1,
+			DRAGON_BONES,
+			DRAGON_BONES + 1,
+			DRAKE_BONES,
+			DRAKE_BONES + 1,
+			FAYRG_BONES,
+			FAYRG_BONES + 1,
+			LAVA_DRAGON_BONES,
+			LAVA_DRAGON_BONES + 1,
+			RAURG_BONES,
+			RAURG_BONES + 1,
+			HYDRA_BONES,
+			HYDRA_BONES + 1,
+			DAGANNOTH_BONES,
+			DAGANNOTH_BONES + 1,
+			OURG_BONES,
+			OURG_BONES + 1,
+			SUPERIOR_DRAGON_BONES,
+			SUPERIOR_DRAGON_BONES + 1,
+
+			//Ensouled heads
+			ENSOULED_ABYSSAL_HEAD_13508,
+			ENSOULED_ABYSSAL_HEAD_13508 + 1,
+			ENSOULED_AVIANSIE_HEAD_13505,
+			ENSOULED_AVIANSIE_HEAD_13505 + 1,
+			ENSOULED_BEAR_HEAD_13463,
+			ENSOULED_BEAR_HEAD_13463 + 1,
+			ENSOULED_BLOODVELD_HEAD_13496,
+			ENSOULED_BLOODVELD_HEAD_13496 + 1,
+			ENSOULED_CHAOS_DRUID_HEAD_13472,
+			ENSOULED_CHAOS_DRUID_HEAD_13472 + 1,
+			ENSOULED_DAGANNOTH_HEAD_13493,
+			ENSOULED_DAGANNOTH_HEAD_13493 + 1,
+			ENSOULED_DEMON_HEAD_13502,
+			ENSOULED_DEMON_HEAD_13502 + 1,
+			ENSOULED_DOG_HEAD_13469,
+			ENSOULED_DOG_HEAD_13469 + 1,
+			ENSOULED_DRAGON_HEAD_13511,
+			ENSOULED_DRAGON_HEAD_13511 + 1,
+			ENSOULED_ELF_HEAD_13481,
+			ENSOULED_ELF_HEAD_13481 + 1,
+			ENSOULED_GIANT_HEAD_13475,
+			ENSOULED_GIANT_HEAD_13475 + 1,
+			ENSOULED_GOBLIN_HEAD_13448,
+			ENSOULED_GOBLIN_HEAD_13448 + 1,
+			ENSOULED_HORROR_HEAD_13487,
+			ENSOULED_HORROR_HEAD_13487 + 1,
+			ENSOULED_IMP_HEAD_13454,
+			ENSOULED_IMP_HEAD_13454 + 1,
+			ENSOULED_KALPHITE_HEAD_13490,
+			ENSOULED_KALPHITE_HEAD_13490 + 1,
+			ENSOULED_MINOTAUR_HEAD_13457,
+			ENSOULED_MINOTAUR_HEAD_13457 + 1,
+			ENSOULED_MONKEY_HEAD_13451,
+			ENSOULED_MONKEY_HEAD_13451 + 1,
+			ENSOULED_OGRE_HEAD_13478,
+			ENSOULED_OGRE_HEAD_13478 + 1,
+			ENSOULED_SCORPION_HEAD_13460,
+			ENSOULED_SCORPION_HEAD_13460 + 1,
+			ENSOULED_TROLL_HEAD_13484,
+			ENSOULED_TROLL_HEAD_13484 + 1,
+			ENSOULED_TZHAAR_HEAD_13499,
+			ENSOULED_TZHAAR_HEAD_13499 + 1,
+			ENSOULED_UNICORN_HEAD_13466,
+			ENSOULED_UNICORN_HEAD_13466 + 1
+		);
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private Map.Entry<Rectangle, GroundItem> textBoxBounds;
@@ -169,8 +424,6 @@ public class GroundItemsPlugin extends Plugin
 	@Inject
 	private EventBus eventBus;
 	private LoadingCache<String, Boolean> highlightedItems;
-	private LoadingCache<String, Boolean> hiddenItems;
-
 	private Color defaultColor;
 	private Color highlightedColor;
 	private Color hiddenColor;
@@ -221,6 +474,8 @@ public class GroundItemsPlugin extends Plugin
 	private boolean showTimer;
 	@Getter(AccessLevel.PACKAGE)
 	private Color bordercolor;
+	private Color herbloreColor;
+	private Color prayerColor;
 
 	@Provides
 	GroundItemsConfig provideConfig(ConfigManager configManager)
@@ -270,6 +525,7 @@ public class GroundItemsPlugin extends Plugin
 		eventBus.subscribe(ClientTick.class, this, this::onClientTick);
 		eventBus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
 		eventBus.subscribe(FocusChanged.class, this, this::onFocusChanged);
+		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
 	}
 
 	private void onGameTick(GameTick event)
@@ -313,6 +569,7 @@ public class GroundItemsPlugin extends Plugin
 		if (existing != null)
 		{
 			existing.setQuantity(existing.getQuantity() + groundItem.getQuantity());
+			// The spawn time remains set at the oldest spawn
 		}
 
 		boolean shouldNotify = !this.onlyShowLoot && this.highlightedColor.equals(getHighlighted(
@@ -345,6 +602,10 @@ public class GroundItemsPlugin extends Plugin
 		else
 		{
 			groundItem.setQuantity(groundItem.getQuantity() - item.getQuantity());
+			// When picking up an item when multiple stacks appear on the ground,
+			// it is not known which item is picked up, so we invalidate the spawn
+			// time
+			groundItem.setSpawnTime(null);
 		}
 	}
 
@@ -377,14 +638,14 @@ public class GroundItemsPlugin extends Plugin
 		);
 
 		Collection<ItemStack> items = npcLootReceived.getItems();
-		lootReceived(items);
+		lootReceived(items, LootType.PVM);
 		lootNotifier(items);
 	}
 
 	private void onPlayerLootReceived(PlayerLootReceived playerLootReceived)
 	{
 		Collection<ItemStack> items = playerLootReceived.getItems();
-		lootReceived(items);
+		lootReceived(items, LootType.PVP);
 		lootNotifier(items);
 	}
 
@@ -440,7 +701,7 @@ public class GroundItemsPlugin extends Plugin
 
 			if (this.collapseEntries)
 			{
-				int menuType = menuEntry.getType();
+				int menuType = menuEntry.getOpcode();
 				if (menuType == FIRST_OPTION || menuType == SECOND_OPTION || menuType == THIRD_OPTION
 					|| menuType == FOURTH_OPTION || menuType == FIFTH_OPTION || menuType == EXAMINE_ITEM)
 				{
@@ -462,12 +723,12 @@ public class GroundItemsPlugin extends Plugin
 
 		newEntries.sort((a, b) ->
 		{
-			final int aMenuType = a.getEntry().getType();
+			final int aMenuType = a.getEntry().getOpcode();
 			if (aMenuType == FIRST_OPTION || aMenuType == SECOND_OPTION || aMenuType == THIRD_OPTION
 				|| aMenuType == FOURTH_OPTION || aMenuType == FIFTH_OPTION || aMenuType == EXAMINE_ITEM
 				|| aMenuType == WALK)
 			{ // only check for item related menu types, so we don't sort other stuff
-				final int bMenuType = b.getEntry().getType();
+				final int bMenuType = b.getEntry().getOpcode();
 				if (bMenuType == FIRST_OPTION || bMenuType == SECOND_OPTION || bMenuType == THIRD_OPTION
 					|| bMenuType == FOURTH_OPTION || bMenuType == FIFTH_OPTION || bMenuType == EXAMINE_ITEM
 					|| bMenuType == WALK)
@@ -534,7 +795,7 @@ public class GroundItemsPlugin extends Plugin
 		}).toArray(MenuEntry[]::new));
 	}
 
-	private void lootReceived(Collection<ItemStack> items)
+	private void lootReceived(Collection<ItemStack> items, LootType lootType)
 	{
 		for (ItemStack itemStack : items)
 		{
@@ -545,6 +806,7 @@ public class GroundItemsPlugin extends Plugin
 			{
 				groundItem.setMine(true);
 				groundItem.setTicks(200);
+				groundItem.setLootType(lootType);
 
 				boolean shouldNotify = this.onlyShowLoot && this.highlightedColor.equals(getHighlighted(
 					groundItem.getName(),
@@ -586,6 +848,7 @@ public class GroundItemsPlugin extends Plugin
 			durationMillis = NORMAL_DURATION_MILLIS;
 			durationTicks = tile.getWorldLocation().equals(playerLocation) ? NORMAL_DURATION_TICKS * 2 : NORMAL_DURATION_TICKS;
 		}
+		final boolean dropped = tile.getWorldLocation().equals(client.getLocalPlayer().getWorldLocation()) && droppedItemQueue.remove(itemId);
 
 		final GroundItem groundItem = GroundItem.builder()
 			.id(itemId)
@@ -601,6 +864,9 @@ public class GroundItemsPlugin extends Plugin
 			.isAlwaysPrivate(client.isInInstancedRegion() || (!itemComposition.isTradeable() && realItemId != COINS))
 			.isOwnedByPlayer(tile.getWorldLocation().equals(playerLocation))
 			.ticks(durationTicks)
+			.lootType(LootType.UNKNOWN)
+			.isDropped(dropped)
+			.spawnTime(Instant.now())
 			.build();
 
 
@@ -678,18 +944,17 @@ public class GroundItemsPlugin extends Plugin
 			int itemId = event.getIdentifier();
 			Scene scene = client.getScene();
 			Tile tile = scene.getTiles()[client.getPlane()][event.getActionParam0()][event.getActionParam1()];
-			TileItemPile itemLayer = tile.getItemLayer();
+			TileItemPile tileItemPile = tile.getItemLayer();
 
-			if (itemLayer == null)
+			if (tileItemPile == null)
 			{
 				return;
 			}
 
-			MenuEntry[] menuEntries = client.getMenuEntries();
-			MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
+			final MenuEntry lastEntry = event.getMenuEntry();
 
 			int quantity = 1;
-			Node current = itemLayer.getBottom();
+			Node current = tileItemPile.getBottom();
 
 			while (current instanceof TileItem)
 			{
@@ -720,6 +985,7 @@ public class GroundItemsPlugin extends Plugin
 				{
 					final String optionText = telegrabEntry ? "Cast" : "Take";
 					lastEntry.setOption(ColorUtil.prependColorTag(optionText, color));
+					event.setWasModified(true);
 				}
 
 				if (mode == BOTH || mode == NAME)
@@ -739,43 +1005,20 @@ public class GroundItemsPlugin extends Plugin
 					}
 
 					lastEntry.setTarget(target);
+					event.setWasModified(true);
 				}
 			}
 
 			if (this.showMenuItemQuantities && itemComposition.isStackable() && quantity > 1)
 			{
 				lastEntry.setTarget(lastEntry.getTarget() + " (" + quantity + ")");
+				event.setWasModified(true);
 			}
 
 			if (this.removeIgnored && event.getOption().equals("Take") && hiddenItemList.contains(Text.removeTags(event.getTarget())))
 			{
-				menuEntries = removeOption(event.getOption(), event.getTarget());
+				client.setMenuOptionCount(client.getMenuOptionCount() - 1);
 			}
-
-			client.setMenuEntries(menuEntries);
-		}
-	}
-
-	private MenuEntry[] removeOption(String option, String target)
-	{
-		MenuEntry[] entries = client.getMenuEntries();
-		int j = 0;
-		if (entries.length > 1)
-		{
-			MenuEntry[] newEntries = new MenuEntry[entries.length - 1];
-			for (MenuEntry entry : entries)
-			{
-				if (!(entry.getOption().equals(option) && entry.getTarget().equals(target)))
-				{
-					newEntries[j++] = entry;
-				}
-			}
-
-			return newEntries;
-		}
-		else
-		{
-			return entries;
 		}
 	}
 
@@ -804,6 +1047,21 @@ public class GroundItemsPlugin extends Plugin
 		this.getHiddenItems = Text.toCSV(hiddenItemSet);
 		config.setHighlightedItem(Text.toCSV(highlightedItemSet));
 		this.getHighlightItems = Text.toCSV(highlightedItemSet);
+	}
+
+	Color getHerbloreColor()
+	{
+		return herbloreColor;
+	}
+
+	Color getPrayerColor()
+	{
+		return prayerColor;
+	}
+
+	Color getDefaultColor()
+	{
+		return config.defaultColor();
 	}
 
 	Color getHighlighted(String item, int gePrice, int haPrice)
@@ -925,6 +1183,17 @@ public class GroundItemsPlugin extends Plugin
 		}
 	}
 
+	private void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
+	{
+		if (menuOptionClicked.getMenuOpcode() == MenuOpcode.ITEM_DROP)
+		{
+			int itemId = menuOptionClicked.getIdentifier();
+			// Keep a queue of recently dropped items to better detect
+			// item spawns that are drops
+			droppedItemQueue.add(itemId);
+		}
+	}
+
 	private void notifyHighlightedItem(GroundItem item)
 	{
 		final Player local = client.getLocalPlayer();
@@ -996,5 +1265,9 @@ public class GroundItemsPlugin extends Plugin
 		this.toggleOutline = config.toggleOutline();
 		this.showTimer = config.showTimer();
 		this.bordercolor = config.bordercolor();
+		this.herbloreColor = config.herbloreColor();
+		this.prayerColor = config.prayerColor();
+		this.highlightHerblore = config.highlightHerblore();
+		this.highlightPrayer = config.highlightPrayer();
 	}
 }

@@ -3,12 +3,18 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fi")
+@ObfuscatedName("ft")
 @Implements("UserComparator5")
 public class UserComparator5 extends AbstractUserComparator {
-	@ObfuscatedName("ax")
-	static String field1986;
-	@ObfuscatedName("q")
+	@ObfuscatedName("p")
+	@ObfuscatedSignature(
+		signature = "Lba;"
+	)
+	@Export("loginScreenRunesAnimation")
+	static LoginScreenAnimation loginScreenRunesAnimation;
+	@ObfuscatedName("ez")
+	static int[] field1958;
+	@ObfuscatedName("c")
 	@Export("reversed")
 	final boolean reversed;
 
@@ -16,10 +22,10 @@ public class UserComparator5 extends AbstractUserComparator {
 		this.reversed = var1;
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(Ljz;Ljz;I)I",
-		garbageValue = "-604876330"
+		signature = "(Lje;Lje;I)I",
+		garbageValue = "-234199662"
 	)
 	@Export("compareBuddy")
 	int compareBuddy(Buddy var1, Buddy var2) {
@@ -38,23 +44,29 @@ public class UserComparator5 extends AbstractUserComparator {
 		return this.compareBuddy((Buddy)var1, (Buddy)var2);
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "(I)[Lhn;",
-		garbageValue = "-1282154756"
+		signature = "([BI)V",
+		garbageValue = "303313970"
 	)
-	@Export("PlayerType_values")
-	public static PlayerType[] PlayerType_values() {
-		return new PlayerType[]{PlayerType.PlayerType_playerModerator, PlayerType.PlayerType_jagexModerator, PlayerType.PlayerType_ironman, PlayerType.PlayerType_ultimateIronman, PlayerType.PlayerType_normal, PlayerType.PlayerType_hardcoreIronman};
-	}
+	@Export("ByteArrayPool_release")
+	public static synchronized void ByteArrayPool_release(byte[] var0) {
+		if (var0.length == 100 && ByteArrayPool.ByteArrayPool_smallCount < 1000) {
+			ByteArrayPool.ByteArrayPool_small[++ByteArrayPool.ByteArrayPool_smallCount - 1] = var0;
+		} else if (var0.length == 5000 && ByteArrayPool.ByteArrayPool_mediumCount < 250) {
+			ByteArrayPool.ByteArrayPool_medium[++ByteArrayPool.ByteArrayPool_mediumCount - 1] = var0;
+		} else if (var0.length == 30000 && ByteArrayPool.ByteArrayPool_largeCount < 50) {
+			ByteArrayPool.ByteArrayPool_large[++ByteArrayPool.ByteArrayPool_largeCount - 1] = var0;
+		} else {
+			if (WorldMapEvent.ByteArrayPool_arrays != null) {
+				for (int var1 = 0; var1 < ByteArrayPool.ByteArrayPool_alternativeSizes.length; ++var1) {
+					if (var0.length == ByteArrayPool.ByteArrayPool_alternativeSizes[var1] && Login.ByteArrayPool_altSizeArrayCounts[var1] < WorldMapEvent.ByteArrayPool_arrays[var1].length) {
+						WorldMapEvent.ByteArrayPool_arrays[var1][Login.ByteArrayPool_altSizeArrayCounts[var1]++] = var0;
+						return;
+					}
+				}
+			}
 
-	@ObfuscatedName("iy")
-	@ObfuscatedSignature(
-		signature = "(ZI)V",
-		garbageValue = "1669969690"
-	)
-	@Export("setTapToDrop")
-	static void setTapToDrop(boolean var0) {
-		Client.tapToDrop = var0;
+		}
 	}
 }

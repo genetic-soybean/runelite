@@ -1,42 +1,46 @@
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ir")
+@ObfuscatedName("ib")
 @Implements("ArchiveDiskActionHandler")
 public class ArchiveDiskActionHandler implements Runnable {
-	@ObfuscatedName("q")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "Ljh;"
+		signature = "Ljv;"
 	)
 	@Export("ArchiveDiskActionHandler_requestQueue")
-	public static NodeDeque ArchiveDiskActionHandler_requestQueue;
-	@ObfuscatedName("w")
+	static NodeDeque ArchiveDiskActionHandler_requestQueue;
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "Ljh;"
+		signature = "Ljv;"
 	)
 	@Export("ArchiveDiskActionHandler_responseQueue")
-	public static NodeDeque ArchiveDiskActionHandler_responseQueue;
-	@ObfuscatedName("e")
+	static NodeDeque ArchiveDiskActionHandler_responseQueue;
+	@ObfuscatedName("g")
 	@ObfuscatedGetter(
-		intValue = -1331634311
+		intValue = 1435645163
 	)
-	static int field3144;
-	@ObfuscatedName("p")
+	public static int field3126;
+	@ObfuscatedName("l")
 	@Export("ArchiveDiskActionHandler_lock")
-	static Object ArchiveDiskActionHandler_lock;
-	@ObfuscatedName("k")
+	public static Object ArchiveDiskActionHandler_lock;
+	@ObfuscatedName("u")
 	@Export("ArchiveDiskActionHandler_thread")
 	static Thread ArchiveDiskActionHandler_thread;
+	@ObfuscatedName("d")
+	@ObfuscatedSignature(
+		signature = "Lhz;"
+	)
+	@Export("Widget_archive")
+	static AbstractArchive Widget_archive;
 
 	static {
 		ArchiveDiskActionHandler_requestQueue = new NodeDeque();
 		ArchiveDiskActionHandler_responseQueue = new NodeDeque();
-		field3144 = 0;
+		field3126 = 0;
 		ArchiveDiskActionHandler_lock = new Object();
 	}
 
@@ -65,76 +69,46 @@ public class ArchiveDiskActionHandler implements Runnable {
 					}
 
 					synchronized(ArchiveDiskActionHandler_lock) {
-						if (field3144 <= 1) {
-							field3144 = 0;
+						if (field3126 <= 1) {
+							field3126 = 0;
 							ArchiveDiskActionHandler_lock.notifyAll();
 							return;
 						}
 
-						field3144 = 600;
+						field3126 = 600;
 					}
 				} else {
-					EnumDefinition.method4550(100L);
+					FriendsList.sleepMillis(100L);
 					synchronized(ArchiveDiskActionHandler_lock) {
-						if (field3144 <= 1) {
-							field3144 = 0;
+						if (field3126 <= 1) {
+							field3126 = 0;
 							ArchiveDiskActionHandler_lock.notifyAll();
 							return;
 						}
 
-						--field3144;
+						--field3126;
 					}
 				}
 			}
 		} catch (Exception var13) {
-			HitSplatDefinition.sendStackTrace((String)null, var13);
+			class188.RunException_sendStackTrace((String)null, var13);
 		}
 	}
 
-	@ObfuscatedName("al")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(Lfs;III)Ldn;",
-		garbageValue = "2015059645"
+		signature = "(Ljava/lang/Throwable;Ljava/lang/String;)Lma;"
 	)
-	public static final PcmPlayer method4256(TaskHandler var0, int var1, int var2) {
-		if (CollisionMap.PcmPlayer_sampleRate == 0) {
-			throw new IllegalStateException();
+	@Export("newRunException")
+	public static RunException newRunException(Throwable var0, String var1) {
+		RunException var2;
+		if (var0 instanceof RunException) {
+			var2 = (RunException)var0;
+			var2.message = var2.message + ' ' + var1;
+		} else {
+			var2 = new RunException(var0, var1);
 		}
-		if (var1 >= 0 && var1 < 2) {
-			if (var2 < 256) {
-				var2 = 256;
-			}
 
-			try {
-				PcmPlayer var3 = class32.pcmPlayerProvider.player();
-				var3.samples = new int[256 * (class169.isStereo ? 2 : 1)];
-				var3.field1414 = var2;
-				var3.init();
-				var3.capacity = (var2 & -1024) + 1024;
-				if (var3.capacity > 16384) {
-					var3.capacity = 16384;
-				}
-
-				var3.open(var3.capacity);
-				if (PcmPlayer.pcmPlayerCount > 0 && SecureRandomFuture.soundSystem == null) {
-					SecureRandomFuture.soundSystem = new SoundSystem();
-					class14.soundSystemExecutor = Executors.newScheduledThreadPool(1);
-					class14.soundSystemExecutor.scheduleAtFixedRate(SecureRandomFuture.soundSystem, 0L, 10L, TimeUnit.MILLISECONDS);
-				}
-
-				if (SecureRandomFuture.soundSystem != null) {
-					if (SecureRandomFuture.soundSystem.players[var1] != null) {
-						throw new IllegalArgumentException();
-					}
-
-					SecureRandomFuture.soundSystem.players[var1] = var3;
-				}
-
-				return var3;
-			} catch (Throwable var4) {
-				return new PcmPlayer();
-			}
-		}
-		throw new IllegalArgumentException();
+		return var2;
 	}
 }

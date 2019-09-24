@@ -27,6 +27,7 @@
 package net.runelite.client.plugins.timers;
 
 import com.google.inject.Provides;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -46,7 +47,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.Player;
-import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
 import net.runelite.api.SkullIcon;
 import net.runelite.api.VarPlayer;
@@ -113,10 +113,12 @@ public class TimersPlugin extends Plugin
 	private static final String SUPER_ANTIFIRE_EXPIRED_MESSAGE = "<col=7f007f>Your super antifire potion has expired.</col>";
 	private static final int VENOM_VALUE_CUTOFF = -40; // Antivenom < -40 =< Antipoison < 0
 	private static final int POISON_TICK_LENGTH = 30;
-
-	private static final Pattern DEADMAN_HALF_TELEBLOCK_PATTERN = Pattern.compile("<col=4f006f>A Tele Block spell has been cast on you by (.+). It will expire in 1 minute, 15 seconds.</col>");
-	private static final Pattern FULL_TELEBLOCK_PATTERN = Pattern.compile("<col=4f006f>A Tele Block spell has been cast on you by (.+). It will expire in 5 minutes, 0 seconds.</col>");
-	private static final Pattern HALF_TELEBLOCK_PATTERN = Pattern.compile("<col=4f006f>A Tele Block spell has been cast on you by (.+). It will expire in 2 minutes, 30 seconds.</col>");
+	private static final String SUPER_ANTIVENOM_DRINK_MESSAGE = "You drink some of your super antivenom potion";
+	private static final String KILLED_TELEBLOCK_OPPONENT_TEXT = "<col=4f006f>Your Tele Block has been removed because you killed ";
+	private static final Pattern DEADMAN_HALF_TELEBLOCK_PATTERN = Pattern.compile("<col=4f006f>A Tele Block spell has been cast on you by (.+)\\. It will expire in 1 minute, 15 seconds\\.</col>");
+	private static final Pattern FULL_TELEBLOCK_PATTERN = Pattern.compile("<col=4f006f>A Tele Block spell has been cast on you by (.+)\\. It will expire in 5 minutes, 0 seconds\\.</col>");
+	private static final Pattern HALF_TELEBLOCK_PATTERN = Pattern.compile("<col=4f006f>A Tele Block spell has been cast on you by (.+)\\. It will expire in 2 minutes, 30 seconds\\.</col>");
+	private static final Pattern DIVINE_POTION_PATTERN = Pattern.compile("You drink some of your divine (.+) potion\\.");
 
 	private TimerTimer freezeTimer;
 	private int freezeTime = -1; // time frozen, in game ticks
@@ -172,6 +174,7 @@ public class TimersPlugin extends Plugin
 	private boolean showSkull;
 	private boolean showStaffOfTheDead;
 	private boolean showAbyssalSireStun;
+	private boolean showDivine;
 
 	@Provides
 	TimersConfig getConfig(ConfigManager configManager)
@@ -355,6 +358,16 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(PRAYER_ENHANCE);
 		}
 
+		if (!this.showDivine)
+		{
+			removeGameTimer(DIVINE_SUPER_ATTACK);
+			removeGameTimer(DIVINE_SUPER_STRENGTH);
+			removeGameTimer(DIVINE_SUPER_DEFENCE);
+			removeGameTimer(DIVINE_SUPER_COMBAT);
+			removeGameTimer(DIVINE_RANGING);
+			removeGameTimer(DIVINE_MAGIC);
+		}
+
 		if (!this.showCannon)
 		{
 			removeGameTimer(CANNON);
@@ -398,11 +411,8 @@ public class TimersPlugin extends Plugin
 		if (!this.showFreezes)
 		{
 			removeGameTimer(BIND);
-			removeGameTimer(HALFBIND);
 			removeGameTimer(SNARE);
-			removeGameTimer(HALFSNARE);
 			removeGameTimer(ENTANGLE);
-			removeGameTimer(HALFENTANGLE);
 			removeGameTimer(ICERUSH);
 			removeGameTimer(ICEBURST);
 			removeGameTimer(ICEBLITZ);
@@ -421,7 +431,11 @@ public class TimersPlugin extends Plugin
 		if (this.showStamina
 			&& event.getOption().contains("Drink")
 			&& (event.getIdentifier() == ItemID.STAMINA_MIX1
-			|| event.getIdentifier() == ItemID.STAMINA_MIX2))
+			|| event.getIdentifier() == ItemID.STAMINA_MIX2
+			|| event.getIdentifier() == ItemID.EGNIOL_POTION_1
+			|| event.getIdentifier() == ItemID.EGNIOL_POTION_2
+			|| event.getIdentifier() == ItemID.EGNIOL_POTION_3
+			|| event.getIdentifier() == ItemID.EGNIOL_POTION_4))
 		{
 			// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
 			createGameTimer(STAMINA);
@@ -582,6 +596,10 @@ public class TimersPlugin extends Plugin
 			{
 				createGameTimer(DMM_HALFTB);
 			}
+			else if (event.getMessage().startsWith(KILLED_TELEBLOCK_OPPONENT_TEXT))
+			{
+				removeTbTimers();
+			}
 		}
 
 		if (this.showAntiFire && event.getMessage().contains(SUPER_ANTIFIRE_DRINK_MESSAGE))
@@ -635,6 +653,40 @@ public class TimersPlugin extends Plugin
 			freezeTimer = createGameTimer(ICEBARRAGE);
 			freezeTime = client.getTickCount();
 		}
+
+		if (config.showDivine())
+		{
+			Matcher mDivine = DIVINE_POTION_PATTERN.matcher(event.getMessage());
+			if (mDivine.find())
+			{
+				switch (mDivine.group(1))
+				{
+					case "super attack":
+						createGameTimer(DIVINE_SUPER_ATTACK);
+						break;
+
+					case "super strength":
+						createGameTimer(DIVINE_SUPER_STRENGTH);
+						break;
+
+					case "super defence":
+						createGameTimer(DIVINE_SUPER_DEFENCE);
+						break;
+
+					case "combat":
+						createGameTimer(DIVINE_SUPER_COMBAT);
+						break;
+
+					case "ranging":
+						createGameTimer(DIVINE_RANGING);
+						break;
+
+					case "magic":
+						createGameTimer(DIVINE_MAGIC);
+						break;
+				}
+			}
+		}
 	}
 
 	private void onGameTick(GameTick event)
@@ -642,6 +694,12 @@ public class TimersPlugin extends Plugin
 		loggedInRace = false;
 
 		Player player = client.getLocalPlayer();
+
+		if (player == null)
+		{
+			return;
+		}
+
 		WorldPoint currentWorldPoint = player.getWorldLocation();
 
 		final boolean isSkulled = player.getSkullIcon() != null && player.getSkullIcon() != SkullIcon.SKULL_FIGHT_PIT;
@@ -730,13 +788,15 @@ public class TimersPlugin extends Plugin
 			}
 		}
 
-		if (actor != client.getLocalPlayer())
+		Player player = client.getLocalPlayer();
+
+		if (player == null || actor != player)
 		{
 			return;
 		}
 
 		if (this.showHomeMinigameTeleports
-			&& client.getLocalPlayer().getAnimation() == AnimationID.IDLE
+			&& player.getAnimation() == AnimationID.IDLE
 			&& (lastAnimation == AnimationID.BOOK_HOME_TELEPORT_5
 			|| lastAnimation == AnimationID.COW_HOME_TELEPORT_6))
 		{
@@ -755,14 +815,15 @@ public class TimersPlugin extends Plugin
 			createGameTimer(DRAGON_FIRE_SHIELD);
 		}
 
-		lastAnimation = client.getLocalPlayer().getAnimation();
+		lastAnimation = player.getAnimation();
 	}
 
 	private void onSpotAnimationChanged(SpotAnimationChanged event)
 	{
 		Actor actor = event.getActor();
+		Player player = client.getLocalPlayer();
 
-		if (actor != client.getLocalPlayer())
+		if (player == null || actor != client.getLocalPlayer())
 		{
 			return;
 		}
@@ -776,44 +837,17 @@ public class TimersPlugin extends Plugin
 		{
 			if (actor.getSpotAnimation() == BIND.getGraphicId())
 			{
-				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
-					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN)
-					&& !client.getWorldType().contains(WorldType.DEADMAN_TOURNAMENT))
-				{
-					createGameTimer(HALFBIND);
-				}
-				else
-				{
-					createGameTimer(BIND);
-				}
+				createGameTimer(BIND);
 			}
 
 			if (actor.getSpotAnimation() == SNARE.getGraphicId())
 			{
-				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
-					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN)
-					&& !client.getWorldType().contains(WorldType.DEADMAN_TOURNAMENT))
-				{
-					createGameTimer(HALFSNARE);
-				}
-				else
-				{
-					createGameTimer(SNARE);
-				}
+				createGameTimer(SNARE);
 			}
 
 			if (actor.getSpotAnimation() == ENTANGLE.getGraphicId())
 			{
-				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
-					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN)
-					&& !client.getWorldType().contains(WorldType.DEADMAN_TOURNAMENT))
-				{
-					createGameTimer(HALFENTANGLE);
-				}
-				else
-				{
-					createGameTimer(ENTANGLE);
-				}
+				createGameTimer(ENTANGLE);
 			}
 
 			// downgrade freeze based on graphic, if at the same tick as the freeze message
@@ -1020,5 +1054,6 @@ public class TimersPlugin extends Plugin
 		this.showSkull = config.showSkull();
 		this.showStaffOfTheDead = config.showStaffOfTheDead();
 		this.showAbyssalSireStun = config.showAbyssalSireStun();
+		this.showDivine = config.showDivine();
 	}
 }

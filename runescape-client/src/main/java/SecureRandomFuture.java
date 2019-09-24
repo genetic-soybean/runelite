@@ -4,25 +4,23 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("co")
+@ObfuscatedName("ce")
 @Implements("SecureRandomFuture")
 public class SecureRandomFuture {
-	@ObfuscatedName("f")
-	@ObfuscatedSignature(
-		signature = "Ldg;"
+	@ObfuscatedName("ho")
+	@ObfuscatedGetter(
+		intValue = -209939989
 	)
-	@Export("soundSystem")
-	static SoundSystem soundSystem;
-	@ObfuscatedName("gw")
-	@Export("regionMapArchiveIds")
-	static int[] regionMapArchiveIds;
-	@ObfuscatedName("q")
+	@Export("oculusOrbFocalPointX")
+	static int oculusOrbFocalPointX;
+	@ObfuscatedName("c")
 	@Export("executor")
 	ExecutorService executor;
-	@ObfuscatedName("w")
+	@ObfuscatedName("x")
 	@Export("future")
 	Future future;
 
@@ -31,10 +29,10 @@ public class SecureRandomFuture {
 		this.future = this.executor.submit(new SecureRandomCallable());
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "1961789418"
+		signature = "(B)V",
+		garbageValue = "17"
 	)
 	@Export("shutdown")
 	void shutdown() {
@@ -42,20 +40,20 @@ public class SecureRandomFuture {
 		this.executor = null;
 	}
 
-	@ObfuscatedName("w")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
 		signature = "(I)Z",
-		garbageValue = "-2036940847"
+		garbageValue = "-1733947901"
 	)
 	@Export("isDone")
 	boolean isDone() {
 		return this.future.isDone();
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
 		signature = "(I)Ljava/security/SecureRandom;",
-		garbageValue = "1181780583"
+		garbageValue = "1840325785"
 	)
 	@Export("get")
 	SecureRandom get() {
@@ -68,37 +66,28 @@ public class SecureRandomFuture {
 		}
 	}
 
-	@ObfuscatedName("w")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(ILkm;Liu;I)V",
-		garbageValue = "-1214592487"
+		signature = "(Lbs;I)V",
+		garbageValue = "-1751721951"
 	)
-	static void method2056(int var0, ArchiveDisk var1, Archive var2) {
-		byte[] var3 = null;
-		synchronized(ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue) {
-			for (ArchiveDiskAction var5 = (ArchiveDiskAction)ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue.last(); var5 != null; var5 = (ArchiveDiskAction)ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue.previous()) {
-				if ((long)var0 == var5.key && var1 == var5.archiveDisk && var5.type == 0) {
-					var3 = var5.data;
-					break;
-				}
-			}
-		}
-
-		if (var3 != null) {
-			var2.load(var1, var0, var3, true);
-		} else {
-			byte[] var4 = var1.read(var0);
-			var2.load(var1, var0, var4, true);
-		}
+	@Export("runScriptEvent")
+	public static void runScriptEvent(ScriptEvent var0) {
+		GameShell.runScript(var0, 500000);
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "-1709939450"
+		signature = "(II)I",
+		garbageValue = "1744475740"
 	)
-	@Export("WorldMapRegion_clearCachedSprites")
-	static void WorldMapRegion_clearCachedSprites() {
-		WorldMapRegion.WorldMapRegion_cachedSprites.clear();
+	public static int method2101(int var0) {
+		return Entity_unpackID(ViewportMouse.ViewportMouse_entityTags[var0]);
+	}
+
+	@ObfuscatedName("l")
+	@Export("Entity_unpackID")
+	public static int Entity_unpackID(long var0) {
+		return (int)(var0 >>> 17 & 4294967295L);
 	}
 }

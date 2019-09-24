@@ -4,42 +4,18 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ik")
+@ObfuscatedName("is")
 @Implements("VarpDefinition")
 public class VarpDefinition extends DualNode {
-	@ObfuscatedName("q")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "Lhp;"
-	)
-	@Export("VarpDefinition_archive")
-	static AbstractArchive VarpDefinition_archive;
-	@ObfuscatedName("w")
-	@ObfuscatedGetter(
-		intValue = -2051999343
-	)
-	@Export("VarpDefinition_fileCount")
-	public static int VarpDefinition_fileCount;
-	@ObfuscatedName("e")
-	@ObfuscatedSignature(
-		signature = "Lel;"
+		signature = "Let;"
 	)
 	@Export("VarpDefinition_cached")
 	static EvictingDualNodeHashTable VarpDefinition_cached;
-	@ObfuscatedName("l")
-	@ObfuscatedSignature(
-		signature = "Llx;"
-	)
-	@Export("titlebuttonSprite")
-	static IndexedSprite titlebuttonSprite;
-	@ObfuscatedName("y")
-	@ObfuscatedSignature(
-		signature = "Lkf;"
-	)
-	@Export("NetCache_responseArchiveBuffer")
-	static Buffer NetCache_responseArchiveBuffer;
-	@ObfuscatedName("p")
+	@ObfuscatedName("g")
 	@ObfuscatedGetter(
-		intValue = 1809591211
+		intValue = -1682787017
 	)
 	@Export("type")
 	public int type;
@@ -52,10 +28,10 @@ public class VarpDefinition extends DualNode {
 		this.type = 0;
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(Lkf;I)V",
-		garbageValue = "-927981442"
+		signature = "(Lkz;B)V",
+		garbageValue = "76"
 	)
 	@Export("decode")
 	void decode(Buffer var1) {
@@ -69,10 +45,10 @@ public class VarpDefinition extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(Lkf;II)V",
-		garbageValue = "-1780799047"
+		signature = "(Lkz;IB)V",
+		garbageValue = "86"
 	)
 	@Export("decodeNext")
 	void decodeNext(Buffer var1, int var2) {
@@ -82,26 +58,63 @@ public class VarpDefinition extends DualNode {
 
 	}
 
-	@ObfuscatedName("w")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(CI)Z",
-		garbageValue = "-17259877"
+		signature = "(Lhz;Lhz;ZIS)V",
+		garbageValue = "-8911"
 	)
-	public static boolean method4366(char var0) {
-		if ((var0 <= 0 || var0 >= 128) && (var0 < 160 || var0 > 255)) {
-			if (var0 != 0) {
-				char[] var1 = class288.cp1252AsciiExtension;
-
-				for (int var2 = 0; var2 < var1.length; ++var2) {
-					char var3 = var1[var2];
-					if (var0 == var3) {
-						return true;
-					}
-				}
+	static void method4354(AbstractArchive var0, AbstractArchive var1, boolean var2, int var3) {
+		if (Login.field1181) {
+			if (var3 == 4) {
+				Login.loginIndex = 4;
 			}
 
-			return false;
+		} else {
+			Login.loginIndex = var3;
+			Rasterizer2D.Rasterizer2D_clear();
+			byte[] var4 = var0.takeFileByNames("title.jpg", "");
+			Login.leftTitleSprite = class16.convertJpgToSprite(var4);
+			class191.rightTitleSprite = Login.leftTitleSprite.mirrorHorizontally();
+			if ((Client.worldProperties & 536870912) != 0) {
+				HealthBar.logoSprite = Interpreter.SpriteBuffer_getIndexedSpriteByName(var1, "logo_deadman_mode", "");
+			} else {
+				HealthBar.logoSprite = Interpreter.SpriteBuffer_getIndexedSpriteByName(var1, "logo", "");
+			}
+
+			Login.titleboxSprite = Interpreter.SpriteBuffer_getIndexedSpriteByName(var1, "titlebox", "");
+			class191.titlebuttonSprite = Interpreter.SpriteBuffer_getIndexedSpriteByName(var1, "titlebutton", "");
+			UserComparator10.runesSprite = GrandExchangeOfferNameComparator.method122(var1, "runes", "");
+			FileSystem.title_muteSprite = GrandExchangeOfferNameComparator.method122(var1, "title_mute", "");
+			GrandExchangeOfferWorldComparator.options_buttons_0Sprite = Interpreter.SpriteBuffer_getIndexedSpriteByName(var1, "options_radio_buttons,0", "");
+			Login.field1153 = Interpreter.SpriteBuffer_getIndexedSpriteByName(var1, "options_radio_buttons,4", "");
+			Login.options_buttons_2Sprite = Interpreter.SpriteBuffer_getIndexedSpriteByName(var1, "options_radio_buttons,2", "");
+			WorldMapDecoration.field202 = Interpreter.SpriteBuffer_getIndexedSpriteByName(var1, "options_radio_buttons,6", "");
+			class4.field17 = GrandExchangeOfferWorldComparator.options_buttons_0Sprite.subWidth;
+			class267.field3524 = GrandExchangeOfferWorldComparator.options_buttons_0Sprite.subHeight;
+			UserComparator5.loginScreenRunesAnimation = new LoginScreenAnimation(UserComparator10.runesSprite);
+			if (var2) {
+				Login.Login_username = "";
+				Login.Login_password = "";
+			}
+
+			class222.field2729 = 0;
+			class81.otp = "";
+			Login.field1183 = true;
+			Login.worldSelectOpen = false;
+			if (!Actor.clientPreferences.titleMusicDisabled) {
+				PendingSpawn.method1681(2, WorldMapDecoration.archive6, "scape main", "", 255, false);
+			} else {
+				WallDecoration.method3256(2);
+			}
+
+			class173.method3575(false);
+			Login.field1181 = true;
+			Login.xPadding = (GraphicsDefaults.canvasWidth - 765) / 2;
+			Login.loginBoxX = Login.xPadding + 202;
+			VarcInt.loginBoxCenter = Login.loginBoxX + 180;
+			Login.leftTitleSprite.drawAt(Login.xPadding, 0);
+			class191.rightTitleSprite.drawAt(Login.xPadding + 382, 0);
+			HealthBar.logoSprite.drawAt(Login.xPadding + 382 - HealthBar.logoSprite.subWidth / 2, 18);
 		}
-		return true;
 	}
 }

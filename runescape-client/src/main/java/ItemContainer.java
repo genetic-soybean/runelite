@@ -3,24 +3,19 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bc")
+@ObfuscatedName("bf")
 @Implements("ItemContainer")
 public class ItemContainer extends Node {
-	@ObfuscatedName("q")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "Llc;"
+		signature = "Llm;"
 	)
 	@Export("itemContainers")
 	static NodeHashTable itemContainers;
-	@ObfuscatedName("jk")
-	@ObfuscatedSignature(
-		signature = "Lhj;"
-	)
-	static Widget field549;
-	@ObfuscatedName("w")
+	@ObfuscatedName("x")
 	@Export("ids")
 	int[] ids;
-	@ObfuscatedName("e")
+	@ObfuscatedName("t")
 	@Export("quantities")
 	int[] quantities;
 
@@ -33,33 +28,22 @@ public class ItemContainer extends Node {
 		this.quantities = new int[]{0};
 	}
 
-	@ObfuscatedName("w")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(IB)Lic;",
-		garbageValue = "-70"
+		signature = "(I)[Lii;",
+		garbageValue = "-1732973980"
 	)
-	public static FloorUnderlayDefinition method1117(int var0) {
-		FloorUnderlayDefinition var1 = (FloorUnderlayDefinition)FloorUnderlayDefinition.FloorUnderlayDefinition_cached.get((long)var0);
-		if (var1 != null) {
-			return var1;
-		}
-		byte[] var2 = FloorUnderlayDefinition.FloorUnderlayDefinition_archive.takeFile(1, var0);
-		var1 = new FloorUnderlayDefinition();
-		if (var2 != null) {
-			var1.decode(new Buffer(var2), var0);
-		}
-
-		var1.postDecode();
-		FloorUnderlayDefinition.FloorUnderlayDefinition_cached.put(var1, (long)var0);
-		return var1;
+	static VerticalAlignment[] method1120() {
+		return new VerticalAlignment[]{VerticalAlignment.field3170, VerticalAlignment.field3172, VerticalAlignment.VerticalAlignment_centered};
 	}
 
-	@ObfuscatedName("ac")
+	@ObfuscatedName("iw")
 	@ObfuscatedSignature(
-		signature = "(II)I",
-		garbageValue = "-1225456641"
+		signature = "(I)Z",
+		garbageValue = "-476511275"
 	)
-	static int method1116(int var0) {
-		return (int)Math.pow(2.0D, (double)((float)var0 / 256.0F + 7.0F));
+	@Export("getTapToDrop")
+	static boolean getTapToDrop() {
+		return Client.tapToDrop;
 	}
 }

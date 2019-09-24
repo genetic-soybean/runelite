@@ -1,24 +1,31 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("id")
+@ObfuscatedName("ih")
 @Implements("VarcInt")
 public class VarcInt extends DualNode {
-	@ObfuscatedName("q")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "Lhp;"
+		signature = "Lhz;"
 	)
 	@Export("VarcInt_archive")
-	public static AbstractArchive VarcInt_archive;
-	@ObfuscatedName("w")
+	static AbstractArchive VarcInt_archive;
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "Lel;"
+		signature = "Let;"
 	)
 	@Export("VarcInt_cached")
-	public static EvictingDualNodeHashTable VarcInt_cached;
-	@ObfuscatedName("e")
+	static EvictingDualNodeHashTable VarcInt_cached;
+	@ObfuscatedName("k")
+	@ObfuscatedGetter(
+		intValue = -59845961
+	)
+	@Export("loginBoxCenter")
+	static int loginBoxCenter;
+	@ObfuscatedName("t")
 	@Export("persist")
 	public boolean persist;
 
@@ -26,72 +33,53 @@ public class VarcInt extends DualNode {
 		VarcInt_cached = new EvictingDualNodeHashTable(64);
 	}
 
-	public VarcInt() {
+	VarcInt() {
 		this.persist = false;
 	}
 
-	@ObfuscatedName("w")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(Lkf;B)V",
-		garbageValue = "22"
+		signature = "(Lkz;B)V",
+		garbageValue = "9"
 	)
-	public void method4401(Buffer var1) {
+	void method4394(Buffer var1) {
 		while (true) {
 			int var2 = var1.readUnsignedByte();
 			if (var2 == 0) {
 				return;
 			}
 
-			this.method4396(var1, var2);
+			this.method4395(var1, var2);
 		}
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "(Lkf;II)V",
-		garbageValue = "958337922"
+		signature = "(Lkz;IB)V",
+		garbageValue = "-46"
 	)
-	void method4396(Buffer var1, int var2) {
+	void method4395(Buffer var1, int var2) {
 		if (var2 == 2) {
 			this.persist = true;
 		}
 
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/CharSequence;S)Ljava/lang/String;",
-		garbageValue = "-32757"
+		signature = "(Lhz;I)V",
+		garbageValue = "-1900079219"
 	)
-	public static String method4403(CharSequence var0) {
-		long var3 = 0L;
-		int var5 = var0.length();
+	public static void method4407(AbstractArchive var0) {
+		ParamDefinition.ParamDefinition_archive = var0;
+	}
 
-		for (int var6 = 0; var6 < var5; ++var6) {
-			var3 *= 37L;
-			char var7 = var0.charAt(var6);
-			if (var7 >= 'A' && var7 <= 'Z') {
-				var3 += (long)(var7 + 1 - 65);
-			} else if (var7 >= 'a' && var7 <= 'z') {
-				var3 += (long)(var7 + 1 - 97);
-			} else if (var7 >= '0' && var7 <= '9') {
-				var3 += (long)(var7 + 27 - 48);
-			}
-
-			if (var3 >= 177917621779460413L) {
-				break;
-			}
-		}
-
-		while (var3 % 37L == 0L && 0L != var3) {
-			var3 /= 37L;
-		}
-
-		String var8 = class215.method4023(var3);
-		if (var8 == null) {
-			var8 = "";
-		}
-
-		return var8;
+	@ObfuscatedName("x")
+	@ObfuscatedSignature(
+		signature = "(B)[Lie;",
+		garbageValue = "-105"
+	)
+	static HorizontalAlignment[] method4396() {
+		return new HorizontalAlignment[]{HorizontalAlignment.field3430, HorizontalAlignment.HorizontalAlignment_centered, HorizontalAlignment.field3428};
 	}
 }

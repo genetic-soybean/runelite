@@ -7,37 +7,37 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fs")
+@ObfuscatedName("fq")
 @Implements("TaskHandler")
 public class TaskHandler implements Runnable {
-	@ObfuscatedName("q")
+	@ObfuscatedName("c")
 	@Export("javaVendor")
 	public static String javaVendor;
-	@ObfuscatedName("w")
+	@ObfuscatedName("x")
 	@Export("javaVersion")
 	public static String javaVersion;
-	@ObfuscatedName("e")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "Lfa;"
+		signature = "Lfc;"
 	)
 	@Export("current")
 	Task current;
-	@ObfuscatedName("p")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "Lfa;"
+		signature = "Lfc;"
 	)
-	@Export("task0")
-	Task task0;
-	@ObfuscatedName("k")
+	@Export("task")
+	Task task;
+	@ObfuscatedName("l")
 	@Export("thread")
 	Thread thread;
-	@ObfuscatedName("l")
+	@ObfuscatedName("u")
 	@Export("isClosed")
 	boolean isClosed;
 
 	public TaskHandler() {
 		this.current = null;
-		this.task0 = null;
+		this.task = null;
 		this.isClosed = false;
 		javaVendor = "Unknown";
 		javaVersion = "1.6";
@@ -55,10 +55,10 @@ public class TaskHandler implements Runnable {
 		this.thread.start();
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "876535177"
+		signature = "(B)V",
+		garbageValue = "-72"
 	)
 	@Export("close")
 	public final void close() {
@@ -74,10 +74,10 @@ public class TaskHandler implements Runnable {
 
 	}
 
-	@ObfuscatedName("w")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(IIILjava/lang/Object;B)Lfa;",
-		garbageValue = "115"
+		signature = "(IIILjava/lang/Object;I)Lfc;",
+		garbageValue = "-1315009014"
 	)
 	@Export("newTask")
 	final Task newTask(int var1, int var2, int var3, Object var4) {
@@ -86,11 +86,11 @@ public class TaskHandler implements Runnable {
 		var5.intArgument = var2;
 		var5.objectArgument = var4;
 		synchronized(this) {
-			if (this.task0 != null) {
-				this.task0.next = var5;
-				this.task0 = var5;
+			if (this.task != null) {
+				this.task.next = var5;
+				this.task = var5;
 			} else {
-				this.task0 = this.current = var5;
+				this.task = this.current = var5;
 			}
 
 			this.notify();
@@ -98,20 +98,20 @@ public class TaskHandler implements Runnable {
 		}
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;II)Lfa;",
-		garbageValue = "313449224"
+		signature = "(Ljava/lang/String;IS)Lfc;",
+		garbageValue = "-16284"
 	)
 	@Export("newSocketTask")
 	public final Task newSocketTask(String var1, int var2) {
 		return this.newTask(1, var2, 0, var1);
 	}
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/Runnable;II)Lfa;",
-		garbageValue = "193419386"
+		signature = "(Ljava/lang/Runnable;II)Lfc;",
+		garbageValue = "-1670540626"
 	)
 	@Export("newThreadTask")
 	public final Task newThreadTask(Runnable var1, int var2) {
@@ -131,7 +131,7 @@ public class TaskHandler implements Runnable {
 						var1 = this.current;
 						this.current = this.current.next;
 						if (this.current == null) {
-							this.task0 = null;
+							this.task = null;
 						}
 						break;
 					}
@@ -162,6 +162,99 @@ public class TaskHandler implements Runnable {
 				throw var6;
 			} catch (Throwable var7) {
 				var1.status = 2;
+			}
+		}
+	}
+
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		signature = "(Lll;I)I",
+		garbageValue = "-428557907"
+	)
+	public static final int method3464(LoginType var0) {
+		if (var0 == null) {
+			return 12;
+		} else {
+			switch(var0.field4033) {
+			case 7:
+				return 20;
+			default:
+				return 12;
+			}
+		}
+	}
+
+	@ObfuscatedName("g")
+	@ObfuscatedSignature(
+		signature = "(II)Z",
+		garbageValue = "-1906197616"
+	)
+	@Export("loadInterface")
+	public static boolean loadInterface(int var0) {
+		if (UserComparator3.Widget_loadedInterfaces[var0]) {
+			return true;
+		} else if (!ArchiveDiskActionHandler.Widget_archive.tryLoadGroup(var0)) {
+			return false;
+		} else {
+			int var1 = ArchiveDiskActionHandler.Widget_archive.getGroupFileCount(var0);
+			if (var1 == 0) {
+				UserComparator3.Widget_loadedInterfaces[var0] = true;
+				return true;
+			} else {
+				if (class289.Widget_interfaceComponents[var0] == null) {
+					class289.Widget_interfaceComponents[var0] = new Widget[var1];
+				}
+
+				for (int var2 = 0; var2 < var1; ++var2) {
+					if (class289.Widget_interfaceComponents[var0][var2] == null) {
+						byte[] var3 = ArchiveDiskActionHandler.Widget_archive.takeFile(var0, var2);
+						if (var3 != null) {
+							class289.Widget_interfaceComponents[var0][var2] = new Widget();
+							class289.Widget_interfaceComponents[var0][var2].id = var2 + (var0 << 16);
+							if (var3[0] == -1) {
+								class289.Widget_interfaceComponents[var0][var2].decode(new Buffer(var3));
+							} else {
+								class289.Widget_interfaceComponents[var0][var2].decodeLegacy(new Buffer(var3));
+							}
+						}
+					}
+				}
+
+				UserComparator3.Widget_loadedInterfaces[var0] = true;
+				return true;
+			}
+		}
+	}
+
+	@ObfuscatedName("as")
+	@ObfuscatedSignature(
+		signature = "([BI)[B",
+		garbageValue = "1618033265"
+	)
+	@Export("decompressBytes")
+	static final byte[] decompressBytes(byte[] var0) {
+		Buffer var1 = new Buffer(var0);
+		int var2 = var1.readUnsignedByte();
+		int var3 = var1.readInt();
+		if (var3 < 0 || AbstractArchive.field3120 != 0 && var3 > AbstractArchive.field3120) {
+			throw new RuntimeException();
+		} else if (var2 == 0) {
+			byte[] var4 = new byte[var3];
+			var1.readBytes(var4, 0, var3);
+			return var4;
+		} else {
+			int var6 = var1.readInt();
+			if (var6 >= 0 && (AbstractArchive.field3120 == 0 || var6 <= AbstractArchive.field3120)) {
+				byte[] var5 = new byte[var6];
+				if (var2 == 1) {
+					BZip2Decompressor.BZip2Decompressor_decompress(var5, var6, var0, var3, 9);
+				} else {
+					AbstractArchive.gzipDecompressor.decompress(var1, var5);
+				}
+
+				return var5;
+			} else {
+				throw new RuntimeException();
 			}
 		}
 	}

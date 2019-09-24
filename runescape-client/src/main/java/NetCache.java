@@ -5,116 +5,125 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ii")
+@ObfuscatedName("in")
 @Implements("NetCache")
 public class NetCache {
-	@ObfuscatedName("q")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "Lky;"
+		signature = "Lks;"
 	)
 	@Export("NetCache_socket")
 	public static AbstractSocket NetCache_socket;
-	@ObfuscatedName("w")
+	@ObfuscatedName("x")
 	@ObfuscatedGetter(
-		intValue = 351053657
+		intValue = 1834591969
 	)
-	static int field3163;
-	@ObfuscatedName("e")
+	@Export("NetCache_loadTime")
+	public static int NetCache_loadTime;
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		longValue = 906577835555410159L
+		longValue = -4753750507167035977L
 	)
-	static long field3169;
-	@ObfuscatedName("p")
+	public static long field3145;
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "Llc;"
+		signature = "Llm;"
 	)
 	@Export("NetCache_pendingPriorityWrites")
-	static NodeHashTable NetCache_pendingPriorityWrites;
-	@ObfuscatedName("k")
+	public static NodeHashTable NetCache_pendingPriorityWrites;
+	@ObfuscatedName("l")
 	@ObfuscatedGetter(
-		intValue = -975999093
+		intValue = -433484907
 	)
 	@Export("NetCache_pendingPriorityWritesCount")
 	public static int NetCache_pendingPriorityWritesCount;
-	@ObfuscatedName("l")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "Llc;"
+		signature = "Llm;"
 	)
 	@Export("NetCache_pendingPriorityResponses")
-	static NodeHashTable NetCache_pendingPriorityResponses;
-	@ObfuscatedName("b")
+	public static NodeHashTable NetCache_pendingPriorityResponses;
+	@ObfuscatedName("j")
 	@ObfuscatedGetter(
-		intValue = -2100347839
+		intValue = 1725604983
 	)
 	@Export("NetCache_pendingPriorityResponsesCount")
 	public static int NetCache_pendingPriorityResponsesCount;
-	@ObfuscatedName("i")
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		signature = "Lix;"
+		signature = "Lig;"
 	)
 	@Export("NetCache_pendingWritesQueue")
-	static DualNodeDeque NetCache_pendingWritesQueue;
-	@ObfuscatedName("c")
+	public static DualNodeDeque NetCache_pendingWritesQueue;
+	@ObfuscatedName("d")
 	@ObfuscatedSignature(
-		signature = "Llc;"
+		signature = "Llm;"
 	)
 	@Export("NetCache_pendingWrites")
-	static NodeHashTable NetCache_pendingWrites;
-	@ObfuscatedName("f")
+	public static NodeHashTable NetCache_pendingWrites;
+	@ObfuscatedName("z")
 	@ObfuscatedGetter(
-		intValue = -478006427
+		intValue = 379281979
 	)
 	@Export("NetCache_pendingWritesCount")
 	public static int NetCache_pendingWritesCount;
-	@ObfuscatedName("m")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "Llc;"
+		signature = "Llm;"
 	)
 	@Export("NetCache_pendingResponses")
-	static NodeHashTable NetCache_pendingResponses;
-	@ObfuscatedName("u")
+	public static NodeHashTable NetCache_pendingResponses;
+	@ObfuscatedName("h")
 	@ObfuscatedGetter(
-		intValue = 302917267
+		intValue = 2084128285
 	)
 	@Export("NetCache_pendingResponsesCount")
 	public static int NetCache_pendingResponsesCount;
-	@ObfuscatedName("v")
+	@ObfuscatedName("f")
+	static boolean field3156;
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "Lkf;"
+		signature = "Lhg;"
+	)
+	@Export("NetCache_currentResponse")
+	public static NetFileRequest NetCache_currentResponse;
+	@ObfuscatedName("p")
+	@ObfuscatedSignature(
+		signature = "Lkz;"
 	)
 	@Export("NetCache_responseHeaderBuffer")
-	static Buffer NetCache_responseHeaderBuffer;
-	@ObfuscatedName("g")
+	public static Buffer NetCache_responseHeaderBuffer;
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = 266827
+		intValue = 1063353551
 	)
-	static int field3175;
-	@ObfuscatedName("j")
+	public static int field3154;
+	@ObfuscatedName("y")
 	@Export("NetCache_crc")
 	static CRC32 NetCache_crc;
-	@ObfuscatedName("h")
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
-		signature = "[Liu;"
+		signature = "[Lio;"
 	)
 	@Export("NetCache_archives")
 	static Archive[] NetCache_archives;
-	@ObfuscatedName("o")
-	static byte field3181;
-	@ObfuscatedName("n")
+	@ObfuscatedName("w")
+	public static byte field3158;
+	@ObfuscatedName("m")
 	@ObfuscatedGetter(
-		intValue = 779627437
+		intValue = -660950913
 	)
 	@Export("NetCache_crcMismatches")
 	public static int NetCache_crcMismatches;
-	@ObfuscatedName("d")
+	@ObfuscatedName("o")
 	@ObfuscatedGetter(
-		intValue = -1542260379
+		intValue = -1715585873
 	)
 	@Export("NetCache_ioExceptions")
 	public static int NetCache_ioExceptions;
 
 	static {
-		field3163 = 0;
+		NetCache_loadTime = 0;
 		NetCache_pendingPriorityWrites = new NodeHashTable(4096);
 		NetCache_pendingPriorityWritesCount = 0;
 		NetCache_pendingPriorityResponses = new NodeHashTable(32);
@@ -125,54 +134,44 @@ public class NetCache {
 		NetCache_pendingResponses = new NodeHashTable(4096);
 		NetCache_pendingResponsesCount = 0;
 		NetCache_responseHeaderBuffer = new Buffer(8);
-		field3175 = 0;
+		field3154 = 0;
 		NetCache_crc = new CRC32();
 		NetCache_archives = new Archive[256];
-		field3181 = 0;
+		field3158 = 0;
 		NetCache_crcMismatches = 0;
 		NetCache_ioExceptions = 0;
 	}
 
-	@ObfuscatedName("hm")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(III)V",
-		garbageValue = "-1775821653"
+		signature = "(II)Lim;",
+		garbageValue = "-202532712"
 	)
-	static void method4312(int var0, int var1) {
-		int var2 = WorldMapIcon_1.fontBold12.stringWidth("Choose Option");
-
-		int var3;
-		int var4;
-		for (var3 = 0; var3 < Client.menuOptionsCount; ++var3) {
-			var4 = WorldMapIcon_1.fontBold12.stringWidth(WorldMapLabel.method417(var3));
-			if (var4 > var2) {
-				var2 = var4;
+	@Export("SpotAnimationDefinition_get")
+	public static SpotAnimationDefinition SpotAnimationDefinition_get(int var0) {
+		SpotAnimationDefinition var1 = (SpotAnimationDefinition)SpotAnimationDefinition.SpotAnimationDefinition_cached.get((long)var0);
+		if (var1 != null) {
+			return var1;
+		} else {
+			byte[] var2 = SpotAnimationDefinition.SpotAnimationDefinition_archive.takeFile(13, var0);
+			var1 = new SpotAnimationDefinition();
+			var1.id = var0;
+			if (var2 != null) {
+				var1.decode(new Buffer(var2));
 			}
-		}
 
-		var2 += 8;
-		var3 = Client.menuOptionsCount * 15 + 22;
-		var4 = var0 - var2 / 2;
-		if (var2 + var4 > GrandExchangeEvent.canvasWidth) {
-			var4 = GrandExchangeEvent.canvasWidth - var2;
+			SpotAnimationDefinition.SpotAnimationDefinition_cached.put(var1, (long)var0);
+			return var1;
 		}
+	}
 
-		if (var4 < 0) {
-			var4 = 0;
-		}
-
-		int var5 = var1;
-		if (var3 + var1 > ParamDefinition.canvasHeight) {
-			var5 = ParamDefinition.canvasHeight - var3;
-		}
-
-		if (var5 < 0) {
-			var5 = 0;
-		}
-
-		class247.menuX = var4;
-		class30.menuY = var5;
-		class42.menuWidth = var2;
-		ObjectSound.menuHeight = Client.menuOptionsCount * 15 + 22;
+	@ObfuscatedName("kj")
+	@ObfuscatedSignature(
+		signature = "(Lhy;B)Z",
+		garbageValue = "-91"
+	)
+	@Export("isComponentHidden")
+	static boolean isComponentHidden(Widget var0) {
+		return var0.isHidden;
 	}
 }

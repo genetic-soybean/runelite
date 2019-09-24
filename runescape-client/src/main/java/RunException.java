@@ -4,28 +4,25 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("ml")
+@ObfuscatedName("ma")
 @Implements("RunException")
 public class RunException extends RuntimeException {
-	@ObfuscatedName("q")
+	@ObfuscatedName("c")
 	@Export("RunException_applet")
 	public static Applet RunException_applet;
-	@ObfuscatedName("e")
+	@ObfuscatedName("x")
+	@Export("localPlayerName")
+	public static String localPlayerName;
+	@ObfuscatedName("g")
 	@ObfuscatedGetter(
-		intValue = -345454085
+		intValue = -242879535
 	)
 	@Export("RunException_revision")
 	public static int RunException_revision;
-	@ObfuscatedName("p")
-	@ObfuscatedGetter(
-		intValue = 875770709
-	)
-	@Export("RunException_clientType")
-	public static int RunException_clientType;
-	@ObfuscatedName("k")
+	@ObfuscatedName("u")
 	@Export("message")
 	String message;
-	@ObfuscatedName("l")
+	@ObfuscatedName("j")
 	@Export("throwable")
 	Throwable throwable;
 

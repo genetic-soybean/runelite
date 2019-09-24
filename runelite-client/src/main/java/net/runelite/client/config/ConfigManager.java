@@ -29,7 +29,6 @@ import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.ImmutableMap;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.io.File;
@@ -46,9 +45,8 @@ import java.nio.channels.FileLock;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,8 +64,8 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.RuneLite;
 import static net.runelite.client.RuneLite.PROFILES_DIR;
 import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.util.ColorUtil;
+import org.apache.commons.lang3.StringUtils;
 
 @Singleton
 @Slf4j
@@ -346,8 +344,26 @@ public class ConfigManager
 			throw new IllegalArgumentException("Not a config group");
 		}
 
+		final List<ConfigSection> sections = Arrays.stream(inter.getMethods())
+			.filter(m -> m.getParameterCount() == 0 && m.isAnnotationPresent(ConfigSection.class) && m.getReturnType() == boolean.class)
+			.map(m -> m.getDeclaredAnnotation(ConfigSection.class))
+			.sorted((a, b) -> ComparisonChain.start()
+				.compare(a.position(), b.position())
+				.compare(a.name(), b.name())
+				.result())
+			.collect(Collectors.toList());
+
+		final List<ConfigTitleSection> titleSections = Arrays.stream(inter.getMethods())
+			.filter(m -> m.getParameterCount() == 0 && m.isAnnotationPresent(ConfigTitleSection.class))
+			.map(m -> m.getDeclaredAnnotation(ConfigTitleSection.class))
+			.sorted((a, b) -> ComparisonChain.start()
+				.compare(a.position(), b.position())
+				.compare(a.name(), b.name())
+				.result())
+			.collect(Collectors.toList());
+
 		final List<ConfigItemDescriptor> items = Arrays.stream(inter.getMethods())
-			.filter(m -> m.getParameterCount() == 0)
+			.filter(m -> m.getParameterCount() == 0 && m.isAnnotationPresent(ConfigItem.class))
 			.map(m -> new ConfigItemDescriptor(
 				m.getDeclaredAnnotation(ConfigItem.class),
 				m.getReturnType(),
@@ -360,35 +376,7 @@ public class ConfigManager
 				.result())
 			.collect(Collectors.toList());
 
-		Collection<ConfigItemsGroup> itemGroups = new ArrayList<>();
-
-		for (ConfigItemDescriptor item : items)
-		{
-			String groupName = item.getItem().group();
-			boolean found = false;
-			for (ConfigItemsGroup g : itemGroups)
-			{
-				if (g.getGroup().equals(groupName))
-				{
-					g.addItem(item);
-					found = true;
-					break;
-				}
-			}
-			if (!found)
-			{
-				ConfigItemsGroup newGroup = new ConfigItemsGroup(groupName);
-				newGroup.addItem(item);
-				itemGroups.add(newGroup);
-			}
-		}
-
-		itemGroups = itemGroups.stream().sorted((a, b) -> ComparisonChain.start()
-			.compare(a.getGroup(), b.getGroup())
-			.result())
-			.collect(Collectors.toList());
-
-		return new ConfigDescriptor(group, itemGroups);
+		return new ConfigDescriptor(group, sections, titleSections, items);
 	}
 
 	/**
@@ -432,7 +420,9 @@ public class ConfigManager
 
 			if (!override)
 			{
-				String current = getConfiguration(group.value(), item.keyName());
+				// This checks if it is set and is also unmarshallable to the correct type; so
+				// we will overwrite invalid config values with the default
+				Object current = getConfiguration(group.value(), item.keyName(), method.getReturnType());
 				if (current != null)
 				{
 					continue; // something else is already set
@@ -508,10 +498,6 @@ public class ConfigManager
 		{
 			return Enum.valueOf((Class<? extends Enum>) type, str);
 		}
-		if (type == Font.class)
-		{
-			return FontManager.getFontOrDefault(FontManager.lookupFont(str));
-		}
 		if (type == Instant.class)
 		{
 			return Instant.parse(str);
@@ -538,6 +524,40 @@ public class ConfigManager
 		if (type == Duration.class)
 		{
 			return Duration.ofMillis(Long.parseLong(str));
+		}
+		if (type == int[].class)
+		{
+			if (str.contains(","))
+			{
+				return Arrays.stream(str.split(",")).mapToInt(Integer::valueOf).toArray();
+			}
+			return new int[]{Integer.parseInt(str)};
+		}
+		if (type == EnumSet.class)
+		{
+			try
+			{
+				String substring = str.substring(str.indexOf("{") + 1, str.length() - 1);
+				String[] splitStr = substring.split(", ");
+				final Class<? extends Enum> enumClass;
+				if (!str.contains("{"))
+				{
+					return null;
+				}
+				enumClass = (Class<? extends Enum>) Class.forName(str.substring(0, str.indexOf("{")));
+				EnumSet enumSet = EnumSet.noneOf(enumClass);
+				for (String s : splitStr)
+				{
+					enumSet.add(Enum.valueOf(enumClass, s.replace("[", "").replace("]", "")));
+				}
+				return enumSet;
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+				return null;
+			}
+
 		}
 		if (type == Map.class)
 		{
@@ -567,10 +587,6 @@ public class ConfigManager
 		if (object instanceof Enum)
 		{
 			return ((Enum) object).name();
-		}
-		if (object instanceof Font)
-		{
-			return FontManager.getFontName((Font)object);
 		}
 		if (object instanceof Dimension)
 		{
@@ -604,6 +620,18 @@ public class ConfigManager
 		if (object instanceof Duration)
 		{
 			return Long.toString(((Duration) object).toMillis());
+		}
+		if (object instanceof int[])
+		{
+			if (((int[]) object).length == 0)
+			{
+				return String.valueOf(object);
+			}
+			return StringUtils.join(object, ",");
+		}
+		if (object instanceof EnumSet)
+		{
+			return ((EnumSet) object).toArray()[0].getClass().getCanonicalName() + "{" + object.toString() + "}";
 		}
 		return object.toString();
 	}

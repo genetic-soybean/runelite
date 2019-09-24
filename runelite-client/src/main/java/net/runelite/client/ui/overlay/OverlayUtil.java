@@ -35,7 +35,6 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.awt.geom.Area;
-import java.awt.geom.GeneralPath;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import net.runelite.api.Actor;
@@ -46,10 +45,11 @@ import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.Prayer;
 import net.runelite.api.TileObject;
+import net.runelite.api.VarClientInt;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.geometry.Geometry;
+import net.runelite.api.vars.InterfaceTab;
 import net.runelite.api.widgets.Widget;
 
 
@@ -133,6 +133,20 @@ public class OverlayUtil
 		}
 
 		Point textLocation = actor.getCanvasTextLocation(graphics, text, actor.getLogicalHeight() + 40);
+		if (textLocation != null)
+		{
+			renderTextLocation(graphics, textLocation, text, color);
+		}
+	}
+
+	public static void renderActorTextOverlay(Graphics2D graphics, Actor actor, String text, Color color)
+	{
+		renderActorTextOverlay(graphics, actor, text, color, 40);
+	}
+
+	public static void renderActorTextOverlay(Graphics2D graphics, Actor actor, String text, Color color, int offset)
+	{
+		Point textLocation = actor.getCanvasTextLocation(graphics, text, actor.getLogicalHeight() + offset);
 		if (textLocation != null)
 		{
 			renderTextLocation(graphics, textLocation, text, color);
@@ -272,14 +286,14 @@ public class OverlayUtil
 
 	public static void renderActorTextAndImage(Graphics2D graphics, Actor actor, String text, Color color, BufferedImage image, int yOffset, int xOffset)
 	{
-		Point textLocation = new Point(actor.getConvexHull().getBounds().x + xOffset,
-			actor.getConvexHull().getBounds().y + yOffset);
+		Point textLocation = 		actor.getCanvasTextLocation(graphics, text, actor.getLogicalHeight() + yOffset);
 
-		renderImageLocation(graphics, textLocation, image);
-		xOffset = image.getWidth() + 1;
-		yOffset = (image.getHeight() - (int) graphics.getFontMetrics().getStringBounds(text, graphics).getHeight());
-		textLocation = new Point(textLocation.getX() + xOffset, textLocation.getY() + image.getHeight() - yOffset);
-		renderTextLocation(graphics, textLocation, text, color);
+		if (textLocation != null)
+		{
+			renderImageLocation(graphics, textLocation, image);
+			textLocation = new Point(textLocation.getX() + xOffset , textLocation.getY());
+			renderTextLocation(graphics, textLocation, text, color);
+		}
 	}
 
 	public static void renderTextLocation(Graphics2D graphics, String txtString, int fontSize, int fontStyle, Color fontColor, Point canvasPoint, boolean shadows, int yOffset)
@@ -350,7 +364,7 @@ public class OverlayUtil
 	{
 		Widget widget = client.getWidget(prayer.getWidgetInfo());
 
-		if (widget == null || widget.isHidden())
+		if (widget == null || client.getVar(VarClientInt.INTERFACE_TAB) != InterfaceTab.PRAYER.getId())
 		{
 			return null;
 		}
@@ -420,34 +434,5 @@ public class OverlayUtil
 			null);
 
 		graphics.setColor(colorIconBorderFill);
-	}
-
-	public static void renderPath(Graphics2D graphics, Client client, GeneralPath path, int maxDrawLength, Color color)
-	{
-		LocalPoint playerLp = client.getLocalPlayer().getLocalLocation();
-		Rectangle viewArea = new Rectangle(
-			playerLp.getX() - maxDrawLength,
-			playerLp.getY() - maxDrawLength,
-			maxDrawLength * 2,
-			maxDrawLength * 2);
-
-		graphics.setColor(color);
-		graphics.setStroke(new BasicStroke(2));
-
-		path = Geometry.clipPath(path, viewArea);
-		path = Geometry.filterPath(path, (p1, p2) ->
-			Perspective.localToCanvas(client, new LocalPoint((int) p1[0], (int) p1[1]), client.getPlane()) != null &&
-				Perspective.localToCanvas(client, new LocalPoint((int) p2[0], (int) p2[1]), client.getPlane()) != null);
-		path = Geometry.transformPath(path, coords ->
-		{
-			Point point = Perspective.localToCanvas(client, new LocalPoint((int) coords[0], (int) coords[1]), client.getPlane());
-			if (point != null)
-			{
-				coords[0] = point.getX();
-				coords[1] = point.getY();
-			}
-		});
-
-		graphics.draw(path);
 	}
 }

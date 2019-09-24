@@ -1,88 +1,98 @@
 import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cg")
+@ObfuscatedName("cx")
 @Implements("PacketWriter")
 public class PacketWriter {
-	@ObfuscatedName("q")
+	@ObfuscatedName("sh")
 	@ObfuscatedSignature(
-		signature = "Lky;"
+		signature = "Lj;"
+	)
+	@Export("grandExchangeEvents")
+	static GrandExchangeEvents grandExchangeEvents;
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		signature = "Lks;"
 	)
 	@Export("socket")
 	AbstractSocket socket;
-	@ObfuscatedName("w")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "Lju;"
+		signature = "Ljd;"
 	)
 	@Export("packetBufferNodes")
 	IterableNodeDeque packetBufferNodes;
-	@ObfuscatedName("e")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = -1004294931
+		intValue = -1063535483
 	)
 	@Export("bufferSize")
 	int bufferSize;
-	@ObfuscatedName("p")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "Lkf;"
+		signature = "Lkz;"
 	)
 	@Export("buffer")
 	Buffer buffer;
-	@ObfuscatedName("k")
+	@ObfuscatedName("l")
 	@ObfuscatedSignature(
-		signature = "Llv;"
+		signature = "Lld;"
 	)
 	@Export("isaacCipher")
 	public IsaacCipher isaacCipher;
-	@ObfuscatedName("l")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "Lkx;"
+		signature = "Lkt;"
 	)
 	@Export("packetBuffer")
 	PacketBuffer packetBuffer;
-	@ObfuscatedName("b")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "Lgc;"
+		signature = "Lga;"
 	)
 	@Export("serverPacket")
 	ServerPacket serverPacket;
-	@ObfuscatedName("i")
+	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = 1529475721
+		intValue = -1384639011
 	)
 	@Export("serverPacketLength")
 	int serverPacketLength;
-	@ObfuscatedName("c")
-	boolean field1322;
+	@ObfuscatedName("d")
+	boolean field1281;
+	@ObfuscatedName("z")
+	@ObfuscatedGetter(
+		intValue = 1450743325
+	)
+	int field1283;
+	@ObfuscatedName("n")
+	@ObfuscatedGetter(
+		intValue = 135236915
+	)
+	@Export("pendingWrites")
+	int pendingWrites;
+	@ObfuscatedName("h")
+	@ObfuscatedSignature(
+		signature = "Lga;"
+	)
+	ServerPacket field1274;
 	@ObfuscatedName("f")
-	@ObfuscatedGetter(
-		intValue = -1922577877
-	)
-	int field1318;
-	@ObfuscatedName("m")
-	@ObfuscatedGetter(
-		intValue = 1793928125
-	)
-	int field1319;
-	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "Lgc;"
+		signature = "Lga;"
 	)
-	ServerPacket field1309;
-	@ObfuscatedName("x")
+	ServerPacket field1286;
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "Lgc;"
+		signature = "Lga;"
 	)
-	ServerPacket field1321;
-	@ObfuscatedName("r")
-	@ObfuscatedSignature(
-		signature = "Lgc;"
-	)
-	ServerPacket field1317;
+	ServerPacket field1287;
 
 	PacketWriter() {
 		this.packetBufferNodes = new IterableNodeDeque();
@@ -91,27 +101,29 @@ public class PacketWriter {
 		this.packetBuffer = new PacketBuffer(40000);
 		this.serverPacket = null;
 		this.serverPacketLength = 0;
-		this.field1322 = true;
-		this.field1318 = 0;
-		this.field1319 = 0;
+		this.field1281 = true;
+		this.field1283 = 0;
+		this.pendingWrites = 0;
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "19166064"
+		garbageValue = "1888658982"
 	)
-	final void method2218() {
-		this.packetBufferNodes.clear();
+	@Export("clearBuffer")
+	final void clearBuffer() {
+		this.packetBufferNodes.rsClear();
 		this.bufferSize = 0;
 	}
 
-	@ObfuscatedName("w")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "294803591"
+		signature = "(B)V",
+		garbageValue = "0"
 	)
-	final void method2234() throws IOException {
+	@Export("flush")
+	final void flush() throws IOException {
 		if (this.socket != null && this.bufferSize > 0) {
 			this.buffer.offset = 0;
 
@@ -119,46 +131,47 @@ public class PacketWriter {
 				PacketBufferNode var1 = (PacketBufferNode)this.packetBufferNodes.last();
 				if (var1 == null || var1.index > this.buffer.array.length - this.buffer.offset) {
 					this.socket.write(this.buffer.array, 0, this.buffer.offset);
-					this.field1319 = 0;
+					this.pendingWrites = 0;
 					break;
 				}
 
 				this.buffer.writeBytes(var1.packetBuffer.array, 0, var1.index);
 				this.bufferSize -= var1.index;
 				var1.remove();
-				var1.packetBuffer.method5477();
-				var1.method3620();
+				var1.packetBuffer.releaseArray();
+				var1.release();
 			}
 		}
 
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(Lgb;I)V",
-		garbageValue = "2067459847"
+		signature = "(Lgj;S)V",
+		garbageValue = "5307"
 	)
-	public final void method2219(PacketBufferNode var1) {
+	@Export("addNode")
+	public final void addNode(PacketBufferNode var1) {
 		this.packetBufferNodes.addFirst(var1);
 		var1.index = var1.packetBuffer.offset;
 		var1.packetBuffer.offset = 0;
 		this.bufferSize += var1.index;
 	}
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "(Lky;I)V",
-		garbageValue = "242555588"
+		signature = "(Lks;B)V",
+		garbageValue = "1"
 	)
 	@Export("setSocket")
 	void setSocket(AbstractSocket var1) {
 		this.socket = var1;
 	}
 
-	@ObfuscatedName("k")
+	@ObfuscatedName("l")
 	@ObfuscatedSignature(
-		signature = "(S)V",
-		garbageValue = "-14154"
+		signature = "(B)V",
+		garbageValue = "111"
 	)
 	@Export("close")
 	void close() {
@@ -169,78 +182,93 @@ public class PacketWriter {
 
 	}
 
-	@ObfuscatedName("l")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "94"
+		signature = "(I)V",
+		garbageValue = "1660773387"
 	)
 	@Export("removeSocket")
 	void removeSocket() {
 		this.socket = null;
 	}
 
-	@ObfuscatedName("b")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "(S)Lky;",
-		garbageValue = "-14430"
+		signature = "(I)Lks;",
+		garbageValue = "-1816909725"
 	)
 	@Export("getSocket")
 	AbstractSocket getSocket() {
 		return this.socket;
 	}
 
-	@ObfuscatedName("gs")
+	@ObfuscatedName("at")
 	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "-107"
+		signature = "(Lfq;IIB)Ldh;",
+		garbageValue = "25"
 	)
-	static final void method2245() {
-		for (Projectile var0 = (Projectile)Client.projectiles.last(); var0 != null; var0 = (Projectile)Client.projectiles.previous()) {
-			if (var0.plane == class42.plane && Client.cycle <= var0.cycleEnd) {
-				if (Client.cycle >= var0.cycleStart) {
-					if (var0.targetIndex > 0) {
-						NPC var1 = Client.npcs[var0.targetIndex - 1];
-						if (var1 != null && var1.x >= 0 && var1.x < 13312 && var1.y >= 0 && var1.y < 13312) {
-							var0.setDestination(var1.x, var1.y, ScriptEvent.getTileHeight(var1.x, var1.y, var0.plane) - var0.endHeight, Client.cycle);
-						}
-					}
-
-					if (var0.targetIndex < 0) {
-						int var2 = -var0.targetIndex - 1;
-						Player var3;
-						if (var2 == Client.localPlayerIndex) {
-							var3 = Client.localPlayer;
-						} else {
-							var3 = Client.players[var2];
-						}
-
-						if (var3 != null && var3.x >= 0 && var3.x < 13312 && var3.y >= 0 && var3.y < 13312) {
-							var0.setDestination(var3.x, var3.y, ScriptEvent.getTileHeight(var3.x, var3.y, var0.plane) - var0.endHeight, Client.cycle);
-						}
-					}
-
-					var0.advance(Client.field718);
-					GrandExchangeOfferWorldComparator.scene.drawEntity(class42.plane, (int)var0.x, (int)var0.y, (int)var0.z, 60, var0, var0.yaw, -1L, false);
-				}
-			} else {
-				var0.remove();
+	public static final PcmPlayer method2246(TaskHandler var0, int var1, int var2) {
+		if (GrandExchangeOfferWorldComparator.PcmPlayer_sampleRate == 0) {
+			throw new IllegalStateException();
+		} else if (var1 >= 0 && var1 < 2) {
+			if (var2 < 256) {
+				var2 = 256;
 			}
-		}
 
+			try {
+				PcmPlayer var3 = HealthBar.pcmPlayerProvider.player();
+				var3.samples = new int[256 * (PcmPlayer.PcmPlayer_stereo ? 2 : 1)];
+				var3.field1377 = var2;
+				var3.init();
+				var3.capacity = (var2 & -1024) + 1024;
+				if (var3.capacity > 16384) {
+					var3.capacity = 16384;
+				}
+
+				var3.open(var3.capacity);
+				if (GrandExchangeEvents.PcmPlayer_count > 0 && FontName.soundSystem == null) {
+					FontName.soundSystem = new SoundSystem();
+					SoundCache.soundSystemExecutor = Executors.newScheduledThreadPool(1);
+					SoundCache.soundSystemExecutor.scheduleAtFixedRate(FontName.soundSystem, 0L, 10L, TimeUnit.MILLISECONDS);
+				}
+
+				if (FontName.soundSystem != null) {
+					if (FontName.soundSystem.players[var1] != null) {
+						throw new IllegalArgumentException();
+					}
+
+					FontName.soundSystem.players[var1] = var3;
+				}
+
+				return var3;
+			} catch (Throwable var4) {
+				return new PcmPlayer();
+			}
+		} else {
+			throw new IllegalArgumentException();
+		}
 	}
 
-	@ObfuscatedName("it")
+	@ObfuscatedName("ft")
 	@ObfuscatedSignature(
-		signature = "(II)Z",
-		garbageValue = "-1368328511"
+		signature = "(ZB)V",
+		garbageValue = "62"
 	)
-	static boolean method2244(int var0) {
-		for (int var1 = 0; var1 < Client.field754; ++var1) {
-			if (Client.field921[var1] == var0) {
-				return true;
+	static final void method2238(boolean var0) {
+		if (var0) {
+			Client.field659 = Login.field1183 ? class160.field1972 : class160.field1974;
+		} else {
+			LinkedHashMap var1 = Actor.clientPreferences.parameters;
+			String var3 = Login.Login_username;
+			int var4 = var3.length();
+			int var5 = 0;
+
+			for (int var6 = 0; var6 < var4; ++var6) {
+				var5 = (var5 << 5) - var5 + var3.charAt(var6);
 			}
+
+			Client.field659 = var1.containsKey(var5) ? class160.field1975 : class160.field1973;
 		}
 
-		return false;
 	}
 }

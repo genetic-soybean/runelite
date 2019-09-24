@@ -1,72 +1,69 @@
-import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cu")
+@ObfuscatedName("cd")
 @Implements("DynamicObject")
 public class DynamicObject extends Entity {
-	@ObfuscatedName("x")
-	static int[] field1301;
-	@ObfuscatedName("q")
+	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		intValue = -982722193
+		intValue = -440317767
 	)
 	@Export("id")
 	int id;
-	@ObfuscatedName("w")
+	@ObfuscatedName("x")
 	@ObfuscatedGetter(
-		intValue = 1770938715
+		intValue = 1457716031
 	)
 	@Export("type")
 	int type;
-	@ObfuscatedName("e")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = 187564889
+		intValue = 2004235481
 	)
 	@Export("orientation")
 	int orientation;
-	@ObfuscatedName("p")
+	@ObfuscatedName("g")
 	@ObfuscatedGetter(
-		intValue = 618802147
+		intValue = 1247808451
 	)
 	@Export("plane")
 	int plane;
-	@ObfuscatedName("k")
+	@ObfuscatedName("l")
 	@ObfuscatedGetter(
-		intValue = 490427017
+		intValue = 910065863
 	)
 	@Export("x")
 	int x;
-	@ObfuscatedName("l")
+	@ObfuscatedName("u")
 	@ObfuscatedGetter(
-		intValue = 660251733
+		intValue = 439709923
 	)
 	@Export("y")
 	int y;
-	@ObfuscatedName("b")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "Lis;"
+		signature = "Liw;"
 	)
 	@Export("sequenceDefinition")
 	SequenceDefinition sequenceDefinition;
-	@ObfuscatedName("i")
+	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = -1570424885
+		intValue = 1565823045
 	)
 	@Export("frame")
 	int frame;
-	@ObfuscatedName("c")
+	@ObfuscatedName("d")
 	@ObfuscatedGetter(
-		intValue = 1283893717
+		intValue = -1402940691
 	)
 	@Export("cycleStart")
 	int cycleStart;
 
 	@ObfuscatedSignature(
-		signature = "(IIIIIIIZLeo;)V"
+		signature = "(IIIIIIIZLel;)V"
 	)
 	DynamicObject(int var1, int var2, int var3, int var4, int var5, int var6, int var7, boolean var8, Entity var9) {
 		this.id = var1;
@@ -76,10 +73,10 @@ public class DynamicObject extends Entity {
 		this.x = var5;
 		this.y = var6;
 		if (var7 != -1) {
-			this.sequenceDefinition = GrandExchangeEvent.getSequenceDefinition(var7);
+			this.sequenceDefinition = class83.SequenceDefinition_get(var7);
 			this.frame = 0;
 			this.cycleStart = Client.cycle - 1;
-			if (this.sequenceDefinition.field3529 == 0 && var9 != null && var9 instanceof DynamicObject) {
+			if (this.sequenceDefinition.field3502 == 0 && var9 != null && var9 instanceof DynamicObject) {
 				DynamicObject var10 = (DynamicObject)var9;
 				if (var10.sequenceDefinition == this.sequenceDefinition) {
 					this.frame = var10.frame;
@@ -96,10 +93,10 @@ public class DynamicObject extends Entity {
 
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("d")
 	@ObfuscatedSignature(
-		signature = "(I)Ldm;",
-		garbageValue = "759381421"
+		signature = "(B)Ldr;",
+		garbageValue = "-35"
 	)
 	@Export("getModel")
 	protected final Model getModel() {
@@ -109,11 +106,11 @@ public class DynamicObject extends Entity {
 				var1 = 100;
 			}
 
-			label56: {
+			label55: {
 				do {
 					do {
 						if (var1 <= this.sequenceDefinition.frameLengths[this.frame]) {
-							break label56;
+							break label55;
 						}
 
 						var1 -= this.sequenceDefinition.frameLengths[this.frame];
@@ -129,176 +126,105 @@ public class DynamicObject extends Entity {
 			this.cycleStart = Client.cycle - var1;
 		}
 
-		ObjectDefinition var12 = ViewportMouse.getObjectDefinition(this.id);
+		ObjectDefinition var12 = WallDecoration.getObjectDefinition(this.id);
 		if (var12.transforms != null) {
 			var12 = var12.transform();
 		}
 
 		if (var12 == null) {
 			return null;
-		}
-		int var2;
-		int var3;
-		if (this.orientation != 1 && this.orientation != 3) {
-			var2 = var12.sizeX;
-			var3 = var12.sizeY;
 		} else {
-			var2 = var12.sizeY;
-			var3 = var12.sizeX;
-		}
+			int var2;
+			int var3;
+			if (this.orientation != 1 && this.orientation != 3) {
+				var2 = var12.sizeX;
+				var3 = var12.sizeY;
+			} else {
+				var2 = var12.sizeY;
+				var3 = var12.sizeX;
+			}
 
-		int var4 = (var2 >> 1) + this.x;
-		int var5 = (var2 + 1 >> 1) + this.x;
-		int var6 = (var3 >> 1) + this.y;
-		int var7 = (var3 + 1 >> 1) + this.y;
-		int[][] var8 = Tiles.Tiles_heights[this.plane];
-		int var9 = var8[var4][var6] + var8[var5][var6] + var8[var4][var7] + var8[var5][var7] >> 2;
-		int var10 = (this.x << 7) + (var2 << 6);
-		int var11 = (this.y << 7) + (var3 << 6);
-		return var12.getModelDynamic(this.type, this.orientation, var8, var10, var9, var11, this.sequenceDefinition, this.frame);
+			int var4 = (var2 >> 1) + this.x;
+			int var5 = (var2 + 1 >> 1) + this.x;
+			int var6 = (var3 >> 1) + this.y;
+			int var7 = (var3 + 1 >> 1) + this.y;
+			int[][] var8 = Tiles.Tiles_heights[this.plane];
+			int var9 = var8[var5][var7] + var8[var4][var6] + var8[var5][var6] + var8[var4][var7] >> 2;
+			int var10 = (this.x << 7) + (var2 << 6);
+			int var11 = (this.y << 7) + (var3 << 6);
+			return var12.getModelDynamic(this.type, this.orientation, var8, var10, var9, var11, this.sequenceDefinition, this.frame);
+		}
 	}
 
-	@ObfuscatedName("w")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(Lky;ZS)V",
-		garbageValue = "-31468"
+		signature = "(Ljava/lang/CharSequence;I)Z",
+		garbageValue = "1791385097"
 	)
-	public static void method2193(AbstractSocket var0, boolean var1) {
-		if (NetCache.NetCache_socket != null) {
-			try {
-				NetCache.NetCache_socket.close();
-			} catch (Exception var8) {
-			}
+	@Export("isNumber")
+	public static boolean isNumber(CharSequence var0) {
+		boolean var2 = false;
+		boolean var3 = false;
+		int var4 = 0;
+		int var5 = var0.length();
+		int var6 = 0;
 
-			NetCache.NetCache_socket = null;
-		}
-
-		NetCache.NetCache_socket = var0;
-		Buffer var2;
-		if (NetCache.NetCache_socket != null) {
-			try {
-				var2 = new Buffer(4);
-				var2.writeByte(var1 ? 2 : 3);
-				var2.writeMedium(0);
-				NetCache.NetCache_socket.write(var2.array, 0, 4);
-			} catch (IOException var7) {
-				try {
-					NetCache.NetCache_socket.close();
-				} catch (Exception var6) {
-				}
-
-				++NetCache.NetCache_ioExceptions;
-				NetCache.NetCache_socket = null;
-			}
-		}
-
-		NetCache.NetCache_responseHeaderBuffer.offset = 0;
-		class226.NetCache_currentResponse = null;
-		VarpDefinition.NetCache_responseArchiveBuffer = null;
-		NetCache.field3175 = 0;
-
+		boolean var1;
 		while (true) {
-			NetFileRequest var9 = (NetFileRequest)NetCache.NetCache_pendingPriorityResponses.first();
-			if (var9 == null) {
-				while (true) {
-					var9 = (NetFileRequest)NetCache.NetCache_pendingResponses.first();
-					if (var9 == null) {
-						if (NetCache.field3181 != 0) {
-							try {
-								var2 = new Buffer(4);
-								var2.writeByte(4);
-								var2.writeByte(NetCache.field3181);
-								var2.writeShort(0);
-								NetCache.NetCache_socket.write(var2.array, 0, 4);
-							} catch (IOException var5) {
-								try {
-									NetCache.NetCache_socket.close();
-								} catch (Exception var4) {
-								}
+			if (var6 >= var5) {
+				var1 = var3;
+				break;
+			}
 
-								++NetCache.NetCache_ioExceptions;
-								NetCache.NetCache_socket = null;
-							}
-						}
-
-						NetCache.field3163 = 0;
-						NetCache.field3169 = DirectByteArrayCopier.currentTimeMs();
-						return;
+			label84: {
+				char var7 = var0.charAt(var6);
+				if (var6 == 0) {
+					if (var7 == '-') {
+						var2 = true;
+						break label84;
 					}
 
-					NetCache.NetCache_pendingWritesQueue.addLast(var9);
-					NetCache.NetCache_pendingWrites.put(var9, var9.key);
-					++NetCache.NetCache_pendingWritesCount;
-					--NetCache.NetCache_pendingResponsesCount;
-				}
-			}
-
-			NetCache.NetCache_pendingPriorityWrites.put(var9, var9.key);
-			++NetCache.NetCache_pendingPriorityWritesCount;
-			--NetCache.NetCache_pendingPriorityResponsesCount;
-		}
-	}
-
-	@ObfuscatedName("l")
-	@ObfuscatedSignature(
-		signature = "(Lbw;Lbw;IZB)I",
-		garbageValue = "24"
-	)
-	@Export("compareWorlds")
-	static int compareWorlds(World var0, World var1, int var2, boolean var3) {
-		if (var2 == 1) {
-			int var4 = var0.population;
-			int var5 = var1.population;
-			if (!var3) {
-				if (var4 == -1) {
-					var4 = 2001;
+					if (var7 == '+') {
+						break label84;
+					}
 				}
 
-				if (var5 == -1) {
-					var5 = 2001;
+				int var9;
+				if (var7 >= '0' && var7 <= '9') {
+					var9 = var7 - '0';
+				} else if (var7 >= 'A' && var7 <= 'Z') {
+					var9 = var7 - '7';
+				} else {
+					if (var7 < 'a' || var7 > 'z') {
+						var1 = false;
+						break;
+					}
+
+					var9 = var7 - 'W';
 				}
+
+				if (var9 >= 10) {
+					var1 = false;
+					break;
+				}
+
+				if (var2) {
+					var9 = -var9;
+				}
+
+				int var8 = var9 + var4 * 10;
+				if (var4 != var8 / 10) {
+					var1 = false;
+					break;
+				}
+
+				var4 = var8;
+				var3 = true;
 			}
 
-			return var4 - var5;
+			++var6;
 		}
-		if (var2 == 2) {
-			return var0.location - var1.location;
-		}
-		if (var2 == 3) {
-			if (var0.activity.equals("-")) {
-				if (var1.activity.equals("-")) {
-					return 0;
-				}
-				return var3 ? -1 : 1;
-			}
-			if (var1.activity.equals("-")) {
-				return var3 ? 1 : -1;
-			}
-			return var0.activity.compareTo(var1.activity);
-		}
-		if (var2 == 4) {
-			return var0.method1698() ? (var1.method1698() ? 0 : 1) : (var1.method1698() ? -1 : 0);
-		}
-		if (var2 == 5) {
-			return var0.method1682() ? (var1.method1682() ? 0 : 1) : (var1.method1682() ? -1 : 0);
-		}
-		if (var2 == 6) {
-			return var0.isPvp() ? (var1.isPvp() ? 0 : 1) : (var1.isPvp() ? -1 : 0);
-		}
-		if (var2 == 7) {
-			return var0.isMembersOnly() ? (var1.isMembersOnly() ? 0 : 1) : (var1.isMembersOnly() ? -1 : 0);
-		}
-		return var0.id - var1.id;
-	}
 
-	@ObfuscatedName("b")
-	@ObfuscatedSignature(
-		signature = "(I)Lbw;",
-		garbageValue = "-1381660129"
-	)
-	@Export("worldListStart")
-	static World worldListStart() {
-		World.worldListWorldCount = 0;
-		return Canvas.getNextWorldListWorld();
+		return var1;
 	}
 }

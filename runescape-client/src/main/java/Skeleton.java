@@ -3,33 +3,26 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("ej")
+@ObfuscatedName("en")
 @Implements("Skeleton")
 public class Skeleton extends Node {
-	@ObfuscatedName("ei")
+	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		intValue = 735653507
-	)
-	@Export("port2")
-	static int port2;
-	@ObfuscatedName("q")
-	@ObfuscatedGetter(
-		intValue = 722010211
+		intValue = 1226731601
 	)
 	@Export("id")
 	int id;
-	@ObfuscatedName("w")
+	@ObfuscatedName("x")
 	@ObfuscatedGetter(
-		intValue = -1628555535
+		intValue = 1996239831
 	)
 	@Export("count")
 	int count;
-	@ObfuscatedName("e")
+	@ObfuscatedName("t")
 	@Export("transformTypes")
 	int[] transformTypes;
-	@ObfuscatedName("p")
+	@ObfuscatedName("g")
 	@Export("labels")
 	int[][] labels;
 
@@ -57,180 +50,83 @@ public class Skeleton extends Node {
 
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("l")
 	@ObfuscatedSignature(
-		signature = "(Lkf;Ljava/lang/String;I)I",
-		garbageValue = "-730620007"
+		signature = "(Lhz;Lhz;Ljava/lang/String;Ljava/lang/String;I)Lkf;",
+		garbageValue = "1144321855"
 	)
-	public static int method3063(Buffer var0, String var1) {
-		int var2 = var0.offset;
-		int var4 = var1.length();
-		byte[] var5 = new byte[var4];
-
-		for (int var6 = 0; var6 < var4; ++var6) {
-			char var7 = var1.charAt(var6);
-			if (var7 > 0 && var7 < 128 || var7 >= 160 && var7 <= 255) {
-				var5[var6] = (byte)var7;
-			} else if (var7 == 8364) {
-				var5[var6] = -128;
-			} else if (var7 == 8218) {
-				var5[var6] = -126;
-			} else if (var7 == 402) {
-				var5[var6] = -125;
-			} else if (var7 == 8222) {
-				var5[var6] = -124;
-			} else if (var7 == 8230) {
-				var5[var6] = -123;
-			} else if (var7 == 8224) {
-				var5[var6] = -122;
-			} else if (var7 == 8225) {
-				var5[var6] = -121;
-			} else if (var7 == 710) {
-				var5[var6] = -120;
-			} else if (var7 == 8240) {
-				var5[var6] = -119;
-			} else if (var7 == 352) {
-				var5[var6] = -118;
-			} else if (var7 == 8249) {
-				var5[var6] = -117;
-			} else if (var7 == 338) {
-				var5[var6] = -116;
-			} else if (var7 == 381) {
-				var5[var6] = -114;
-			} else if (var7 == 8216) {
-				var5[var6] = -111;
-			} else if (var7 == 8217) {
-				var5[var6] = -110;
-			} else if (var7 == 8220) {
-				var5[var6] = -109;
-			} else if (var7 == 8221) {
-				var5[var6] = -108;
-			} else if (var7 == 8226) {
-				var5[var6] = -107;
-			} else if (var7 == 8211) {
-				var5[var6] = -106;
-			} else if (var7 == 8212) {
-				var5[var6] = -105;
-			} else if (var7 == 732) {
-				var5[var6] = -104;
-			} else if (var7 == 8482) {
-				var5[var6] = -103;
-			} else if (var7 == 353) {
-				var5[var6] = -102;
-			} else if (var7 == 8250) {
-				var5[var6] = -101;
-			} else if (var7 == 339) {
-				var5[var6] = -100;
-			} else if (var7 == 382) {
-				var5[var6] = -98;
-			} else if (var7 == 376) {
-				var5[var6] = -97;
-			} else {
-				var5[var6] = 63;
-			}
+	@Export("SpriteBuffer_getFontByName")
+	public static Font SpriteBuffer_getFontByName(AbstractArchive var0, AbstractArchive var1, String var2, String var3) {
+		int var4 = var0.getGroupId(var2);
+		int var5 = var0.getFileId(var4, var3);
+		byte[] var8 = var0.takeFile(var4, var5);
+		boolean var7;
+		if (var8 == null) {
+			var7 = false;
+		} else {
+			GrandExchangeOfferWorldComparator.SpriteBuffer_decode(var8);
+			var7 = true;
 		}
 
-		var0.writeSmartByteShort(var5.length);
-		var0.offset += class210.huffman.compress(var5, 0, var5.length, var0.array, var0.offset);
-		return var0.offset - var2;
+		Font var6;
+		if (!var7) {
+			var6 = null;
+		} else {
+			byte[] var9 = var1.takeFile(var4, var5);
+			Font var11;
+			if (var9 == null) {
+				var11 = null;
+			} else {
+				Font var10 = new Font(var9, class325.SpriteBuffer_xOffsets, SecureRandomCallable.SpriteBuffer_yOffsets, class325.SpriteBuffer_spriteWidths, SoundSystem.SpriteBuffer_spriteHeights, class325.SpriteBuffer_spritePalette, InvDefinition.SpriteBuffer_pixels);
+				class192.SpriteBuffer_clear();
+				var11 = var10;
+			}
+
+			var6 = var11;
+		}
+
+		return var6;
 	}
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(ILcx;ZI)I",
-		garbageValue = "-107040601"
+		signature = "(IZI)Ljava/lang/String;",
+		garbageValue = "-1925003342"
 	)
-	static int method3064(int var0, Script var1, boolean var2) {
-		int var3;
-		int var4;
-		if (var0 == ScriptOpcodes.CC_CREATE) {
-			HealthBarUpdate.Interpreter_intStackSize -= 3;
-			var3 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
-			var4 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
-			int var5 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 2];
-			if (var4 == 0) {
-				throw new RuntimeException();
-			}
-			Widget var6 = class80.getWidget(var3);
-			if (var6.children == null) {
-				var6.children = new Widget[var5 + 1];
-			}
+	@Export("intToString")
+	public static String intToString(int var0, boolean var1) {
+		if (var1 && var0 >= 0) {
+			int var3 = var0;
+			String var2;
+			if (var1 && var0 >= 0) {
+				int var4 = 2;
 
-			if (var6.children.length <= var5) {
-				Widget[] var7 = new Widget[var5 + 1];
-
-				for (int var8 = 0; var8 < var6.children.length; ++var8) {
-					var7[var8] = var6.children[var8];
+				for (int var5 = var0 / 10; var5 != 0; ++var4) {
+					var5 /= 10;
 				}
 
-				var6.children = var7;
-			}
+				char[] var6 = new char[var4];
+				var6[0] = '+';
 
-			if (var5 > 0 && var6.children[var5 - 1] == null) {
-				throw new RuntimeException("" + (var5 - 1));
-			}
-			Widget var12 = new Widget();
-			var12.type = var4;
-			var12.parentId = var12.id = var6.id;
-			var12.childIndex = var5;
-			var12.isIf3 = true;
-			var6.children[var5] = var12;
-			if (var2) {
-				Interpreter.field1111 = var12;
-			} else {
-				Calendar.field2507 = var12;
-			}
-
-			Strings.method4120(var6);
-			return 1;
-		}
-		Widget var9;
-		if (var0 == ScriptOpcodes.CC_DELETE) {
-			var9 = var2 ? Interpreter.field1111 : Calendar.field2507;
-			Widget var10 = class80.getWidget(var9.id);
-			var10.children[var9.childIndex] = null;
-			Strings.method4120(var10);
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CC_DELETEALL) {
-			var9 = class80.getWidget(Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize]);
-			var9.children = null;
-			Strings.method4120(var9);
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CC_FIND) {
-			HealthBarUpdate.Interpreter_intStackSize -= 2;
-			var3 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
-			var4 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
-			Widget var11 = Client.getWidgetChild(var3, var4);
-			if (var11 != null && var4 != -1) {
-				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = 1;
-				if (var2) {
-					Interpreter.field1111 = var11;
-				} else {
-					Calendar.field2507 = var11;
+				for (int var7 = var4 - 1; var7 > 0; --var7) {
+					int var8 = var3;
+					var3 /= 10;
+					int var9 = var8 - var3 * 10;
+					if (var9 >= 10) {
+						var6[var7] = (char)(var9 + 87);
+					} else {
+						var6[var7] = (char)(var9 + 48);
+					}
 				}
+
+				var2 = new String(var6);
 			} else {
-				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = 0;
+				var2 = Integer.toString(var0, 10);
 			}
 
-			return 1;
+			return var2;
+		} else {
+			return Integer.toString(var0);
 		}
-		if (var0 == ScriptOpcodes.IF_FIND) {
-			var9 = class80.getWidget(Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize]);
-			if (var9 != null) {
-				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = 1;
-				if (var2) {
-					Interpreter.field1111 = var9;
-				} else {
-					Calendar.field2507 = var9;
-				}
-			} else {
-				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = 0;
-			}
-
-			return 1;
-		}
-		return 2;
 	}
 }

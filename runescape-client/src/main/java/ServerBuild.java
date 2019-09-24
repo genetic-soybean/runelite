@@ -4,43 +4,46 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ht")
+@ObfuscatedName("ho")
 @Implements("ServerBuild")
 public class ServerBuild {
-	@ObfuscatedName("q")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "Lht;"
+		signature = "Lho;"
 	)
 	@Export("LIVE")
 	static final ServerBuild LIVE;
-	@ObfuscatedName("w")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "Lht;"
+		signature = "Lho;"
 	)
 	@Export("BUILDLIVE")
 	static final ServerBuild BUILDLIVE;
-	@ObfuscatedName("e")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "Lht;"
+		signature = "Lho;"
 	)
 	@Export("RC")
 	static final ServerBuild RC;
-	@ObfuscatedName("p")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "Lht;"
+		signature = "Lho;"
 	)
 	@Export("WIP")
 	static final ServerBuild WIP;
-	@ObfuscatedName("f")
-	static int[] field3103;
-	@ObfuscatedName("k")
+	@ObfuscatedName("z")
+	@ObfuscatedGetter(
+		intValue = 1377702413
+	)
+	static int field3079;
+	@ObfuscatedName("l")
 	@Export("name")
 	public final String name;
-	@ObfuscatedName("l")
+	@ObfuscatedName("u")
 	@ObfuscatedGetter(
-		intValue = 1706897489
+		intValue = -2004053653
 	)
-	final int field3097;
+	public final int field3077;
 
 	static {
 		LIVE = new ServerBuild("LIVE", 0);
@@ -51,25 +54,6 @@ public class ServerBuild {
 
 	ServerBuild(String var1, int var2) {
 		this.name = var1;
-		this.field3097 = var2;
-	}
-
-	@ObfuscatedName("w")
-	@ObfuscatedSignature(
-		signature = "(II)Lht;",
-		garbageValue = "-1180809125"
-	)
-	@Export("valueOf")
-	public static ServerBuild valueOf(int var0) {
-		ServerBuild[] var1 = IsaacCipher.ServerBuild_values();
-
-		for (int var2 = 0; var2 < var1.length; ++var2) {
-			ServerBuild var3 = var1[var2];
-			if (var0 == var3.field3097) {
-				return var3;
-			}
-		}
-
-		return null;
+		this.field3077 = var2;
 	}
 }

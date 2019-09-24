@@ -4,51 +4,51 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cx")
+@ObfuscatedName("cu")
 @Implements("Script")
 public class Script extends DualNode {
-	@ObfuscatedName("q")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "Lel;"
+		signature = "Let;"
 	)
 	@Export("Script_cached")
 	static EvictingDualNodeHashTable Script_cached;
-	@ObfuscatedName("w")
+	@ObfuscatedName("x")
 	@Export("opcodes")
 	int[] opcodes;
-	@ObfuscatedName("e")
+	@ObfuscatedName("t")
 	@Export("intOperands")
 	int[] intOperands;
-	@ObfuscatedName("p")
+	@ObfuscatedName("g")
 	@Export("stringOperands")
 	String[] stringOperands;
-	@ObfuscatedName("k")
+	@ObfuscatedName("l")
 	@ObfuscatedGetter(
-		intValue = -1512547181
+		intValue = 1662651269
 	)
 	@Export("localIntCount")
 	int localIntCount;
-	@ObfuscatedName("l")
+	@ObfuscatedName("u")
 	@ObfuscatedGetter(
-		intValue = -461479353
+		intValue = 925895493
 	)
 	@Export("localStringCount")
 	int localStringCount;
-	@ObfuscatedName("b")
+	@ObfuscatedName("j")
 	@ObfuscatedGetter(
-		intValue = -1738324737
+		intValue = -1615704029
 	)
 	@Export("intArgumentCount")
 	int intArgumentCount;
-	@ObfuscatedName("i")
+	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = -826878645
+		intValue = -1886789561
 	)
 	@Export("stringArgumentCount")
 	int stringArgumentCount;
-	@ObfuscatedName("c")
+	@ObfuscatedName("d")
 	@ObfuscatedSignature(
-		signature = "[Lla;"
+		signature = "[Llj;"
 	)
 	@Export("switches")
 	IterableNodeHashTable[] switches;
@@ -60,21 +60,36 @@ public class Script extends DualNode {
 	Script() {
 	}
 
-	@ObfuscatedName("k")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "(IB)[Lla;",
-		garbageValue = "45"
+		signature = "(IB)[Llj;",
+		garbageValue = "58"
 	)
-	IterableNodeHashTable[] method2182(int var1) {
+	@Export("newIterableNodeHashTable")
+	IterableNodeHashTable[] newIterableNodeHashTable(int var1) {
 		return new IterableNodeHashTable[var1];
 	}
 
-	@ObfuscatedName("b")
+	@ObfuscatedName("gu")
 	@ObfuscatedSignature(
-		signature = "(IB)Z",
-		garbageValue = "-58"
+		signature = "(B)V",
+		garbageValue = "-4"
 	)
-	public static boolean method2185(int var0) {
-		return (var0 >> 30 & 1) != 0;
+	static final void method2201() {
+		for (GraphicsObject var0 = (GraphicsObject)Client.graphicsObjects.last(); var0 != null; var0 = (GraphicsObject)Client.graphicsObjects.previous()) {
+			if (var0.plane == MouseRecorder.plane && !var0.isFinished) {
+				if (Client.cycle >= var0.cycleStart) {
+					var0.advance(Client.field683);
+					if (var0.isFinished) {
+						var0.remove();
+					} else {
+						WorldMapIcon_1.scene.drawEntity(var0.plane, var0.x, var0.y, var0.height, 60, var0, 0, -1L, false);
+					}
+				}
+			} else {
+				var0.remove();
+			}
+		}
+
 	}
 }

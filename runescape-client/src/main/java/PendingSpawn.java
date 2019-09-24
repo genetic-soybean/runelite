@@ -4,85 +4,78 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bt")
+@ObfuscatedName("bo")
 @Implements("PendingSpawn")
 public final class PendingSpawn extends Node {
-	@ObfuscatedName("sq")
-	@ObfuscatedSignature(
-		signature = "Lih;"
-	)
-	public static class237 field944;
-	@ObfuscatedName("sw")
-	@ObfuscatedSignature(
-		signature = "Lb;"
-	)
-	@Export("grandExchangeEvents")
-	static GrandExchangeEvents grandExchangeEvents;
-	@ObfuscatedName("q")
+	@ObfuscatedName("ar")
+	@Export("hasFocus")
+	protected static boolean hasFocus;
+	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		intValue = 1117563783
+		intValue = 912800159
 	)
 	@Export("plane")
 	int plane;
-	@ObfuscatedName("w")
+	@ObfuscatedName("x")
 	@ObfuscatedGetter(
-		intValue = -1026352463
-	)
-	@Export("type")
-	int type;
-	@ObfuscatedName("e")
-	@ObfuscatedGetter(
-		intValue = -1124430139
-	)
-	@Export("x")
-	int x;
-	@ObfuscatedName("p")
-	@ObfuscatedGetter(
-		intValue = 1248195559
+		intValue = -639221859
 	)
 	@Export("y")
 	int y;
-	@ObfuscatedName("k")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = 160620695
+		intValue = 458809523
 	)
-	int field935;
+	@Export("type")
+	int type;
+	@ObfuscatedName("g")
+	@ObfuscatedGetter(
+		intValue = 87359327
+	)
+	@Export("x")
+	int x;
 	@ObfuscatedName("l")
 	@ObfuscatedGetter(
-		intValue = 1900923625
+		intValue = -1751315985
 	)
-	int field936;
-	@ObfuscatedName("b")
+	@Export("objectId")
+	int objectId;
+	@ObfuscatedName("u")
 	@ObfuscatedGetter(
-		intValue = 1207440287
+		intValue = -470640353
 	)
-	int field933;
-	@ObfuscatedName("i")
+	int field900;
+	@ObfuscatedName("j")
 	@ObfuscatedGetter(
-		intValue = -1651150405
+		intValue = -402504459
+	)
+	int field903;
+	@ObfuscatedName("v")
+	@ObfuscatedGetter(
+		intValue = -1760011819
 	)
 	@Export("id")
 	int id;
-	@ObfuscatedName("c")
+	@ObfuscatedName("d")
 	@ObfuscatedGetter(
-		intValue = -1876574001
+		intValue = -316029459
 	)
 	@Export("orientation")
 	int orientation;
-	@ObfuscatedName("f")
+	@ObfuscatedName("z")
 	@ObfuscatedGetter(
-		intValue = -884568825
+		intValue = 2139915221
 	)
-	int field940;
-	@ObfuscatedName("m")
+	int field911;
+	@ObfuscatedName("n")
 	@ObfuscatedGetter(
-		intValue = -1567883817
+		intValue = -1581206037
 	)
 	@Export("delay")
 	int delay;
-	@ObfuscatedName("u")
+	@ObfuscatedName("h")
 	@ObfuscatedGetter(
-		intValue = 783887651
+		intValue = -1067091679
 	)
 	@Export("hitpoints")
 	int hitpoints;
@@ -92,63 +85,73 @@ public final class PendingSpawn extends Node {
 		this.hitpoints = -1;
 	}
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(III)V",
-		garbageValue = "-1833847542"
+		signature = "(Lhz;III)[Lli;",
+		garbageValue = "1975064075"
 	)
-	static void method1653(int var0, int var1) {
-		long var2 = (long)((var0 << 16) + var1);
-		NetFileRequest var4 = (NetFileRequest)NetCache.NetCache_pendingWrites.get(var2);
-		if (var4 != null) {
-			NetCache.NetCache_pendingWritesQueue.addLast(var4);
+	@Export("SpriteBuffer_getSpriteArray")
+	public static Sprite[] SpriteBuffer_getSpriteArray(AbstractArchive var0, int var1, int var2) {
+		byte[] var4 = var0.takeFile(var1, var2);
+		boolean var3;
+		if (var4 == null) {
+			var3 = false;
+		} else {
+			GrandExchangeOfferWorldComparator.SpriteBuffer_decode(var4);
+			var3 = true;
+		}
+
+		return !var3 ? null : RouteStrategy.method3578();
+	}
+
+	@ObfuscatedName("t")
+	@ObfuscatedSignature(
+		signature = "(III)I",
+		garbageValue = "-1406470873"
+	)
+	static int method1683(int var0, int var1) {
+		ItemContainer var2 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
+		if (var2 == null) {
+			return 0;
+		} else if (var1 == -1) {
+			return 0;
+		} else {
+			int var3 = 0;
+
+			for (int var4 = 0; var4 < var2.quantities.length; ++var4) {
+				if (var2.ids[var4] == var1) {
+					var3 += var2.quantities[var4];
+				}
+			}
+
+			return var3;
 		}
 	}
 
-	@ObfuscatedName("jr")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(IIIB)Lbo;",
-		garbageValue = "124"
+		signature = "(ILhz;Ljava/lang/String;Ljava/lang/String;IZI)V",
+		garbageValue = "-2128555897"
 	)
-	static final InterfaceParent method1652(int var0, int var1, int var2) {
-		InterfaceParent var3 = new InterfaceParent();
-		var3.group = var1;
-		var3.type = var2;
-		Client.interfaceParents.put(var3, (long)var0);
-		GrandExchangeOfferAgeComparator.method146(var1);
-		Widget var4 = class80.getWidget(var0);
-		Strings.method4120(var4);
-		if (Client.field850 != null) {
-			Strings.method4120(Client.field850);
-			Client.field850 = null;
-		}
+	public static void method1681(int var0, AbstractArchive var1, String var2, String var3, int var4, boolean var5) {
+		int var6 = var1.getGroupId(var2);
+		int var7 = var1.getFileId(var6, var3);
+		class197.field2376 = 1;
+		class197.musicTrackArchive = var1;
+		class197.musicTrackGroupId = var6;
+		class197.musicTrackFileId = var7;
+		Canvas.field395 = var4;
+		MouseRecorder.musicTrackBoolean = var5;
+		ModelData0.field1833 = var0;
+	}
 
-		for (int var5 = 0; var5 < Client.menuOptionsCount; ++var5) {
-			if (class1.isWidgetMenuOpcode(Client.menuOpcodes[var5])) {
-				if (var5 < Client.menuOptionsCount - 1) {
-					for (int var6 = var5; var6 < Client.menuOptionsCount - 1; ++var6) {
-						Client.menuActions[var6] = Client.menuActions[var6 + 1];
-						Client.menuTargetNames[var6] = Client.menuTargetNames[var6 + 1];
-						Client.menuOpcodes[var6] = Client.menuOpcodes[var6 + 1];
-						Client.menuArguments0[var6] = Client.menuArguments0[var6 + 1];
-						Client.menuArguments1[var6] = Client.menuArguments1[var6 + 1];
-						Client.menuArguments2[var6] = Client.menuArguments2[var6 + 1];
-						Client.menuShiftClick[var6] = Client.menuShiftClick[var6 + 1];
-					}
-				}
-
-				--var5;
-				--Client.menuOptionsCount;
-			}
-		}
-
-		GrandExchangeOfferAgeComparator.method145();
-		WorldMapSprite.revalidateWidgetScroll(Widget.Widget_interfaceComponents[var0 >> 16], var4, false);
-		Canvas.runWidgetOnLoadListener(var1);
-		if (Client.rootInterface != -1) {
-			WorldMapLabelSize.method175(Client.rootInterface, 1);
-		}
-
-		return var3;
+	@ObfuscatedName("v")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "-789098612"
+	)
+	public static final void method1682() {
+		ViewportMouse.ViewportMouse_isInViewport = false;
+		ViewportMouse.ViewportMouse_entityCount = 0;
 	}
 }

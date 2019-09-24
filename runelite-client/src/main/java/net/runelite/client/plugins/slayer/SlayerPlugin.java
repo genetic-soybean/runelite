@@ -54,6 +54,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
 import net.runelite.api.MessageNode;
 import net.runelite.api.NPC;
@@ -99,7 +100,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
-import net.runelite.client.util.Text;
+import net.runelite.api.util.Text;
 import net.runelite.http.api.chat.ChatClient;
 
 @PluginDescriptor(
@@ -133,7 +134,7 @@ public class SlayerPlugin extends Plugin
 
 	private static final int GROTESQUE_GUARDIANS_REGION = 6727;
 
-	private static final Set<Task> weaknessTasks = ImmutableSet.of(Task.DESERT_LIZARDS, Task.GARGOYLES,
+	private static final Set<Task> weaknessTasks = ImmutableSet.of(Task.LIZARDS, Task.GARGOYLES,
 		Task.GROTESQUE_GUARDIANS, Task.GROTESQUE_GUARDIANS, Task.MUTATED_ZYGOMITES, Task.ROCKSLUGS);
 
 	// Chat Command
@@ -242,7 +243,7 @@ public class SlayerPlugin extends Plugin
 	private Task weaknessTask = null;
 
 	private TaskCounter counter;
-	private int cachedXp;
+	private int cachedXp = -1;
 	private int cachedPoints;
 	private Instant infoTimer;
 	private List<String> targetNames = new ArrayList<>();
@@ -328,6 +329,11 @@ public class SlayerPlugin extends Plugin
 
 		clientToolbar.addNavigation(navButton);
 
+		if (client.getGameState() == GameState.LOGGED_IN)
+		{
+			cachedXp = client.getSkillExperience(SLAYER);
+		}
+
 		chatCommandManager.registerCommandAsync(TASK_COMMAND_STRING, this::taskLookup, this::taskSubmit);
 
 		chatCommandManager.registerCommandAsync(POINTS_COMMAND_STRING, this::pointsLookup); //here
@@ -348,6 +354,8 @@ public class SlayerPlugin extends Plugin
 		chatCommandManager.unregisterCommand(TASK_COMMAND_STRING);
 		chatCommandManager.unregisterCommand(POINTS_COMMAND_STRING);
 		clientToolbar.removeNavigation(navButton);
+
+		cachedXp = -1;
 	}
 
 	private void addSubscriptions()
@@ -370,12 +378,13 @@ public class SlayerPlugin extends Plugin
 		return configManager.getConfig(SlayerConfig.class);
 	}
 
-	private void onGameStateChanged(GameStateChanged event)
+	void onGameStateChanged(GameStateChanged event)
 	{
 		switch (event.getGameState())
 		{
 			case HOPPING:
 			case LOGGING_IN:
+				cachedXp = -1;
 				cachedPoints = 0;
 				clearTrackedNPCs();
 				break;
@@ -387,7 +396,7 @@ public class SlayerPlugin extends Plugin
 				if (loginTick && this.amount != -1
 					&& !this.taskName.isEmpty())
 				{
-					setTask(this.taskName, this.amount, this.initialAmount, true, this.taskLocation, this.lastCertainAmount);
+					setTask(this.taskName, this.amount, this.initialAmount, true, this.taskLocation, this.lastCertainAmount, false);
 				}
 		}
 	}
@@ -736,38 +745,47 @@ public class SlayerPlugin extends Plugin
 			return;
 		}
 
-		if (cachedXp != 0)
+		if (cachedXp == -1)
 		{
-			final int taskKillExp = Task.getTask(taskName).getExpectedKillExp();
+			// this is the initial xp sent on login
+			cachedXp = slayerExp;
+			return;
+		}
 
-			// Only count exp gain as a kill if the task either has no expected exp for a kill, or if the exp gain is equal
-			// to the expected exp gain for the task.
-			if (taskKillExp == 0 || taskKillExp == slayerExp - cachedXp)
+		final Task task = Task.getTask(taskName);
+
+		// null tasks are technically valid, it only means they arent explicitly defined in the Task enum
+		// allow them through so that if there is a task capture failure the counter will still work
+		final int taskKillExp = task != null ? task.getExpectedKillExp() : 0;
+
+		// Only count exp gain as a kill if the task either has no expected exp for a kill, or if the exp gain is equal
+		// to the expected exp gain for the task.
+		if (taskKillExp == 0 || taskKillExp == slayerExp - cachedXp)
+		{
+			killedOne();
+		}
+		else
+		{
+			// this is not the initial xp sent on login so these are new xp gains
+			int gains = slayerExp - cachedXp;
+
+			// potential npcs to give xp drop are current highlighted npcs and the lingering presences
+			List<NPCPresence> potentialNPCs = new ArrayList<>(lingeringPresences);
+			for (NPC npc : highlightedTargets)
+			{
+				NPCPresence currentPresence = NPCPresence.buildPresence(npc);
+				potentialNPCs.add(currentPresence);
+			}
+
+			int killCount = estimateKillCount(potentialNPCs, gains);
+			for (int i = 0; i < killCount; i++)
 			{
 				killedOne();
-			}
-			else
-			{
-				// this is not the initial xp sent on login so these are new xp gains
-				int gains = slayerExp - cachedXp;
-
-				// potential npcs to give xp drop are current highlighted npcs and the lingering presences
-				List<NPCPresence> potentialNPCs = new ArrayList<>(lingeringPresences);
-				for (NPC npc : highlightedTargets)
-				{
-					NPCPresence currentPresence = NPCPresence.buildPresence(npc);
-					potentialNPCs.add(currentPresence);
-				}
-
-				int killCount = estimateKillCount(potentialNPCs, gains);
-				for (int i = 0; i < killCount; i++)
-				{
-					killedOne();
-					int delta = slayerExp - cachedXp;
-					currentTask.setElapsedXp(currentTask.getElapsedXp() + delta);
-				}
+				int delta = slayerExp - cachedXp;
+				currentTask.setElapsedXp(currentTask.getElapsedXp() + delta);
 			}
 		}
+
 		cachedXp = slayerExp;
 	}
 
@@ -804,7 +822,7 @@ public class SlayerPlugin extends Plugin
 
 	private void onConfigChanged(ConfigChanged event)
 	{
-		if (!event.getGroup().equals("slayer"))
+		if (!event.getGroup().equals("slayer") || !event.getKey().equals("infobox"))
 		{
 			return;
 		}
@@ -1012,6 +1030,11 @@ public class SlayerPlugin extends Plugin
 
 	private void setTask(String name, int amt, int initAmt, boolean isNewAssignment, String location, int lastCertainAmt)
 	{
+		setTask(name, amt, initAmt, isNewAssignment, location, lastCertainAmt, true);
+	}
+
+	private void setTask(String name, int amt, int initAmt, boolean isNewAssignment, String location, int lastCertainAmt, boolean addCounter)
+	{
 		currentTask = new TaskData(isNewAssignment ? 0 : currentTask.getElapsedTime(),
 			isNewAssignment ? 0 : currentTask.getElapsedKills(),
 			isNewAssignment ? 0 : currentTask.getElapsedXp(),
@@ -1024,8 +1047,12 @@ public class SlayerPlugin extends Plugin
 
 		save();
 		removeCounter();
-		addCounter();
-		infoTimer = Instant.now();
+
+		if (addCounter)
+		{
+			infoTimer = Instant.now();
+			addCounter();
+		}
 
 		Task task = Task.getTask(name);
 		targetNames.clear();
@@ -1033,6 +1060,11 @@ public class SlayerPlugin extends Plugin
 		rebuildTargetIds(task);
 		rebuildCheckAsTokens(task);
 		rebuildTargetList();
+
+		if (task == null)
+		{
+			return;
+		}
 
 		if (!weaknessOverlayAttached && task.getWeaknessItem() != -1 && task.getWeaknessThreshold() != -1)
 		{
@@ -1138,7 +1170,8 @@ public class SlayerPlugin extends Plugin
 		}
 
 		if (TASK_STRING_VALIDATION.matcher(task.getTask()).find() || task.getTask().length() > TASK_STRING_MAX_LENGTH ||
-			TASK_STRING_VALIDATION.matcher(task.getLocation()).find() || task.getLocation().length() > TASK_STRING_MAX_LENGTH)
+			TASK_STRING_VALIDATION.matcher(task.getLocation()).find() || task.getLocation().length() > TASK_STRING_MAX_LENGTH ||
+			Task.getTask(task.getTask()) == null || !Task.LOCATIONS.contains(task.getLocation()))
 		{
 			log.debug("Validation failed for task name or location: {}", task);
 			return;

@@ -37,14 +37,14 @@ import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.widgets.WidgetID;
 import static net.runelite.api.widgets.WidgetInfo.*;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.config.Keybind;
 import net.runelite.client.config.RuneLitePlusConfig;
-import net.runelite.client.discord.DiscordService;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.ClientUI;
+import net.runelite.client.util.HotkeyListener;
 
 @PluginDescriptor(
 	loadWhenOutdated = true, // prevent users from disabling
@@ -60,9 +60,6 @@ public class RuneLitePlusPlugin extends Plugin
 	private RuneLitePlusConfig config;
 
 	@Inject
-	private DiscordService discordService;
-
-	@Inject
 	private KeyManager keyManager;
 
 	@Inject
@@ -73,20 +70,33 @@ public class RuneLitePlusPlugin extends Plugin
 
 	@Inject
 	private EventBus eventbus;
+
+	private HotkeyListener hotkeyListener = new HotkeyListener(() -> this.keybind)
+	{
+		@Override
+		public void hotkeyPressed()
+		{
+			detach = !detach;
+			client.setOculusOrbState(detach ? 1 : 0);
+			client.setOculusOrbNormalSpeed(detach ? 36 : 12);
+		}
+	};
 	private int entered = -1;
 	private int enterIdx;
 	private boolean expectInput;
+	private boolean detach;
+	private Keybind keybind;
 
 	@Override
 	protected void startUp() throws Exception
 	{
 		addSubscriptions();
-		ClientUI.currentPresenceName = ("RuneLitePlus");
-		ClientUI.frame.setTitle(ClientUI.currentPresenceName);
 
 		entered = -1;
 		enterIdx = 0;
 		expectInput = false;
+		this.keybind = config.detachHotkey();
+		keyManager.registerKeyListener(hotkeyListener);
 	}
 
 	@Override
@@ -98,6 +108,7 @@ public class RuneLitePlusPlugin extends Plugin
 		enterIdx = 0;
 		expectInput = false;
 		keyManager.unregisterKeyListener(keyListener);
+		keyManager.unregisterKeyListener(hotkeyListener);
 	}
 
 	private void onConfigChanged(ConfigChanged event)
@@ -107,7 +118,9 @@ public class RuneLitePlusPlugin extends Plugin
 			return;
 		}
 
-		else if (!config.keyboardPin())
+		this.keybind = config.detachHotkey();
+
+		if (!config.keyboardPin())
 		{
 			entered = 0;
 			enterIdx = 0;
@@ -185,7 +198,7 @@ public class RuneLitePlusPlugin extends Plugin
 
 		// Script 685 will call 653, which in turn will set expectInput to true
 		expectInput = false;
-		client.runScript(BANK_PIN_OP, num, enterIdx, entered, BANK_PIN_EXIT_BUTTON.getId(), BANK_PIN_FORGOT_BUTTON.getId(), BANK_PIN_1.getId(), BANK_PIN_2.getId(), BANK_PIN_3.getId(), BANK_PIN_4.getId(), BANK_PIN_5.getId(), BANK_PIN_6.getId(), BANK_PIN_7.getId(), BANK_PIN_8.getId(), BANK_PIN_9.getId(), BANK_PIN_0.getId(), BANK_PIN_FIRST_ENTERED.getId(), BANK_PIN_SECOND_ENTERED.getId(), BANK_PIN_THIRD_ENTERED.getId(), BANK_PIN_FOURTH_ENTERED.getId(), BANK_PIN_INSTRUCTION_TEXT.getId());
+		client.runScript(BANK_PIN_OP, num, enterIdx, entered, BANK_PIN_EXIT_BUTTON.getId(), BANK_PIN_FORGOT_BUTTON.getId(), BANK_PIN_1.getId(), BANK_PIN_2.getId(), BANK_PIN_3.getId(), BANK_PIN_4.getId(), BANK_PIN_5.getId(), BANK_PIN_6.getId(), BANK_PIN_7.getId(), BANK_PIN_8.getId(), BANK_PIN_9.getId(), BANK_PIN_10.getId(), BANK_PIN_FIRST_ENTERED.getId(), BANK_PIN_SECOND_ENTERED.getId(), BANK_PIN_THIRD_ENTERED.getId(), BANK_PIN_FOURTH_ENTERED.getId(), BANK_PIN_INSTRUCTION_TEXT.getId());
 
 		if (oldEnterIdx == 0)
 		{

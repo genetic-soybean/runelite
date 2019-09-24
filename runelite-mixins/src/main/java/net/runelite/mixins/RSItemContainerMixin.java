@@ -51,17 +51,16 @@ public abstract class RSItemContainerMixin implements RSItemContainer
 	@Override
 	public Item[] getItems()
 	{
-		final int[] itemIds = getItemIds();
-		final int[] stackSizes = getStackSizes();
-		final Item[] items = new Item[itemIds.length];
+		int[] itemIds = getItemIds();
+		int[] stackSizes = getStackSizes();
+		Item[] items = new Item[itemIds.length];
 
 		for (int i = 0; i < itemIds.length; ++i)
 		{
-			final Item item = new Item(
-					itemIds[i],
-					stackSizes[i]
-				);
-
+			Item item = new Item(
+				itemIds[i],
+				stackSizes[i]
+			);
 			items[i] = item;
 		}
 
@@ -71,7 +70,6 @@ public abstract class RSItemContainerMixin implements RSItemContainer
 	@Copy("itemContainerSetItem")
 	static void rs$itemContainerSetItem(int itemContainerId, int index, int itemId, int itemQuantity)
 	{
-
 	}
 
 	@Replace("itemContainerSetItem")

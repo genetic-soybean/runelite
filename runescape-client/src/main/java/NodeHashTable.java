@@ -3,31 +3,31 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("lc")
+@ObfuscatedName("lm")
 @Implements("NodeHashTable")
 public final class NodeHashTable {
-	@ObfuscatedName("q")
+	@ObfuscatedName("c")
 	@Export("size")
 	int size;
-	@ObfuscatedName("w")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "[Lfw;"
+		signature = "[Lfn;"
 	)
 	@Export("buckets")
 	Node[] buckets;
-	@ObfuscatedName("e")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "Lfw;"
+		signature = "Lfn;"
 	)
 	@Export("currentGet")
 	Node currentGet;
-	@ObfuscatedName("p")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "Lfw;"
+		signature = "Lfn;"
 	)
 	@Export("current")
 	Node current;
-	@ObfuscatedName("k")
+	@ObfuscatedName("l")
 	@Export("index")
 	int index;
 
@@ -44,9 +44,9 @@ public final class NodeHashTable {
 
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(J)Lfw;"
+		signature = "(J)Lfn;"
 	)
 	@Export("get")
 	public Node get(long var1) {
@@ -64,9 +64,9 @@ public final class NodeHashTable {
 		return null;
 	}
 
-	@ObfuscatedName("w")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(Lfw;J)V"
+		signature = "(Lfn;J)V"
 	)
 	@Export("put")
 	public void put(Node var1, long var2) {
@@ -82,9 +82,9 @@ public final class NodeHashTable {
 		var1.key = var2;
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "()Lfw;"
+		signature = "()Lfn;"
 	)
 	@Export("first")
 	public Node first() {
@@ -92,9 +92,9 @@ public final class NodeHashTable {
 		return this.next();
 	}
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "()Lfw;"
+		signature = "()Lfn;"
 	)
 	@Export("next")
 	public Node next() {
@@ -103,16 +103,17 @@ public final class NodeHashTable {
 			var1 = this.current;
 			this.current = var1.previous;
 			return var1;
+		} else {
+			do {
+				if (this.index >= this.size) {
+					return null;
+				}
+
+				var1 = this.buckets[this.index++].previous;
+			} while(var1 == this.buckets[this.index - 1]);
+
+			this.current = var1.previous;
+			return var1;
 		}
-		do {
-			if (this.index >= this.size) {
-				return null;
-			}
-
-			var1 = this.buckets[this.index++].previous;
-		} while(var1 == this.buckets[this.index - 1]);
-
-		this.current = var1.previous;
-		return var1;
 	}
 }

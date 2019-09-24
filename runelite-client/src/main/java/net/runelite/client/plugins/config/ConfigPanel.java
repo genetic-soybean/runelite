@@ -26,14 +26,15 @@ package net.runelite.client.plugins.config;
 
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Insets;
 import java.awt.Rectangle;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.ItemEvent;
@@ -45,19 +46,23 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.stream.Collectors;
 import javax.inject.Singleton;
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -65,6 +70,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
@@ -79,21 +86,22 @@ import javax.swing.event.DocumentListener;
 import javax.swing.plaf.basic.BasicSpinnerUI;
 import javax.swing.text.JTextComponent;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.util.Text;
+import net.runelite.client.config.Button;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigDescriptor;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigItemDescriptor;
-import net.runelite.client.config.ConfigItemsGroup;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.config.ConfigPanelItem;
+import net.runelite.client.config.ConfigSection;
+import net.runelite.client.config.ConfigTitleSection;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.config.ModifierlessKeybind;
 import net.runelite.client.config.Range;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.config.RuneLitePlusConfig;
-import net.runelite.client.config.Stub;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginInstantiationException;
@@ -106,12 +114,12 @@ import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.ComboBoxListRenderer;
 import net.runelite.client.ui.components.IconButton;
 import net.runelite.client.ui.components.IconTextField;
+import net.runelite.client.ui.components.MinimumSizedPanel;
 import net.runelite.client.ui.components.colorpicker.ColorPickerManager;
 import net.runelite.client.ui.components.colorpicker.RuneliteColorPicker;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.MiscUtils;
-import net.runelite.client.util.Text;
 import org.apache.commons.lang3.StringUtils;
 
 @Slf4j
@@ -123,6 +131,10 @@ public class ConfigPanel extends PluginPanel
 	private static final int OFFSET = 6;
 	private static final ImageIcon BACK_ICON;
 	private static final ImageIcon BACK_ICON_HOVER;
+	private static final ImageIcon SECTION_EXPAND_ICON;
+	private static final ImageIcon SECTION_EXPAND_ICON_HOVER;
+	private static final ImageIcon SECTION_RETRACT_ICON;
+	private static final ImageIcon SECTION_RETRACT_ICON_HOVER;
 
 	private static final String RUNELITE_GROUP_NAME = RuneLiteConfig.class.getAnnotation(ConfigGroup.class).value();
 	private static final String PINNED_PLUGINS_CONFIG_KEY = "pinnedPlugins";
@@ -151,6 +163,16 @@ public class ConfigPanel extends PluginPanel
 		final BufferedImage backIcon = ImageUtil.getResourceStreamFromClass(ConfigPanel.class, "config_back_icon.png");
 		BACK_ICON = new ImageIcon(backIcon);
 		BACK_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(backIcon, -100));
+
+		final BufferedImage orangeBackIcon = ImageUtil.fillImage(backIcon, ColorScheme.BRAND_ORANGE);
+
+		final BufferedImage sectionRetractIcon = ImageUtil.rotateImage(orangeBackIcon, Math.PI * 1.5);
+		SECTION_RETRACT_ICON = new ImageIcon(sectionRetractIcon);
+		SECTION_RETRACT_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(sectionRetractIcon, -100));
+
+		final BufferedImage sectionExpandIcon = ImageUtil.rotateImage(orangeBackIcon, Math.PI);
+		SECTION_EXPAND_ICON = new ImageIcon(sectionExpandIcon);
+		SECTION_EXPAND_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(sectionExpandIcon, -100));
 	}
 
 	ConfigPanel(PluginManager pluginManager, ConfigManager configManager, ScheduledExecutorService executorService,
@@ -214,7 +236,6 @@ public class ConfigPanel extends PluginPanel
 
 		initializePluginList();
 		refreshPluginList();
-
 	}
 
 	static class configTextArea extends JTextArea
@@ -521,6 +542,21 @@ public class ConfigPanel extends PluginPanel
 		}
 	}
 
+	private void toggleSection(ConfigDescriptor cd, ConfigSection cs, IconButton button, JPanel contents)
+	{
+		boolean newState = !contents.isVisible();
+		contents.setVisible(newState);
+		button.setIcon(newState ? SECTION_RETRACT_ICON : SECTION_EXPAND_ICON);
+		button.setHoverIcon(newState ? SECTION_RETRACT_ICON_HOVER : SECTION_EXPAND_ICON_HOVER);
+		configManager.setConfiguration(cd.getGroup().value(), cs.keyName(), newState);
+		button.setToolTipText(newState ? "Retract" : "Expand");
+		SwingUtilities.invokeLater(() ->
+		{
+			contents.revalidate();
+			contents.repaint();
+		});
+	}
+
 	void openGroupConfigPanel(PluginListItem listItem, Config config, ConfigDescriptor cd)
 	{
 		openGroupConfigPanel(listItem, config, cd, false);
@@ -553,504 +589,612 @@ public class ConfigPanel extends PluginPanel
 		title.setToolTipText("<html>" + name + ":<br>" + listItem.getDescription() + "</html>");
 		topPanel.add(title);
 
-		for (ConfigItemsGroup cig : cd.getItemGroups())
+		final Map<String, JPanel> sectionWidgets = new HashMap<>();
+		final Map<String, JPanel> titleSectionWidgets = new HashMap<>();
+
+		for (ConfigSection cs : cd.getSections())
 		{
-			ConfigPanelItem mainParent = new ConfigPanelItem(null, null);
+			final MinimumSizedPanel section = new MinimumSizedPanel();
+			section.setLayout(new BoxLayout(section, BoxLayout.Y_AXIS));
+			section.setMinimumSize(new Dimension(PANEL_WIDTH, 0));
 
-			boolean collapsed = false;
-			if (!cig.getGroup().equals(""))
+			JPanel item = new JPanel();
+			item.setLayout(new BorderLayout());
+			item.setMinimumSize(new Dimension(PANEL_WIDTH, 0));
+
+			name = cs.name();
+			String description = cs.description();
+
+			JLabel headerLabel = new JLabel(cs.name());
+			headerLabel.setFont(FontManager.getRunescapeFont());
+			headerLabel.setForeground(ColorScheme.BRAND_ORANGE);
+			if (!description.equals(""))
 			{
-				String header = cig.getGroup();
+				headerLabel.setToolTipText("<html>" + name + ":<br>" + description + "</html>");
+			}
+			headerLabel.setPreferredSize(new Dimension(PANEL_WIDTH, (int) headerLabel.getPreferredSize().getHeight()));
 
-				JPanel item = new JPanel();
-				item.setLayout(new BorderLayout());
-				item.setMinimumSize(new Dimension(PANEL_WIDTH, 0));
+			final boolean state = Boolean.parseBoolean(configManager.getConfiguration(cd.getGroup().value(), cs.keyName()));
 
-				JLabel headerLabel = new JLabel(header);
-				headerLabel.setForeground(Color.ORANGE);
-				headerLabel.setPreferredSize(new Dimension(PANEL_WIDTH, (int) headerLabel.getPreferredSize().getHeight()));
-				String sCollapsed = configManager.getConfiguration(cd.getGroup().value(), cig.getGroup() + "_collapse");
+			final IconButton collapse = new IconButton(state ? SECTION_RETRACT_ICON : SECTION_EXPAND_ICON);
+			collapse.setHoverIcon(state ? SECTION_RETRACT_ICON_HOVER : SECTION_EXPAND_ICON_HOVER);
+			collapse.setToolTipText(state ? "Retract" : "Expand");
+			collapse.setPreferredSize(new Dimension(20, 20));
+			collapse.setFont(collapse.getFont().deriveFont(16.0f));
+			collapse.setBorder(null);
+			collapse.setMargin(new Insets(0, 0, 0, 0));
+			headerLabel.setBorder(new EmptyBorder(0, 10, 0, 0));
 
-				if (sCollapsed != null)
+			item.add(collapse, BorderLayout.WEST);
+			item.add(headerLabel, BorderLayout.CENTER);
+
+			final JPanel sectionContents = new JPanel();
+			sectionContents.setLayout(new DynamicGridLayout(0, 1, 0, 5));
+			sectionContents.setMinimumSize(new Dimension(PANEL_WIDTH, 0));
+			sectionContents.setBorder(new EmptyBorder(OFFSET, 5, 0, 0));
+			section.add(item, BorderLayout.NORTH);
+			section.add(sectionContents, BorderLayout.SOUTH);
+
+			sectionContents.setVisible(state);
+
+			// Add listeners to each part of the header so that it's easier to toggle them
+			final MouseAdapter adapter = new MouseAdapter()
+			{
+				@Override
+				public void mouseClicked(MouseEvent e)
 				{
-					collapsed = Boolean.parseBoolean(sCollapsed);
+					toggleSection(cd, cs, collapse, sectionContents);
 				}
+			};
+			collapse.addActionListener(e -> toggleSection(cd, cs, collapse, sectionContents));
+			headerLabel.addMouseListener(adapter);
 
-				JButton collapse = new JButton(collapsed ? "+" : "-");
-				collapse.setPreferredSize(new Dimension(20, 20));
-				collapse.setFont(collapse.getFont().deriveFont(16.0f));
-				collapse.setBorder(null);
-				collapse.setMargin(new Insets(0, 0, 0, 0));
-				collapse.addActionListener(ae -> changeGroupCollapse(listItem, config, collapse, cd, cig));
-				headerLabel.setBorder(new EmptyBorder(0, 10, 0, 0));
+			sectionWidgets.put(cs.keyName(), sectionContents);
 
-				item.add(collapse, BorderLayout.WEST);
-				item.add(headerLabel, BorderLayout.CENTER);
+			// Allow for sub-sections
+			JPanel parentSection = sectionWidgets.get(cs.section());
+			if (parentSection == null)
+			{
+				mainPanel.add(section);
+			}
+			else
+			{
+				parentSection.add(section);
+			}
+		}
 
-				mainPanel.add(item);
+		for (ConfigTitleSection cs : cd.getTitleSections())
+		{
+			final MinimumSizedPanel titleSection = new MinimumSizedPanel();
+			titleSection.setLayout(new BoxLayout(titleSection, BoxLayout.Y_AXIS));
+			titleSection.setMinimumSize(new Dimension(PANEL_WIDTH, 0));
+
+			JPanel item = new JPanel();
+			item.setLayout(new BorderLayout());
+			item.setMinimumSize(new Dimension(PANEL_WIDTH, 0));
+
+			Border border = item.getBorder();
+			Border margin = new EmptyBorder(10, 0, 0, 0);
+			item.setBorder(new CompoundBorder(border, margin));
+
+			JLabel configEntryName = new JLabel(cs.name());
+			configEntryName.setPreferredSize(new Dimension(PANEL_WIDTH, (int) configEntryName.getPreferredSize().getHeight()));
+			configEntryName.setForeground(ColorScheme.BRAND_ORANGE);
+			item.add(configEntryName, BorderLayout.NORTH);
+
+			final JPanel sectionContents = new JPanel();
+			sectionContents.setLayout(new DynamicGridLayout(0, 1, 0, 5));
+			sectionContents.setMinimumSize(new Dimension(0, 0));
+			sectionContents.setBorder(new EmptyBorder(OFFSET, 5, 0, 0));
+
+			titleSection.add(item, BorderLayout.NORTH);
+			titleSection.add(sectionContents, BorderLayout.SOUTH);
+
+			titleSectionWidgets.put(cs.keyName(), sectionContents);
+
+			// Allow for sub-sections
+			JPanel parentTitleSection = titleSectionWidgets.get(cs.titleSection());
+			JPanel parentSection = sectionWidgets.get(cs.section());
+
+			if (parentTitleSection != null)
+			{
+				parentTitleSection.add(titleSection);
+			}
+			else if (parentSection != null)
+			{
+				parentSection.add(titleSection);
+			}
+			else
+			{
+				mainPanel.add(titleSection);
+			}
+		}
+
+		List<JButton> buttons = new ArrayList<>();
+
+		for (ConfigItemDescriptor cid : cd.getItems())
+		{
+			if (cid == null)
+			{
+				continue; // Ignore main 'parent'
 			}
 
-			if (collapsed)
+			Boolean unhide = cid.getItem().hidden();
+			Boolean hide = !cid.getItem().hide().isEmpty();
+
+			if (unhide || hide)
 			{
+				boolean show = false;
+
+				List<String> itemHide = Splitter
+					.onPattern("\\|\\|")
+					.trimResults()
+					.omitEmptyStrings()
+					.splitToList(String.format("%s || %s", cid.getItem().unhide(), cid.getItem().hide()));
+
+				for (ConfigItemDescriptor cid2 : cd.getItems())
+				{
+					if (itemHide.contains(cid2.getItem().keyName()))
+					{
+						if (cid2.getType() == boolean.class)
+						{
+							show = Boolean.parseBoolean(configManager.getConfiguration(cd.getGroup().value(), cid2.getItem().keyName()));
+						}
+						else if (cid2.getType().isEnum())
+						{
+							@SuppressWarnings("unchecked") Class<? extends Enum> type = (Class<? extends Enum>) cid2.getType();
+							try
+							{
+								@SuppressWarnings("unchecked") Enum selectedItem = Enum.valueOf(type, configManager.getConfiguration(cd.getGroup().value(), cid2.getItem().keyName()));
+								if (!cid.getItem().unhideValue().equals(""))
+								{
+									List<String> unhideValue = Splitter
+										.onPattern("\\|\\|")
+										.trimResults()
+										.omitEmptyStrings()
+										.splitToList(cid.getItem().unhideValue());
+
+									show = unhideValue.contains(selectedItem.toString());
+								}
+								else if (!cid.getItem().hideValue().equals(""))
+								{
+									List<String> hideValue = Splitter
+										.onPattern("\\|\\|")
+										.trimResults()
+										.omitEmptyStrings()
+										.splitToList(cid.getItem().hideValue());
+
+									show = !hideValue.contains(selectedItem.toString());
+								}
+							}
+							catch (IllegalArgumentException ex)
+							{
+								log.info("So bad, so sad: {}", ex.toString());
+							}
+						}
+					}
+
+					if (show)
+					{
+						break;
+					}
+				}
+
+				if ((unhide && !show) || (hide && show))
+				{
+					continue;
+				}
+			}
+
+			if (cid.getType() == Button.class)
+			{
+				try
+				{
+					ConfigItem item = cid.getItem();
+
+					JButton button = new JButton(item.name());
+
+					Class<ActionListener> actionListener = (Class<ActionListener>) item.clazz();
+
+					button.addActionListener(actionListener.newInstance());
+					buttons.add(button);
+				}
+				catch (IllegalAccessException | InstantiationException ex)
+				{
+					log.error("Adding action listener failed: {}", ex.getMessage());
+				}
+
 				continue;
 			}
 
-			List<ConfigItemDescriptor> allItems = new ArrayList<>(cig.getItems());
+			JPanel item = new JPanel();
+			item.setLayout(new BorderLayout());
+			item.setMinimumSize(new Dimension(PANEL_WIDTH, 0));
+			name = cid.getItem().name();
 
-			int maxDepth = 3;
-			do
+			JLabel configEntryName = new JLabel(name);
+			configEntryName.setPreferredSize(new Dimension(PANEL_WIDTH, (int) configEntryName.getPreferredSize().getHeight()));
+			configEntryName.setForeground(Color.WHITE);
+			configEntryName.setToolTipText("<html>" + name + ":<br>" + cid.getItem().description() + "</html>");
+			item.add(configEntryName, cid.getType() != String.class ? BorderLayout.CENTER : BorderLayout.NORTH);
+
+			if (cid.getType() == boolean.class)
 			{
-				for (ConfigItemDescriptor cid : new ArrayList<>(allItems))
-				{
+				JCheckBox checkbox = new JCheckBox();
+				checkbox.setBackground(ColorScheme.LIGHT_GRAY_COLOR);
+				checkbox.setSelected(Boolean.parseBoolean(configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName())));
+				checkbox.addActionListener(ae -> changeConfiguration(listItem, config, checkbox, cd, cid));
 
-					String parent = cid.getItem().parent();
+				item.add(checkbox, BorderLayout.EAST);
+			}
 
-					if (parent.equals(""))
-					{
-						mainParent.getChildren().add(new ConfigPanelItem(mainParent, cid));
-						allItems.remove(cid);
-					}
-					else
-					{
-						if (mainParent.addChildIfMatchParent(cid))
-						{
-							allItems.remove(cid);
-						}
-					}
-
-				}
-
-				maxDepth--;
-
-			} while (allItems.size() > 0 && maxDepth > 0);
-
-			List<ConfigPanelItem> orderedList = mainParent.getItemsAsList();
-
-			for (ConfigPanelItem cpi : orderedList)
+			else if (cid.getType() == int.class)
 			{
-				ConfigItemDescriptor cid = cpi.getItem();
+				int value = Integer.parseInt(configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName()));
 
-				if (cid == null)
+				Range range = cid.getRange();
+				int min = 0, max = Integer.MAX_VALUE;
+				if (range != null)
 				{
-					continue; // Ignore main 'parent'
+					min = range.min();
+					max = range.max();
 				}
 
-				Boolean unhide = cid.getItem().hidden();
-				Boolean hide = !cid.getItem().hide().isEmpty();
+				// Config may previously have been out of range
+				value = MiscUtils.clamp(value, min, max);
 
-				if (unhide || hide)
+				if (max < Integer.MAX_VALUE)
 				{
-					boolean show = false;
-
-					List<String> itemHide = Splitter
-						.onPattern("\\|\\|")
-						.trimResults()
-						.omitEmptyStrings()
-						.splitToList(String.format("%s || %s", cid.getItem().unhide(), cid.getItem().hide()));
-
-					for (ConfigItemDescriptor cid2 : cd.getItems())
-					{
-						if (itemHide.contains(cid2.getItem().keyName()))
+					JLabel sliderValueLabel = new JLabel();
+					JSlider slider = new JSlider(min, max, value);
+					sliderValueLabel.setText(String.valueOf(slider.getValue()));
+					slider.setPreferredSize(new Dimension(80, 25));
+					slider.setBackground(Color.WHITE);
+					slider.addChangeListener((l) ->
 						{
-							if (cid2.getType() == boolean.class)
+							sliderValueLabel.setText(String.valueOf(slider.getValue()));
+							if (!slider.getValueIsAdjusting())
 							{
-								show = Boolean.parseBoolean(configManager.getConfiguration(cd.getGroup().value(), cid2.getItem().keyName()));
-							}
-							else if (cid2.getType().isEnum())
-							{
-								@SuppressWarnings("unchecked") Class<? extends Enum> type = (Class<? extends Enum>) cid2.getType();
-								try
-								{
-									@SuppressWarnings("unchecked") Enum selectedItem = Enum.valueOf(type, configManager.getConfiguration(cd.getGroup().value(), cid2.getItem().keyName()));
-									if (!cid.getItem().unhideValue().equals(""))
-									{
-										show = selectedItem.toString().equals(cid.getItem().unhideValue());
-									}
-									else if (!cid.getItem().hideValue().equals(""))
-									{
-										show = !selectedItem.toString().equals(cid.getItem().hideValue());
-									}
-								}
-								catch (IllegalArgumentException ex)
-								{
-									log.info("So bad, so sad: {}", ex.toString());
-								}
+								changeConfiguration(listItem, config, slider, cd, cid);
 							}
 						}
+					);
 
-						if (show)
+					SpinnerModel model = new SpinnerNumberModel(value, min, max, 1);
+					JSpinner spinner = new JSpinner(model);
+					Component editor = spinner.getEditor();
+					JFormattedTextField spinnerTextField = ((JSpinner.DefaultEditor) editor).getTextField();
+					spinnerTextField.setColumns(SPINNER_FIELD_WIDTH);
+					spinner.setUI(new BasicSpinnerUI()
+					{
+						protected Component createNextButton()
 						{
-							break;
+							return null;
 						}
-					}
 
-					if ((unhide && !show) || (hide && show))
-					{
-						continue;
-					}
-				}
-
-				JPanel item = new JPanel();
-				item.setLayout(new BorderLayout());
-				item.setMinimumSize(new Dimension(PANEL_WIDTH, 0));
-				name = cid.getItem().name();
-
-				StringBuilder depthOffset = new StringBuilder();
-				for (int depth = 1; depth < cpi.getDepth(); depth++)
-				{
-					depthOffset.append("   ");
-				}
-
-				name = depthOffset + name;
-
-				JLabel configEntryName = new JLabel(name);
-				configEntryName.setPreferredSize(new Dimension(PANEL_WIDTH, (int) configEntryName.getPreferredSize().getHeight()));
-				configEntryName.setForeground(Color.WHITE);
-				configEntryName.setToolTipText("<html>" + name + ":<br>" + cid.getItem().description() + "</html>");
-				item.add(configEntryName, cid.getType() != String.class ? BorderLayout.CENTER : BorderLayout.NORTH);
-
-				if (cid.getType() == Stub.class)
-				{
-					Border border = item.getBorder();
-					Border margin = new EmptyBorder(10, 0, 0, 0);
-					item.setBorder(new CompoundBorder(border, margin));
-
-					configEntryName.setForeground(Color.ORANGE);
-					configEntryName.setToolTipText(null);
-				}
-
-				else if (cid.getType() == boolean.class)
-				{
-					JCheckBox checkbox = new JCheckBox();
-					checkbox.setBackground(ColorScheme.LIGHT_GRAY_COLOR);
-					checkbox.setSelected(Boolean.parseBoolean(configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName())));
-					checkbox.addActionListener(ae -> changeConfiguration(listItem, config, checkbox, cd, cid));
-
-					item.add(checkbox, BorderLayout.EAST);
-				}
-
-				else if (cid.getType() == int.class)
-				{
-					int value = Integer.parseInt(configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName()));
-
-					Range range = cid.getRange();
-					int min = 0, max = Integer.MAX_VALUE;
-					if (range != null)
-					{
-						min = range.min();
-						max = range.max();
-					}
-
-					// Config may previously have been out of range
-					value = MiscUtils.clamp(value, min, max);
-
-					if (max < Integer.MAX_VALUE)
-					{
-						JLabel sliderValueLabel = new JLabel();
-						JSlider slider = new JSlider(min, max, value);
-						sliderValueLabel.setText(String.valueOf(slider.getValue()));
-						slider.setPreferredSize(new Dimension(85, 25));
-						slider.addChangeListener((l) ->
-							{
-								sliderValueLabel.setText(String.valueOf(slider.getValue()));
-								if (!slider.getValueIsAdjusting())
-								{
-									changeConfiguration(listItem, config, slider, cd, cid);
-								}
-							}
-						);
-
-						SpinnerModel model = new SpinnerNumberModel(value, min, max, 1);
-						JSpinner spinner = new JSpinner(model);
-						Component editor = spinner.getEditor();
-						JFormattedTextField spinnerTextField = ((JSpinner.DefaultEditor) editor).getTextField();
-						spinnerTextField.setColumns(SPINNER_FIELD_WIDTH);
-						spinner.setUI(new BasicSpinnerUI()
+						protected Component createPreviousButton()
 						{
-							protected Component createNextButton()
-							{
-								return null;
-							}
-
-							protected Component createPreviousButton()
-							{
-								return null;
-							}
-						});
-						spinner.addChangeListener((ce) ->
-						{
-							changeConfiguration(listItem, config, spinner, cd, cid);
-							spinner.setVisible(false);
-							sliderValueLabel.setText(String.valueOf(spinner.getValue()));
-							sliderValueLabel.setVisible(true);
-							slider.setValue((Integer) spinner.getValue());
-							slider.setVisible(true);
-						});
-						spinner.setVisible(false);
-
-						sliderValueLabel.addMouseListener(new MouseAdapter()
-						{
-							public void mouseClicked(MouseEvent e)
-							{
-								spinner.setValue(slider.getValue());
-								spinner.setVisible(true);
-								sliderValueLabel.setVisible(false);
-								slider.setVisible(false);
-							}
-						});
-
-						JPanel subPanel = new JPanel();
-
-						subPanel.add(spinner);
-						subPanel.add(sliderValueLabel);
-						subPanel.add(slider);
-
-						item.add(subPanel, BorderLayout.EAST);
-					}
-					else
-					{
-						SpinnerModel model = new SpinnerNumberModel(value, min, max, 1);
-						JSpinner spinner = new JSpinner(model);
-						Component editor = spinner.getEditor();
-						JFormattedTextField spinnerTextField = ((JSpinner.DefaultEditor) editor).getTextField();
-						spinnerTextField.setColumns(SPINNER_FIELD_WIDTH);
-						spinner.addChangeListener(ce -> changeConfiguration(listItem, config, spinner, cd, cid));
-
-						item.add(spinner, BorderLayout.EAST);
-					}
-				}
-
-				else if (cid.getType() == String.class)
-				{
-					JTextComponent textField;
-
-					if (cid.getItem().secret())
-					{
-						textField = new JPasswordField();
-					}
-					else
-					{
-						final JTextArea textArea = new configTextArea();
-						textArea.setLineWrap(true);
-						textArea.setWrapStyleWord(true);
-						textField = textArea;
-					}
-
-					textField.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-					textField.setText(configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName()));
-
-					textField.addFocusListener(new FocusAdapter()
-					{
-						@Override
-						public void focusLost(FocusEvent e)
-						{
-							ConfigItem item = cid.getItem();
-							if (item.parse())
-							{
-								Boolean result = parse(item, textField.getText());
-
-								if (result != null && result)
-								{
-									changeConfiguration(listItem, config, textField, cd, cid);
-								}
-							}
-							else
-							{
-								changeConfiguration(listItem, config, textField, cd, cid);
-							}
+							return null;
 						}
 					});
 
-					if (cid.getItem().parse())
+					JPanel subPanel = new JPanel();
+					subPanel.setPreferredSize(new Dimension(110, 25));
+					subPanel.setLayout(new BorderLayout());
+
+					spinner.addChangeListener((ce) ->
 					{
-						JLabel parsingLabel = new JLabel();
-						parsingLabel.setHorizontalAlignment(SwingConstants.CENTER);
-						parsingLabel.setPreferredSize(new Dimension(PANEL_WIDTH, 15));
+						changeConfiguration(listItem, config, spinner, cd, cid);
 
-						DeferredDocumentChangedListener listener = new DeferredDocumentChangedListener();
-						listener.addChangeListener(e ->
-						{
-							if (cid.getItem().parse())
-							{
-								parseLabel(cid.getItem(), parsingLabel, textField.getText());
-							}
-						});
-						textField.getDocument().addDocumentListener(listener);
+						sliderValueLabel.setText(String.valueOf(spinner.getValue()));
+						slider.setValue((Integer) spinner.getValue());
 
-						item.add(textField, BorderLayout.CENTER);
+						subPanel.add(sliderValueLabel, BorderLayout.WEST);
+						subPanel.add(slider, BorderLayout.EAST);
+						subPanel.remove(spinner);
 
-						parseLabel(cid.getItem(), parsingLabel, textField.getText());
-						item.add(parsingLabel, BorderLayout.SOUTH);
-					}
-					else
+						validate();
+						repaint();
+					});
+
+					sliderValueLabel.addMouseListener(new MouseAdapter()
 					{
-						item.add(textField, BorderLayout.SOUTH);
-					}
-				}
-
-				else if (cid.getType() == Color.class)
-				{
-					String existing = configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName());
-
-					Color existingColor;
-					JButton colorPickerBtn;
-
-					if (existing == null)
-					{
-						existingColor = Color.BLACK;
-						colorPickerBtn = new JButton("Pick a color");
-					}
-					else
-					{
-						existingColor = ColorUtil.fromString(existing);
-						colorPickerBtn = new JButton(ColorUtil.toHexColor(existingColor).toUpperCase());
-					}
-
-					colorPickerBtn.setFocusable(false);
-					colorPickerBtn.setBackground(existingColor);
-					colorPickerBtn.addMouseListener(new MouseAdapter()
-					{
-						@Override
 						public void mouseClicked(MouseEvent e)
 						{
-							RuneliteColorPicker colorPicker = colorPickerManager.create(
-								SwingUtilities.windowForComponent(ConfigPanel.this),
-								colorPickerBtn.getBackground(),
-								cid.getItem().name(),
-								cid.getAlpha() == null);
-							colorPicker.setLocation(getLocationOnScreen());
-							colorPicker.setOnColorChange(c ->
-							{
-								colorPickerBtn.setBackground(c);
-								colorPickerBtn.setText(ColorUtil.toHexColor(c).toUpperCase());
-							});
+							spinner.setValue(slider.getValue());
 
-							colorPicker.setOnClose(c -> changeConfiguration(listItem, config, colorPicker, cd, cid));
-							colorPicker.setVisible(true);
+							subPanel.remove(sliderValueLabel);
+							subPanel.remove(slider);
+							subPanel.add(spinner, BorderLayout.EAST);
+
+							validate();
+							repaint();
+
+							final JTextField tf = ((JSpinner.DefaultEditor) spinner.getEditor()).getTextField();
+							tf.requestFocusInWindow();
+							SwingUtilities.invokeLater(tf::selectAll);
 						}
 					});
 
-					item.add(colorPickerBtn, BorderLayout.EAST);
+					subPanel.add(sliderValueLabel, BorderLayout.WEST);
+					subPanel.add(slider, BorderLayout.EAST);
+
+					item.add(subPanel, BorderLayout.EAST);
+				}
+				else
+				{
+					SpinnerModel model = new SpinnerNumberModel(value, min, max, 1);
+					JSpinner spinner = new JSpinner(model);
+					Component editor = spinner.getEditor();
+					JFormattedTextField spinnerTextField = ((JSpinner.DefaultEditor) editor).getTextField();
+					spinnerTextField.setColumns(SPINNER_FIELD_WIDTH);
+					spinner.addChangeListener(ce -> changeConfiguration(listItem, config, spinner, cd, cid));
+
+					item.add(spinner, BorderLayout.EAST);
+				}
+			}
+
+			else if (cid.getType() == String.class)
+			{
+				JTextComponent textField;
+
+				if (cid.getItem().secret())
+				{
+					textField = new JPasswordField();
+				}
+				else
+				{
+					final JTextArea textArea = new configTextArea();
+					textArea.setLineWrap(true);
+					textArea.setWrapStyleWord(true);
+					textField = textArea;
 				}
 
-				else if (cid.getType() == Dimension.class)
+				textField.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+				textField.setText(configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName()));
+
+				DeferredDocumentChangedListener listener = new DeferredDocumentChangedListener();
+				listener.addChangeListener(e ->
 				{
-					JPanel dimensionPanel = new JPanel();
-					dimensionPanel.setLayout(new BorderLayout());
-
-					String str = configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName());
-					String[] splitStr = str.split("x");
-					int width = Integer.parseInt(splitStr[0]);
-					int height = Integer.parseInt(splitStr[1]);
-
-					SpinnerModel widthModel = new SpinnerNumberModel(width, 0, Integer.MAX_VALUE, 1);
-					JSpinner widthSpinner = new JSpinner(widthModel);
-					Component widthEditor = widthSpinner.getEditor();
-					JFormattedTextField widthSpinnerTextField = ((JSpinner.DefaultEditor) widthEditor).getTextField();
-					widthSpinnerTextField.setColumns(4);
-
-					SpinnerModel heightModel = new SpinnerNumberModel(height, 0, Integer.MAX_VALUE, 1);
-					JSpinner heightSpinner = new JSpinner(heightModel);
-					Component heightEditor = heightSpinner.getEditor();
-					JFormattedTextField heightSpinnerTextField = ((JSpinner.DefaultEditor) heightEditor).getTextField();
-					heightSpinnerTextField.setColumns(4);
-
-					ChangeListener listener = e ->
-						configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), widthSpinner.getValue() + "x" + heightSpinner.getValue());
-
-					widthSpinner.addChangeListener(listener);
-					heightSpinner.addChangeListener(listener);
-
-					dimensionPanel.add(widthSpinner, BorderLayout.WEST);
-					dimensionPanel.add(new JLabel(" x "), BorderLayout.CENTER);
-					dimensionPanel.add(heightSpinner, BorderLayout.EAST);
-
-					item.add(dimensionPanel, BorderLayout.EAST);
-				}
-
-				else if (cid.getType().isEnum())
-				{
-					Class<? extends Enum> type = (Class<? extends Enum>) cid.getType();
-					JComboBox box = new JComboBox(type.getEnumConstants());
-					box.setPreferredSize(new Dimension(box.getPreferredSize().width, 25));
-					box.setRenderer(new ComboBoxListRenderer());
-					box.setForeground(Color.WHITE);
-					box.setFocusable(false);
-					box.setPrototypeDisplayValue("XXXXXXXX"); //sorry but this is the way to keep the size of the combobox in check.
-					try
+					ConfigItem configItem = cid.getItem();
+					if (configItem.parse())
 					{
-						Enum selectedItem = Enum.valueOf(type, configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName()));
-						box.setSelectedItem(selectedItem);
-						box.setToolTipText(selectedItem.toString());
-					}
-					catch (IllegalArgumentException ex)
-					{
-						log.debug("invalid seleced item", ex);
-					}
-					box.addItemListener(e ->
-					{
-						if (e.getStateChange() == ItemEvent.SELECTED)
+						Boolean result = parse(configItem, textField.getText());
+
+						if (result != null && result)
 						{
-							changeConfiguration(listItem, config, box, cd, cid);
-							box.setToolTipText(Objects.requireNonNull(box.getSelectedItem()).toString());
+							changeConfiguration(listItem, config, textField, cd, cid);
 						}
-					});
-					item.add(box, BorderLayout.EAST);
-				}
-
-				else if (cid.getType() == Keybind.class || cid.getType() == ModifierlessKeybind.class)
-				{
-					Keybind startingValue = configManager.getConfiguration(cd.getGroup().value(),
-						cid.getItem().keyName(),
-						(Class<? extends Keybind>) cid.getType());
-
-					HotkeyButton button = new HotkeyButton(startingValue, cid.getType() == ModifierlessKeybind.class);
-
-					button.addFocusListener(new FocusAdapter()
-					{
-						@Override
-						public void focusLost(FocusEvent e)
-						{
-							changeConfiguration(listItem, config, button, cd, cid);
-						}
-					});
-
-					item.add(button, BorderLayout.EAST);
-				}
-
-				if (cid.getType() == Font.class)
-				{
-					JComboBox box = new JComboBox(FontManager.getAvailableFontNames());
-					box.setPreferredSize(new Dimension(150, 25));
-					box.setRenderer(new ComboBoxListRenderer());
-					box.setForeground(Color.WHITE);
-					box.setFocusable(false);
-					String currentlyConfigured = configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName());
-					if (FontManager.lookupFont(currentlyConfigured) != null)
-					{
-						box.setSelectedItem(currentlyConfigured);
-						box.setToolTipText(currentlyConfigured);
 					}
 					else
 					{
-						log.debug("Selected font wasn't found on this system, resetting font back to runescape regular");
-						configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), FontManager.getRunescapeFont());
+						changeConfiguration(listItem, config, textField, cd, cid);
 					}
-					box.addItemListener(e ->
+				});
+				textField.getDocument().addDocumentListener(listener);
+
+				if (cid.getItem().parse())
+				{
+					JLabel parsingLabel = new JLabel();
+					parsingLabel.setHorizontalAlignment(SwingConstants.CENTER);
+					parsingLabel.setPreferredSize(new Dimension(PANEL_WIDTH, 15));
+
+					listener = new DeferredDocumentChangedListener();
+					listener.addChangeListener(e ->
 					{
-						if (e.getStateChange() == ItemEvent.SELECTED && box.getSelectedItem() != null)
+						if (cid.getItem().parse())
 						{
-							final Font selected = FontManager.lookupFont(box.getSelectedItem().toString());
-							configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), selected);
-							box.setToolTipText(box.getSelectedItem().toString());
+							parseLabel(cid.getItem(), parsingLabel, textField.getText());
 						}
 					});
-					item.add(box, BorderLayout.EAST);
+					textField.getDocument().addDocumentListener(listener);
+
+					item.add(textField, BorderLayout.CENTER);
+
+					parseLabel(cid.getItem(), parsingLabel, textField.getText());
+					item.add(parsingLabel, BorderLayout.SOUTH);
+				}
+				else
+				{
+					item.add(textField, BorderLayout.SOUTH);
+				}
+			}
+
+			else if (cid.getType() == Color.class)
+			{
+				String existing = configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName());
+
+				Color existingColor;
+				JButton colorPickerBtn;
+
+				if (existing == null)
+				{
+					existingColor = Color.BLACK;
+					colorPickerBtn = new JButton("Pick a color");
+				}
+				else
+				{
+					existingColor = ColorUtil.fromString(existing);
+					colorPickerBtn = new JButton(ColorUtil.toHexColor(existingColor).toUpperCase());
 				}
 
+				colorPickerBtn.setFocusable(false);
+				colorPickerBtn.setBackground(existingColor);
+				colorPickerBtn.addMouseListener(new MouseAdapter()
+				{
+					@Override
+					public void mouseClicked(MouseEvent e)
+					{
+						RuneliteColorPicker colorPicker = colorPickerManager.create(
+							SwingUtilities.windowForComponent(ConfigPanel.this),
+							colorPickerBtn.getBackground(),
+							cid.getItem().name(),
+							cid.getAlpha() == null);
+						colorPicker.setLocation(getLocationOnScreen());
+						colorPicker.setOnColorChange(c ->
+						{
+							colorPickerBtn.setBackground(c);
+							colorPickerBtn.setText(ColorUtil.toHexColor(c).toUpperCase());
+						});
+
+						colorPicker.setOnClose(c -> changeConfiguration(listItem, config, colorPicker, cd, cid));
+						colorPicker.setVisible(true);
+					}
+				});
+
+				item.add(colorPickerBtn, BorderLayout.EAST);
+			}
+
+			else if (cid.getType() == Dimension.class)
+			{
+				JPanel dimensionPanel = new JPanel();
+				dimensionPanel.setLayout(new BorderLayout());
+
+				String str = configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName());
+				String[] splitStr = str.split("x");
+				int width = Integer.parseInt(splitStr[0]);
+				int height = Integer.parseInt(splitStr[1]);
+
+				SpinnerModel widthModel = new SpinnerNumberModel(width, 0, Integer.MAX_VALUE, 1);
+				JSpinner widthSpinner = new JSpinner(widthModel);
+				Component widthEditor = widthSpinner.getEditor();
+				JFormattedTextField widthSpinnerTextField = ((JSpinner.DefaultEditor) widthEditor).getTextField();
+				widthSpinnerTextField.setColumns(4);
+
+				SpinnerModel heightModel = new SpinnerNumberModel(height, 0, Integer.MAX_VALUE, 1);
+				JSpinner heightSpinner = new JSpinner(heightModel);
+				Component heightEditor = heightSpinner.getEditor();
+				JFormattedTextField heightSpinnerTextField = ((JSpinner.DefaultEditor) heightEditor).getTextField();
+				heightSpinnerTextField.setColumns(4);
+
+				ChangeListener listener = e ->
+					configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), widthSpinner.getValue() + "x" + heightSpinner.getValue());
+
+				widthSpinner.addChangeListener(listener);
+				heightSpinner.addChangeListener(listener);
+
+				dimensionPanel.add(widthSpinner, BorderLayout.WEST);
+				dimensionPanel.add(new JLabel(" x "), BorderLayout.CENTER);
+				dimensionPanel.add(heightSpinner, BorderLayout.EAST);
+
+				item.add(dimensionPanel, BorderLayout.EAST);
+			}
+
+			else if (cid.getType().isEnum())
+			{
+				Class<? extends Enum> type = (Class<? extends Enum>) cid.getType();
+				JComboBox box = new JComboBox(type.getEnumConstants());
+				box.setPreferredSize(new Dimension(box.getPreferredSize().width, 25));
+				box.setRenderer(new ComboBoxListRenderer());
+				box.setForeground(Color.WHITE);
+				box.setFocusable(false);
+				box.setPrototypeDisplayValue("XXXXXXXX"); //sorry but this is the way to keep the size of the combobox in check.
+				try
+				{
+					Enum selectedItem = Enum.valueOf(type, configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName()));
+					box.setSelectedItem(selectedItem);
+					box.setToolTipText(selectedItem.toString());
+				}
+				catch (IllegalArgumentException ex)
+				{
+					log.debug("invalid seleced item", ex);
+				}
+				box.addItemListener(e ->
+				{
+					if (e.getStateChange() == ItemEvent.SELECTED)
+					{
+						changeConfiguration(listItem, config, box, cd, cid);
+						box.setToolTipText(Objects.requireNonNull(box.getSelectedItem()).toString());
+					}
+				});
+				item.add(box, BorderLayout.EAST);
+			}
+
+			else if (cid.getType() == Keybind.class || cid.getType() == ModifierlessKeybind.class)
+			{
+				Keybind startingValue = configManager.getConfiguration(cd.getGroup().value(),
+					cid.getItem().keyName(),
+					(Class<? extends Keybind>) cid.getType());
+
+				HotkeyButton button = new HotkeyButton(startingValue, cid.getType() == ModifierlessKeybind.class);
+
+				button.addFocusListener(new FocusAdapter()
+				{
+					@Override
+					public void focusLost(FocusEvent e)
+					{
+						changeConfiguration(listItem, config, button, cd, cid);
+					}
+				});
+
+				item.add(button, BorderLayout.EAST);
+			}
+
+			else if (cid.getType() == EnumSet.class)
+			{
+
+				int displayRows = cid.getItem().displayRows();
+
+				Class enumType = cid.getItem().enumClass();
+
+				EnumSet enumSet = configManager.getConfiguration(cd.getGroup().value(),
+					cid.getItem().keyName(), EnumSet.class);
+				if (enumSet == null || enumSet.contains(null))
+				{
+					enumSet = EnumSet.noneOf(enumType);
+				}
+				JList jList = new JList(enumType.getEnumConstants());
+				jList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+
+				if (!enumSet.isEmpty() && enumSet.size() > 1)
+				{
+					int[] selected = new int[enumSet.size()];
+					for (int i = 0; i < enumSet.size(); i++)
+					{
+						if (enumSet.contains(EnumSet.allOf(enumType).toArray()[i]))
+						{
+							selected[i] = Lists.newArrayList(EnumSet.allOf(enumType)).indexOf(enumSet.toArray()[i]);
+						}
+					}
+					jList.setSelectedIndices(selected);
+				}
+				if (enumSet.size() == 1)
+				{
+					enumSet.forEach(anObject -> jList.setSelectedValue(anObject, true));
+				}
+				jList.setVisibleRowCount(displayRows);
+				jList.setPrototypeCellValue("XXXXXXXXXX");
+				jList.setCellRenderer(new ComboBoxListRenderer());
+				jList.setLayoutOrientation(JList.VERTICAL);
+				jList.setSelectionBackground(Color.decode("708090"));
+				jList.addListSelectionListener(e ->
+					changeConfiguration(listItem, config, jList, cd, cid));
+				JScrollPane jScrollPane = new JScrollPane();
+				jScrollPane.setViewportView(jList);
+				jScrollPane.setViewportBorder(BorderFactory.createLoweredSoftBevelBorder());
+
+				item.add(jScrollPane, BorderLayout.SOUTH);
+
+			}
+
+			JPanel titleSection = titleSectionWidgets.get(cid.getItem().titleSection());
+			JPanel section = sectionWidgets.get(cid.getItem().section());
+
+			if (titleSection != null)
+			{
+				titleSection.add(item);
+			}
+			else if (section != null)
+			{
+				section.add(item);
+			}
+			else
+			{
 				mainPanel.add(item);
 			}
 		}
+
+		buttons.forEach(mainPanel::add);
 
 		JButton resetButton = new JButton("Reset");
 		resetButton.addActionListener((e) ->
@@ -1082,25 +1226,6 @@ public class ConfigPanel extends PluginPanel
 			scrollPane.getVerticalScrollBar().setValue(0);
 		}
 		revalidate();
-	}
-
-	private void changeGroupCollapse(PluginListItem listItem, Config config, JComponent component, ConfigDescriptor cd, ConfigItemsGroup cig)
-	{
-		if (component instanceof JButton)
-		{
-
-			String sCollapsed = configManager.getConfiguration(cd.getGroup().value(), cig.getGroup() + "_collapse");
-			boolean collapse = true;
-
-			if (sCollapsed != null)
-			{
-				collapse = !Boolean.parseBoolean(sCollapsed);
-			}
-
-			configManager.setConfiguration(cd.getGroup().value(), cig.getGroup() + "_collapse", collapse);
-
-			reloadPluginlist(listItem, config, cd);
-		}
 	}
 
 	private void changeConfiguration(PluginListItem listItem, Config config, Component component, ConfigDescriptor cd, ConfigItemDescriptor cid)
@@ -1193,6 +1318,56 @@ public class ConfigPanel extends PluginPanel
 					}
 
 					String changedVal = ((Enum) jComboBox.getSelectedItem()).name();
+
+					if (cid2.getItem().enabledBy().contains(cid.getItem().keyName()) && cid2.getItem().enabledByValue().equals(changedVal))
+					{
+						configManager.setConfiguration(cd.getGroup().value(), cid2.getItem().keyName(), "true");
+						reloadPluginlist(listItem, config, cd);
+					}
+					else if (cid2.getItem().disabledBy().contains(cid.getItem().keyName()) && cid2.getItem().disabledByValue().equals(changedVal))
+					{
+						configManager.setConfiguration(cd.getGroup().value(), cid2.getItem().keyName(), "false");
+						reloadPluginlist(listItem, config, cd);
+					}
+				}
+			}
+		}
+		else if (component instanceof JList)
+		{
+			JList jList = (JList) component;
+
+			Class<? extends Enum> enumType = cid.getItem().enumClass();
+			EnumSet enumSet = configManager.getConfiguration(cd.getGroup().value(),
+				cid.getItem().keyName(), EnumSet.class);
+			if (enumSet == null)
+			{
+				enumSet = EnumSet.noneOf(enumType);
+			}
+			enumSet.clear();
+
+			EnumSet finalEnumSet = enumSet;
+			jList.getSelectedValuesList().forEach(value ->
+				finalEnumSet.add(Enum.valueOf(cid.getItem().enumClass(), value.toString())));
+
+
+			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), finalEnumSet);
+
+			for (ConfigItemDescriptor cid2 : cd.getItems())
+			{
+				if (cid2.getItem().hidden() || !cid2.getItem().hide().isEmpty())
+				{
+					List<String> itemHide = Splitter
+						.onPattern("\\|\\|")
+						.trimResults()
+						.omitEmptyStrings()
+						.splitToList(String.format("%s || %s", cid2.getItem().unhide(), cid2.getItem().hide()));
+
+					if (itemHide.contains(cid.getItem().keyName()))
+					{
+						reloadPluginlist(listItem, config, cd);
+					}
+
+					String changedVal = String.valueOf((jList.getSelectedValues()));
 
 					if (cid2.getItem().enabledBy().contains(cid.getItem().keyName()) && cid2.getItem().enabledByValue().equals(changedVal))
 					{
@@ -1307,6 +1482,7 @@ public class ConfigPanel extends PluginPanel
 	{
 		return new Dimension(PANEL_WIDTH + SCROLLBAR_WIDTH, super.getPreferredSize().height);
 	}
+
 
 	private static class FixedWidthPanel extends JPanel
 	{

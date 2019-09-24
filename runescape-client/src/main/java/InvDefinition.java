@@ -1,32 +1,34 @@
+import java.io.File;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ig")
+@ObfuscatedName("ik")
 @Implements("InvDefinition")
 public class InvDefinition extends DualNode {
-	@ObfuscatedName("q")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "Lhp;"
+		signature = "Lhz;"
 	)
 	@Export("InvDefinition_archive")
 	static AbstractArchive InvDefinition_archive;
-	@ObfuscatedName("w")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "Lel;"
+		signature = "Let;"
 	)
 	@Export("InvDefinition_cached")
 	static EvictingDualNodeHashTable InvDefinition_cached;
-	@ObfuscatedName("bs")
+	@ObfuscatedName("l")
+	@Export("cacheDir")
+	static File cacheDir;
+	@ObfuscatedName("d")
+	@Export("SpriteBuffer_pixels")
+	public static byte[][] SpriteBuffer_pixels;
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = 1665309649
-	)
-	static int field3199;
-	@ObfuscatedName("e")
-	@ObfuscatedGetter(
-		intValue = 2126077973
+		intValue = 1514382049
 	)
 	@Export("size")
 	public int size;
@@ -39,10 +41,10 @@ public class InvDefinition extends DualNode {
 		this.size = 0;
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(Lkf;I)V",
-		garbageValue = "-1922259569"
+		signature = "(Lkz;I)V",
+		garbageValue = "406226730"
 	)
 	@Export("decode")
 	void decode(Buffer var1) {
@@ -56,10 +58,10 @@ public class InvDefinition extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "(Lkf;II)V",
-		garbageValue = "-745252030"
+		signature = "(Lkz;II)V",
+		garbageValue = "-289105808"
 	)
 	@Export("decodeNext")
 	void decodeNext(Buffer var1, int var2) {

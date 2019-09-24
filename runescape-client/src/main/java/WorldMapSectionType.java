@@ -3,43 +3,42 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("h")
+@ObfuscatedName("k")
 @Implements("WorldMapSectionType")
 public enum WorldMapSectionType implements Enumerated {
-	@ObfuscatedName("q")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "Lh;"
+		signature = "Lk;"
 	)
 	@Export("WORLDMAPSECTIONTYPE0")
-	WORLDMAPSECTIONTYPE0(1, (byte)0),
-	@ObfuscatedName("w")
+	WORLDMAPSECTIONTYPE0(2, (byte)0),
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "Lh;"
+		signature = "Lk;"
 	)
 	@Export("WORLDMAPSECTIONTYPE1")
-	WORLDMAPSECTIONTYPE1(2, (byte)1),
-	@ObfuscatedName("e")
+	WORLDMAPSECTIONTYPE1(0, (byte)1),
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "Lh;"
+		signature = "Lk;"
 	)
 	@Export("WORLDMAPSECTIONTYPE2")
-	WORLDMAPSECTIONTYPE2(0, (byte)2),
-	@ObfuscatedName("p")
+	WORLDMAPSECTIONTYPE2(3, (byte)2),
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "Lh;"
+		signature = "Lk;"
 	)
 	@Export("WORLDMAPSECTIONTYPE3")
-	WORLDMAPSECTIONTYPE3(3, (byte)3);
+	WORLDMAPSECTIONTYPE3(1, (byte)3);
 
-	@ObfuscatedName("k")
+	@ObfuscatedName("l")
 	@ObfuscatedGetter(
-		intValue = 1941114483
+		intValue = 1030094683
 	)
 	@Export("type")
 	final int type;
-	@ObfuscatedName("l")
+	@ObfuscatedName("u")
 	@Export("id")
 	final byte id;
 
@@ -48,188 +47,95 @@ public enum WorldMapSectionType implements Enumerated {
 		this.id = var4;
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
 		signature = "(I)I",
-		garbageValue = "320353268"
+		garbageValue = "-1410702910"
 	)
 	@Export("rsOrdinal")
 	public int rsOrdinal() {
 		return this.id;
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "(Lkx;B)V",
-		garbageValue = "-61"
+		signature = "(B)V",
+		garbageValue = "53"
 	)
-	@Export("updatePlayer")
-	static final void updatePlayer(PacketBuffer var0) {
-		var0.importIndex();
-		int var1 = Client.localPlayerIndex;
-		Player var2 = Client.localPlayer = Client.players[var1] = new Player();
-		var2.index = var1;
-		int var3 = var0.readBits(30);
-		byte var4 = (byte)(var3 >> 28);
-		int var5 = var3 >> 14 & 16383;
-		int var6 = var3 & 16383;
-		var2.pathX[0] = var5 - MusicPatchNode2.baseX * 64;
-		var2.x = (var2.pathX[0] << 7) + (var2.transformedSize() << 6);
-		var2.pathY[0] = var6 - class1.baseY * 64;
-		var2.y = (var2.pathY[0] << 7) + (var2.transformedSize() << 6);
-		class42.plane = var2.plane = var4;
-		if (Players.field1254[var1] != null) {
-			var2.read(Players.field1254[var1]);
-		}
+	public static void method220() {
+		synchronized(KeyHandler.KeyHandler_instance) {
+			++KeyHandler.KeyHandler_idleCycles;
+			KeyHandler.field381 = KeyHandler.field383;
+			KeyHandler.field380 = 0;
+			int var1;
+			if (KeyHandler.field366 < 0) {
+				for (var1 = 0; var1 < 112; ++var1) {
+					KeyHandler.KeyHandler_pressedKeys[var1] = false;
+				}
 
-		Players.Players_count = 0;
-		Players.Players_indices[++Players.Players_count - 1] = var1;
-		Players.field1252[var1] = 0;
-		Players.Players_emptyIdxCount = 0;
-
-		for (int var7 = 1; var7 < 2048; ++var7) {
-			if (var7 != var1) {
-				int var8 = var0.readBits(18);
-				int var9 = var8 >> 16;
-				int var10 = var8 >> 8 & 597;
-				int var11 = var8 & 597;
-				Players.Players_regions[var7] = (var10 << 14) + var11 + (var9 << 28);
-				Players.Players_orientations[var7] = 0;
-				Players.Players_targetIndices[var7] = -1;
-				Players.Players_emptyIndices[++Players.Players_emptyIdxCount - 1] = var7;
-				Players.field1252[var7] = 0;
-			}
-		}
-
-		var0.exportIndex();
-	}
-
-	@ObfuscatedName("aj")
-	@ObfuscatedSignature(
-		signature = "(ILcx;ZB)I",
-		garbageValue = "1"
-	)
-	static int method239(int var0, Script var1, boolean var2) {
-		int var3;
-		if (var0 == ScriptOpcodes.CAM_FORCEANGLE) {
-			HealthBarUpdate.Interpreter_intStackSize -= 2;
-			var3 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
-			int var4 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
-			if (!Client.isCameraLocked) {
-				Client.camAngleX = var3;
-				Client.camAngleY = var4;
-			}
-
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CAM_GETANGLE_XA) {
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = Client.camAngleX;
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CAM_GETANGLE_YA) {
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = Client.camAngleY;
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CAM_SETFOLLOWHEIGHT) {
-			var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			if (var3 < 0) {
-				var3 = 0;
-			}
-
-			Client.camFollowHeight = var3;
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CAM_GETFOLLOWHEIGHT) {
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = Client.camFollowHeight;
-			return 1;
-		}
-		return 2;
-	}
-
-	@ObfuscatedName("aq")
-	@ObfuscatedSignature(
-		signature = "(ILcx;ZI)I",
-		garbageValue = "-292172071"
-	)
-	static int method242(int var0, Script var1, boolean var2) {
-		if (var0 == ScriptOpcodes.VIEWPORT_SETFOV) {
-			HealthBarUpdate.Interpreter_intStackSize -= 2;
-			Client.field782 = (short)ItemContainer.method1116(Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize]);
-			if (Client.field782 <= 0) {
-				Client.field782 = 256;
-			}
-
-			Client.field651 = (short)ItemContainer.method1116(Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1]);
-			if (Client.field651 <= 0) {
-				Client.field651 = 256;
-			}
-
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.VIEWPORT_SETZOOM) {
-			HealthBarUpdate.Interpreter_intStackSize -= 2;
-			Client.field906 = (short)Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
-			if (Client.field906 <= 0) {
-				Client.field906 = 256;
-			}
-
-			Client.field908 = (short)Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
-			if (Client.field908 <= 0) {
-				Client.field908 = 320;
-			}
-
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.VIEWPORT_CLAMPFOV) {
-			HealthBarUpdate.Interpreter_intStackSize -= 4;
-			Client.field820 = (short)Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
-			if (Client.field820 <= 0) {
-				Client.field820 = 1;
-			}
-
-			Client.field790 = (short)Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
-			if (Client.field790 <= 0) {
-				Client.field790 = 32767;
-			} else if (Client.field790 < Client.field820) {
-				Client.field790 = Client.field820;
-			}
-
-			Client.field732 = (short)Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 2];
-			if (Client.field732 <= 0) {
-				Client.field732 = 1;
-			}
-
-			Client.field659 = (short)Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 3];
-			if (Client.field659 <= 0) {
-				Client.field659 = 32767;
-			} else if (Client.field659 < Client.field732) {
-				Client.field659 = Client.field732;
-			}
-
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.VIEWPORT_GETEFFECTIVESIZE) {
-			if (Client.viewportWidget != null) {
-				UrlRequest.setViewportShape(0, 0, Client.viewportWidget.width, Client.viewportWidget.height, false);
-				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = Client.viewportWidth;
-				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = Client.viewportHeight;
+				KeyHandler.field366 = KeyHandler.field375;
 			} else {
-				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = -1;
-				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = -1;
+				while (KeyHandler.field375 != KeyHandler.field366) {
+					var1 = KeyHandler.field369[KeyHandler.field375];
+					KeyHandler.field375 = KeyHandler.field375 + 1 & 127;
+					if (var1 < 0) {
+						KeyHandler.KeyHandler_pressedKeys[~var1] = false;
+					} else {
+						if (!KeyHandler.KeyHandler_pressedKeys[var1] && KeyHandler.field380 < KeyHandler.field379.length - 1) {
+							KeyHandler.field379[++KeyHandler.field380 - 1] = var1;
+						}
+
+						KeyHandler.KeyHandler_pressedKeys[var1] = true;
+					}
+				}
 			}
 
-			return 1;
+			if (KeyHandler.field380 > 0) {
+				KeyHandler.KeyHandler_idleCycles = 0;
+			}
+
+			KeyHandler.field383 = KeyHandler.field382;
 		}
-		if (var0 == ScriptOpcodes.VIEWPORT_GETZOOM) {
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = Client.field906;
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = Client.field908;
-			return 1;
+	}
+
+	@ObfuscatedName("fr")
+	@ObfuscatedSignature(
+		signature = "(Liw;IIIB)V",
+		garbageValue = "3"
+	)
+	@Export("addSequenceSoundEffect")
+	static void addSequenceSoundEffect(SequenceDefinition var0, int var1, int var2, int var3) {
+		if (Client.soundEffectCount < 50 && Client.field860 != 0) {
+			if (var0.soundEffects != null && var1 < var0.soundEffects.length) {
+				int var4 = var0.soundEffects[var1];
+				if (var4 != 0) {
+					int var5 = var4 >> 8;
+					int var6 = var4 >> 4 & 7;
+					int var7 = var4 & 15;
+					Client.soundEffectIds[Client.soundEffectCount] = var5;
+					Client.queuedSoundEffectLoops[Client.soundEffectCount] = var6;
+					Client.queuedSoundEffectDelays[Client.soundEffectCount] = 0;
+					Client.soundEffects[Client.soundEffectCount] = null;
+					int var8 = (var2 - 64) / 128;
+					int var9 = (var3 - 64) / 128;
+					Client.soundLocations[Client.soundEffectCount] = var7 + (var9 << 8) + (var8 << 16);
+					++Client.soundEffectCount;
+				}
+			}
 		}
-		if (var0 == ScriptOpcodes.VIEWPORT_GETFOV) {
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = NetFileRequest.method4140(Client.field782);
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = NetFileRequest.method4140(Client.field651);
-			return 1;
+	}
+
+	@ObfuscatedName("kb")
+	@ObfuscatedSignature(
+		signature = "(IS)V",
+		garbageValue = "1024"
+	)
+	static void method224(int var0) {
+		for (IntegerNode var1 = (IntegerNode)Client.widgetClickMasks.first(); var1 != null; var1 = (IntegerNode)Client.widgetClickMasks.next()) {
+			if ((long)var0 == (var1.key >> 48 & 65535L)) {
+				var1.remove();
+			}
 		}
-		return 2;
+
 	}
 }

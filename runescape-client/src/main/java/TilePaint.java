@@ -4,45 +4,45 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("et")
+@ObfuscatedName("ec")
 @Implements("TilePaint")
 public final class TilePaint {
-	@ObfuscatedName("q")
+	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		intValue = 1202729845
+		intValue = 569513587
 	)
 	@Export("swColor")
 	int swColor;
-	@ObfuscatedName("w")
+	@ObfuscatedName("x")
 	@ObfuscatedGetter(
-		intValue = -1835963633
+		intValue = -1458777975
 	)
 	@Export("seColor")
 	int seColor;
-	@ObfuscatedName("e")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = 2057235411
+		intValue = 658024941
 	)
 	@Export("neColor")
 	int neColor;
-	@ObfuscatedName("p")
+	@ObfuscatedName("g")
 	@ObfuscatedGetter(
-		intValue = -1305916277
+		intValue = -112567911
 	)
 	@Export("nwColor")
 	int nwColor;
-	@ObfuscatedName("k")
+	@ObfuscatedName("l")
 	@ObfuscatedGetter(
-		intValue = -647321713
+		intValue = 696861651
 	)
 	@Export("texture")
 	int texture;
-	@ObfuscatedName("l")
+	@ObfuscatedName("u")
 	@Export("isFlat")
 	boolean isFlat;
-	@ObfuscatedName("b")
+	@ObfuscatedName("j")
 	@ObfuscatedGetter(
-		intValue = 205236161
+		intValue = -130131907
 	)
 	@Export("rgb")
 	int rgb;
@@ -58,36 +58,119 @@ public final class TilePaint {
 		this.isFlat = var7;
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("ee")
 	@ObfuscatedSignature(
-		signature = "(Lhp;III)[Lly;",
-		garbageValue = "1591290793"
+		signature = "(B)V",
+		garbageValue = "-55"
 	)
-	@Export("SpriteBuffer_getSpriteArray")
-	public static Sprite[] SpriteBuffer_getSpriteArray(AbstractArchive var0, int var1, int var2) {
-		if (!Friend.SpriteBuffer_bufferFile(var0, var1, var2)) {
-			return null;
+	static void method3037() {
+		Client.mouseLastLastPressedTimeMillis = 1L;
+		ParamDefinition.mouseRecorder.index = 0;
+		PendingSpawn.hasFocus = true;
+		Client.hadFocus = true;
+		Client.field750 = -1L;
+		class51.method860();
+		Client.packetWriter.clearBuffer();
+		Client.packetWriter.packetBuffer.offset = 0;
+		Client.packetWriter.serverPacket = null;
+		Client.packetWriter.field1274 = null;
+		Client.packetWriter.field1286 = null;
+		Client.packetWriter.field1287 = null;
+		Client.packetWriter.serverPacketLength = 0;
+		Client.packetWriter.field1283 = 0;
+		Client.rebootTimer = 0;
+		Client.logoutTimer = 0;
+		Client.hintArrowType = 0;
+		Client.menuOptionsCount = 0;
+		Client.isMenuOpen = false;
+		MouseHandler.MouseHandler_idleCycles = 0;
+		Messages.Messages_channels.clear();
+		Messages.Messages_hashTable.clear();
+		Messages.Messages_queue.clear();
+		Messages.Messages_count = 0;
+		Client.isItemSelected = 0;
+		Client.isSpellSelected = false;
+		Client.soundEffectCount = 0;
+		Client.camAngleY = 0;
+		Client.oculusOrbState = 0;
+		MenuAction.field1133 = null;
+		Client.minimapState = 0;
+		Client.field848 = -1;
+		Client.destinationX = 0;
+		Client.destinationY = 0;
+		Client.playerAttackOption = AttackOption.AttackOption_hidden;
+		Client.npcAttackOption = AttackOption.AttackOption_hidden;
+		Client.npcCount = 0;
+		Huffman.method3942();
+
+		int var0;
+		for (var0 = 0; var0 < 2048; ++var0) {
+			Client.players[var0] = null;
 		}
-		Sprite[] var4 = new Sprite[SpriteBuffer.SpriteBuffer_spriteCount];
 
-		for (int var5 = 0; var5 < SpriteBuffer.SpriteBuffer_spriteCount; ++var5) {
-			Sprite var6 = var4[var5] = new Sprite();
-			var6.width = SpriteBuffer.SpriteBuffer_spriteWidth;
-			var6.height = SpriteBuffer.SpriteBuffer_spriteHeight;
-			var6.yOffset = Varps.SpriteBuffer_xOffsets[var5];
-			var6.xOffset = SpriteBuffer.SpriteBuffer_yOffsets[var5];
-			var6.subWidth = SpriteBuffer.SpriteBuffer_spriteWidths[var5];
-			var6.subHeight = class216.SpriteBuffer_spriteHeights[var5];
-			int var7 = var6.subHeight * var6.subWidth;
-			byte[] var8 = SpriteBuffer.SpriteBuffer_pixels[var5];
-			var6.pixels = new int[var7];
+		for (var0 = 0; var0 < 32768; ++var0) {
+			Client.npcs[var0] = null;
+		}
 
-			for (int var9 = 0; var9 < var7; ++var9) {
-				var6.pixels[var9] = Frames.SpriteBuffer_spritePalette[var8[var9] & 255];
+		Client.combatTargetPlayerIndex = -1;
+		Client.projectiles.clear();
+		Client.graphicsObjects.clear();
+
+		for (var0 = 0; var0 < 4; ++var0) {
+			for (int var1 = 0; var1 < 104; ++var1) {
+				for (int var2 = 0; var2 < 104; ++var2) {
+					Client.groundItems[var0][var1][var2] = null;
+				}
 			}
 		}
 
-		class16.SpriteBuffer_clear();
-		return var4;
+		Client.pendingSpawns = new NodeDeque();
+		class218.friendSystem.clear();
+
+		for (var0 = 0; var0 < CollisionMap.VarpDefinition_fileCount; ++var0) {
+			VarpDefinition var3 = class30.method518(var0);
+			if (var3 != null) {
+				Varps.Varps_temp[var0] = 0;
+				Varps.Varps_main[var0] = 0;
+			}
+		}
+
+		BoundaryObject.varcs.clearTransient();
+		Client.followerIndex = -1;
+		if (Client.rootInterface != -1) {
+			TileItemPile.method2728(Client.rootInterface);
+		}
+
+		for (InterfaceParent var4 = (InterfaceParent)Client.interfaceParents.first(); var4 != null; var4 = (InterfaceParent)Client.interfaceParents.next()) {
+			StructDefinition.closeInterface(var4, true);
+		}
+
+		Client.rootInterface = -1;
+		Client.interfaceParents = new NodeHashTable(8);
+		Client.meslayerContinueWidget = null;
+		Client.menuOptionsCount = 0;
+		Client.isMenuOpen = false;
+		Client.playerAppearance.update((int[])null, new int[]{0, 0, 0, 0, 0}, false, -1);
+
+		for (var0 = 0; var0 < 8; ++var0) {
+			Client.playerMenuActions[var0] = null;
+			Client.playerOptionsPriorities[var0] = false;
+		}
+
+		class286.method5221();
+		Client.isLoading = true;
+
+		for (var0 = 0; var0 < 100; ++var0) {
+			Client.field827[var0] = true;
+		}
+
+		MouseRecorder.method1145();
+		GrandExchangeOfferUnitPriceComparator.clanChat = null;
+
+		for (var0 = 0; var0 < 8; ++var0) {
+			Client.grandExchangeOffers[var0] = new GrandExchangeOffer();
+		}
+
+		PacketWriter.grandExchangeEvents = null;
 	}
 }

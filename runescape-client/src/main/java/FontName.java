@@ -2,48 +2,65 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("kd")
+@ObfuscatedName("kn")
 @Implements("FontName")
 public class FontName {
-	@ObfuscatedName("q")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "Lkd;"
+		signature = "Lkn;"
 	)
 	@Export("FontName_plain11")
 	public static final FontName FontName_plain11;
-	@ObfuscatedName("w")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "Lkd;"
+		signature = "Lkn;"
 	)
 	@Export("FontName_plain12")
 	public static final FontName FontName_plain12;
-	@ObfuscatedName("e")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "Lkd;"
+		signature = "Lkn;"
 	)
 	@Export("FontName_bold12")
 	public static final FontName FontName_bold12;
-	@ObfuscatedName("p")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "Lkd;"
+		signature = "Lkn;"
 	)
 	@Export("FontName_verdana11")
 	public static final FontName FontName_verdana11;
-	@ObfuscatedName("k")
+	@ObfuscatedName("l")
 	@ObfuscatedSignature(
-		signature = "Lkd;"
+		signature = "Lkn;"
 	)
 	@Export("FontName_verdana13")
 	public static final FontName FontName_verdana13;
-	@ObfuscatedName("l")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "Lkd;"
+		signature = "Lkn;"
 	)
 	@Export("FontName_verdana15")
 	public static final FontName FontName_verdana15;
-	@ObfuscatedName("b")
+	@ObfuscatedName("z")
+	@ObfuscatedSignature(
+		signature = "Ldm;"
+	)
+	@Export("soundSystem")
+	static SoundSystem soundSystem;
+	@ObfuscatedName("dv")
+	@ObfuscatedSignature(
+		signature = "Lio;"
+	)
+	@Export("archive10")
+	static Archive archive10;
+	@ObfuscatedName("gt")
+	@ObfuscatedSignature(
+		signature = "Lli;"
+	)
+	@Export("redHintArrowSprite")
+	static Sprite redHintArrowSprite;
+	@ObfuscatedName("j")
 	@Export("name")
 	String name;
 
@@ -60,778 +77,781 @@ public class FontName {
 		this.name = var1;
 	}
 
-	@ObfuscatedName("d")
-	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "-201583329"
-	)
-	public static void method5317() {
-		ItemDefinition.ItemDefinition_cachedSprites.clear();
+	@ObfuscatedName("c")
+	public static final int method5287(double var0, double var2, double var4) {
+		double var6 = var4;
+		double var8 = var4;
+		double var10 = var4;
+		if (0.0D != var2) {
+			double var12;
+			if (var4 < 0.5D) {
+				var12 = (var2 + 1.0D) * var4;
+			} else {
+				var12 = var2 + var4 - var2 * var4;
+			}
+
+			double var14 = var4 * 2.0D - var12;
+			double var16 = 0.3333333333333333D + var0;
+			if (var16 > 1.0D) {
+				--var16;
+			}
+
+			double var20 = var0 - 0.3333333333333333D;
+			if (var20 < 0.0D) {
+				++var20;
+			}
+
+			if (var16 * 6.0D < 1.0D) {
+				var6 = var14 + var16 * (var12 - var14) * 6.0D;
+			} else if (var16 * 2.0D < 1.0D) {
+				var6 = var12;
+			} else if (3.0D * var16 < 2.0D) {
+				var6 = 6.0D * (0.6666666666666666D - var16) * (var12 - var14) + var14;
+			} else {
+				var6 = var14;
+			}
+
+			if (6.0D * var0 < 1.0D) {
+				var8 = var0 * 6.0D * (var12 - var14) + var14;
+			} else if (2.0D * var0 < 1.0D) {
+				var8 = var12;
+			} else if (3.0D * var0 < 2.0D) {
+				var8 = (var12 - var14) * (0.6666666666666666D - var0) * 6.0D + var14;
+			} else {
+				var8 = var14;
+			}
+
+			if (6.0D * var20 < 1.0D) {
+				var10 = var14 + var20 * (var12 - var14) * 6.0D;
+			} else if (var20 * 2.0D < 1.0D) {
+				var10 = var12;
+			} else if (3.0D * var20 < 2.0D) {
+				var10 = var14 + (0.6666666666666666D - var20) * (var12 - var14) * 6.0D;
+			} else {
+				var10 = var14;
+			}
+		}
+
+		int var22 = (int)(256.0D * var6);
+		int var13 = (int)(256.0D * var8);
+		int var23 = (int)(var10 * 256.0D);
+		int var15 = var23 + (var13 << 8) + (var22 << 16);
+		return var15;
 	}
 
-	@ObfuscatedName("az")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(ILcx;ZI)I",
-		garbageValue = "-225592066"
+		signature = "(I)[Lkn;",
+		garbageValue = "-1831558082"
 	)
-	static int method5316(int var0, Script var1, boolean var2) {
-		int var3;
-		if (var0 == ScriptOpcodes.OC_NAME) {
-			var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			Interpreter.Interpreter_stringStack[++Skills.Interpreter_stringStackSize - 1] = WorldMapArea.getItemDefinition(var3).name;
-			return 1;
+	public static FontName[] method5288() {
+		return new FontName[]{FontName_verdana13, FontName_plain11, FontName_verdana11, FontName_verdana15, FontName_plain12, FontName_bold12};
+	}
+
+	@ObfuscatedName("x")
+	@ObfuscatedSignature(
+		signature = "(II)Lia;",
+		garbageValue = "1426575141"
+	)
+	@Export("getNpcDefinition")
+	public static NPCDefinition getNpcDefinition(int var0) {
+		NPCDefinition var1 = (NPCDefinition)NPCDefinition.NpcDefinition_cached.get((long)var0);
+		if (var1 != null) {
+			return var1;
+		} else {
+			byte[] var2 = NPCDefinition.NpcDefinition_archive.takeFile(9, var0);
+			var1 = new NPCDefinition();
+			var1.id = var0;
+			if (var2 != null) {
+				var1.decode(new Buffer(var2));
+			}
+
+			var1.postDecode();
+			NPCDefinition.NpcDefinition_cached.put(var1, (long)var0);
+			return var1;
 		}
+	}
+
+	@ObfuscatedName("t")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/String;II)Z",
+		garbageValue = "-1001272425"
+	)
+	static boolean method5292(String var0, int var1) {
+		return ReflectionCheck.method2261(var0, var1, "openjs");
+	}
+
+	@ObfuscatedName("g")
+	@ObfuscatedSignature(
+		signature = "(Lbn;I)V",
+		garbageValue = "76683988"
+	)
+	static void method5284(GameShell var0) {
 		int var4;
-		ItemDefinition var5;
-		if (var0 == ScriptOpcodes.OC_OP) {
-			HealthBarUpdate.Interpreter_intStackSize -= 2;
-			var3 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
-			var4 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
-			var5 = WorldMapArea.getItemDefinition(var3);
-			if (var4 >= 1 && var4 <= 5 && var5.groundActions[var4 - 1] != null) {
-				Interpreter.Interpreter_stringStack[++Skills.Interpreter_stringStackSize - 1] = var5.groundActions[var4 - 1];
-			} else {
-				Interpreter.Interpreter_stringStack[++Skills.Interpreter_stringStackSize - 1] = "";
-			}
-
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.OC_IOP) {
-			HealthBarUpdate.Interpreter_intStackSize -= 2;
-			var3 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
-			var4 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
-			var5 = WorldMapArea.getItemDefinition(var3);
-			if (var4 >= 1 && var4 <= 5 && var5.inventoryActions[var4 - 1] != null) {
-				Interpreter.Interpreter_stringStack[++Skills.Interpreter_stringStackSize - 1] = var5.inventoryActions[var4 - 1];
-			} else {
-				Interpreter.Interpreter_stringStack[++Skills.Interpreter_stringStackSize - 1] = "";
-			}
-
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.OC_COST) {
-			var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = WorldMapArea.getItemDefinition(var3).price;
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.OC_STACKABLE) {
-			var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = WorldMapArea.getItemDefinition(var3).isStackable == 1 ? 1 : 0;
-			return 1;
-		}
-		ItemDefinition var6;
-		if (var0 == ScriptOpcodes.OC_CERT) {
-			var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			var6 = WorldMapArea.getItemDefinition(var3);
-			if (var6.noteTemplate == -1 && var6.note >= 0) {
-				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var6.note;
-			} else {
-				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3;
-			}
-
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.OC_UNCERT) {
-			var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			var6 = WorldMapArea.getItemDefinition(var3);
-			if (var6.noteTemplate >= 0 && var6.note >= 0) {
-				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var6.note;
-			} else {
-				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3;
-			}
-
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.OC_MEMBERS) {
-			var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = WorldMapArea.getItemDefinition(var3).isMembersOnly ? 1 : 0;
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.OC_PLACEHOLDER) {
-			var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			var6 = WorldMapArea.getItemDefinition(var3);
-			if (var6.placeholderTemplate == -1 && var6.placeholder >= 0) {
-				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var6.placeholder;
-			} else {
-				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3;
-			}
-
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.OC_UNPLACEHOLDER) {
-			var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			var6 = WorldMapArea.getItemDefinition(var3);
-			if (var6.placeholderTemplate >= 0 && var6.placeholder >= 0) {
-				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var6.placeholder;
-			} else {
-				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3;
-			}
-
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.OC_FIND) {
-			String var7 = Interpreter.Interpreter_stringStack[--Skills.Interpreter_stringStackSize];
-			var4 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			WorldMapDecoration.findItemDefinitions(var7, var4 == 1);
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = FloorOverlayDefinition.foundItemIdCount;
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.OC_FINDNEXT) {
-			if (WorldMapData_1.foundItemIds != null && class32.foundItemIndex < FloorOverlayDefinition.foundItemIdCount) {
-				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = WorldMapData_1.foundItemIds[++class32.foundItemIndex - 1] & '\uffff';
-			} else {
-				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = -1;
-			}
-
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.OC_FINDRESET) {
-			class32.foundItemIndex = 0;
-			return 1;
-		}
-		return 2;
-	}
-
-	@ObfuscatedName("ii")
-	@ObfuscatedSignature(
-		signature = "([Lhj;IIIIIIIII)V",
-		garbageValue = "-414433713"
-	)
-	@Export("drawInterface")
-	static final void drawInterface(Widget[] var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
-		Rasterizer2D.Rasterizer2D_setClip(var2, var3, var4, var5);
-		Rasterizer3D.Rasterizer3D_setClipFromRasterizer2D();
-
-		for (int var9 = 0; var9 < var0.length; ++var9) {
-			Widget var10 = var0[var9];
-			if (var10 != null && (var10.parentId == var1 || var1 == -1412584499 && var10 == Client.clickedWidget)) {
-				int var11;
-				if (var8 == -1) {
-					Client.rootWidgetXs[Client.rootWidgetCount] = var10.x + var6;
-					Client.rootWidgetYs[Client.rootWidgetCount] = var7 + var10.y;
-					Client.rootWidgetWidths[Client.rootWidgetCount] = var10.width;
-					Client.rootWidgetHeights[Client.rootWidgetCount] = var10.height;
-					var11 = ++Client.rootWidgetCount - 1;
-				} else {
-					var11 = var8;
-				}
-
-				var10.rootIndex = var11;
-				var10.cycle = Client.cycle;
-				if (!var10.isIf3 || !ScriptEvent.isComponentHidden(var10)) {
-					if (var10.contentType > 0) {
-						GrandExchangeOfferTotalQuantityComparator.method85(var10);
+		if (Login.worldSelectOpen) {
+			while (true) {
+				if (!AbstractUserComparator.isKeyDown()) {
+					if (MouseHandler.MouseHandler_lastButton != 1 && (WorldMapSection1.mouseCam || MouseHandler.MouseHandler_lastButton != 4)) {
+						break;
 					}
 
-					int var12 = var10.x + var6;
-					int var13 = var7 + var10.y;
-					int var14 = var10.transparencyTop;
-					int var15;
-					int var16;
-					if (var10 == Client.clickedWidget) {
-						if (var1 != -1412584499 && !var10.isScrollBar) {
-							WorldMapIcon_1.field188 = var0;
-							WorldMapDecorationType.field2742 = var6;
-							ClientPacket.field2305 = var7;
-							continue;
-						}
-
-						if (Client.isDraggingWidget && Client.field873) {
-							var15 = MouseHandler.MouseHandler_x;
-							var16 = MouseHandler.MouseHandler_y;
-							var15 -= Client.widgetClickX;
-							var16 -= Client.widgetClickY;
-							if (var15 < Client.field834) {
-								var15 = Client.field834;
-							}
-
-							if (var15 + var10.width > Client.field834 + Client.clickedWidgetParent.width) {
-								var15 = Client.field834 + Client.clickedWidgetParent.width - var10.width;
-							}
-
-							if (var16 < Client.field835) {
-								var16 = Client.field835;
-							}
-
-							if (var16 + var10.height > Client.field835 + Client.clickedWidgetParent.height) {
-								var16 = Client.field835 + Client.clickedWidgetParent.height - var10.height;
-							}
-
-							var12 = var15;
-							var13 = var16;
-						}
-
-						if (!var10.isScrollBar) {
-							var14 = 128;
-						}
+					int var1 = Login.xPadding + 280;
+					if (MouseHandler.MouseHandler_lastPressedX >= var1 && MouseHandler.MouseHandler_lastPressedX <= var1 + 14 && MouseHandler.MouseHandler_lastPressedY >= 4 && MouseHandler.MouseHandler_lastPressedY <= 18) {
+						class30.changeWorldSelectSorting(0, 0);
+						break;
 					}
 
-					int var17;
-					int var18;
-					int var19;
-					int var20;
-					int var21;
-					int var22;
-					if (var10.type == 2) {
-						var15 = var2;
-						var16 = var3;
-						var17 = var4;
-						var18 = var5;
-					} else if (var10.type == 9) {
-						var19 = var12;
-						var20 = var13;
-						var21 = var12 + var10.width;
-						var22 = var13 + var10.height;
-						if (var21 < var12) {
-							var19 = var21;
-							var21 = var12;
-						}
+					if (MouseHandler.MouseHandler_lastPressedX >= var1 + 15 && MouseHandler.MouseHandler_lastPressedX <= var1 + 80 && MouseHandler.MouseHandler_lastPressedY >= 4 && MouseHandler.MouseHandler_lastPressedY <= 18) {
+						class30.changeWorldSelectSorting(0, 1);
+						break;
+					}
 
-						if (var22 < var13) {
-							var20 = var22;
-							var22 = var13;
-						}
+					int var2 = Login.xPadding + 390;
+					if (MouseHandler.MouseHandler_lastPressedX >= var2 && MouseHandler.MouseHandler_lastPressedX <= var2 + 14 && MouseHandler.MouseHandler_lastPressedY >= 4 && MouseHandler.MouseHandler_lastPressedY <= 18) {
+						class30.changeWorldSelectSorting(1, 0);
+						break;
+					}
 
-						++var21;
-						++var22;
-						var15 = var19 > var2 ? var19 : var2;
-						var16 = var20 > var3 ? var20 : var3;
-						var17 = var21 < var4 ? var21 : var4;
-						var18 = var22 < var5 ? var22 : var5;
+					if (MouseHandler.MouseHandler_lastPressedX >= var2 + 15 && MouseHandler.MouseHandler_lastPressedX <= var2 + 80 && MouseHandler.MouseHandler_lastPressedY >= 4 && MouseHandler.MouseHandler_lastPressedY <= 18) {
+						class30.changeWorldSelectSorting(1, 1);
+						break;
+					}
+
+					int var17 = Login.xPadding + 500;
+					if (MouseHandler.MouseHandler_lastPressedX >= var17 && MouseHandler.MouseHandler_lastPressedX <= var17 + 14 && MouseHandler.MouseHandler_lastPressedY >= 4 && MouseHandler.MouseHandler_lastPressedY <= 18) {
+						class30.changeWorldSelectSorting(2, 0);
+						break;
+					}
+
+					if (MouseHandler.MouseHandler_lastPressedX >= var17 + 15 && MouseHandler.MouseHandler_lastPressedX <= var17 + 80 && MouseHandler.MouseHandler_lastPressedY >= 4 && MouseHandler.MouseHandler_lastPressedY <= 18) {
+						class30.changeWorldSelectSorting(2, 1);
+						break;
+					}
+
+					var4 = Login.xPadding + 610;
+					if (MouseHandler.MouseHandler_lastPressedX >= var4 && MouseHandler.MouseHandler_lastPressedX <= var4 + 14 && MouseHandler.MouseHandler_lastPressedY >= 4 && MouseHandler.MouseHandler_lastPressedY <= 18) {
+						class30.changeWorldSelectSorting(3, 0);
+						break;
+					}
+
+					if (MouseHandler.MouseHandler_lastPressedX >= var4 + 15 && MouseHandler.MouseHandler_lastPressedX <= var4 + 80 && MouseHandler.MouseHandler_lastPressedY >= 4 && MouseHandler.MouseHandler_lastPressedY <= 18) {
+						class30.changeWorldSelectSorting(3, 1);
+						break;
+					}
+
+					if (MouseHandler.MouseHandler_lastPressedX >= Login.xPadding + 708 && MouseHandler.MouseHandler_lastPressedY >= 4 && MouseHandler.MouseHandler_lastPressedX <= Login.xPadding + 708 + 50 && MouseHandler.MouseHandler_lastPressedY <= 20) {
+						GrandExchangeOfferOwnWorldComparator.method1232();
+						break;
+					}
+
+					if (Login.hoveredWorldIndex != -1) {
+						World var5 = World.World_worlds[Login.hoveredWorldIndex];
+						ReflectionCheck.changeWorld(var5);
+						GrandExchangeOfferOwnWorldComparator.method1232();
 					} else {
-						var19 = var12 + var10.width;
-						var20 = var13 + var10.height;
-						var15 = var12 > var2 ? var12 : var2;
-						var16 = var13 > var3 ? var13 : var3;
-						var17 = var19 < var4 ? var19 : var4;
-						var18 = var20 < var5 ? var20 : var5;
+						if (Login.worldSelectPage > 0 && class2.worldSelectLeftSprite != null && MouseHandler.MouseHandler_lastPressedX >= 0 && MouseHandler.MouseHandler_lastPressedX <= class2.worldSelectLeftSprite.subWidth && MouseHandler.MouseHandler_lastPressedY >= GameShell.canvasHeight / 2 - 50 && MouseHandler.MouseHandler_lastPressedY <= GameShell.canvasHeight / 2 + 50) {
+							--Login.worldSelectPage;
+						}
+
+						if (Login.worldSelectPage < Login.worldSelectPagesCount && WorldMapRectangle.worldSelectRightSprite != null && MouseHandler.MouseHandler_lastPressedX >= GraphicsDefaults.canvasWidth - WorldMapRectangle.worldSelectRightSprite.subWidth - 5 && MouseHandler.MouseHandler_lastPressedX <= GraphicsDefaults.canvasWidth && MouseHandler.MouseHandler_lastPressedY >= GameShell.canvasHeight / 2 - 50 && MouseHandler.MouseHandler_lastPressedY <= GameShell.canvasHeight / 2 + 50) {
+							++Login.worldSelectPage;
+						}
+					}
+					break;
+				}
+
+				if (class43.field361 == 13) {
+					GrandExchangeOfferOwnWorldComparator.method1232();
+					break;
+				}
+
+				if (class43.field361 == 96) {
+					if (Login.worldSelectPage > 0 && class2.worldSelectLeftSprite != null) {
+						--Login.worldSelectPage;
+					}
+				} else if (class43.field361 == 97 && Login.worldSelectPage < Login.worldSelectPagesCount && WorldMapRectangle.worldSelectRightSprite != null) {
+					++Login.worldSelectPage;
+				}
+			}
+
+		} else {
+			if ((MouseHandler.MouseHandler_lastButton == 1 || !WorldMapSection1.mouseCam && MouseHandler.MouseHandler_lastButton == 4) && MouseHandler.MouseHandler_lastPressedX >= Login.xPadding + 765 - 50 && MouseHandler.MouseHandler_lastPressedY >= 453) {
+				Actor.clientPreferences.titleMusicDisabled = !Actor.clientPreferences.titleMusicDisabled;
+				class296.savePreferences();
+				if (!Actor.clientPreferences.titleMusicDisabled) {
+					UserComparator7.method3376(WorldMapDecoration.archive6, "scape main", "", 255, false);
+				} else {
+					class197.midiPcmStream.clear();
+					class197.field2376 = 1;
+					class197.musicTrackArchive = null;
+				}
+			}
+
+			if (Client.gameState != 5) {
+				if (-1L == Login.field1162) {
+					Login.field1162 = SoundCache.method2480() + 1000L;
+				}
+
+				long var12 = SoundCache.method2480();
+				boolean var3;
+				if (Client.archiveLoaders != null && Client.archiveLoaderArchive < Client.archiveLoaders.size()) {
+					while (true) {
+						if (Client.archiveLoaderArchive >= Client.archiveLoaders.size()) {
+							var3 = true;
+							break;
+						}
+
+						ArchiveLoader var16 = (ArchiveLoader)Client.archiveLoaders.get(Client.archiveLoaderArchive);
+						if (!var16.isLoaded()) {
+							var3 = false;
+							break;
+						}
+
+						++Client.archiveLoaderArchive;
+					}
+				} else {
+					var3 = true;
+				}
+
+				if (var3 && Login.field1164 == -1L) {
+					Login.field1164 = var12;
+					if (Login.field1164 > Login.field1162) {
+						Login.field1162 = Login.field1164;
+					}
+				}
+
+				if (Client.gameState == 10 || Client.gameState == 11) {
+					if (class43.clientLanguage == Language.Language_EN) {
+						if (MouseHandler.MouseHandler_lastButton == 1 || !WorldMapSection1.mouseCam && MouseHandler.MouseHandler_lastButton == 4) {
+							var4 = Login.xPadding + 5;
+							short var14 = 463;
+							byte var6 = 100;
+							byte var7 = 35;
+							if (MouseHandler.MouseHandler_lastPressedX >= var4 && MouseHandler.MouseHandler_lastPressedX <= var4 + var6 && MouseHandler.MouseHandler_lastPressedY >= var14 && MouseHandler.MouseHandler_lastPressedY <= var7 + var14) {
+								if (ClientPacket.loadWorlds()) {
+									Login.worldSelectOpen = true;
+									Login.worldSelectPage = 0;
+									Login.worldSelectPagesCount = 0;
+								}
+
+								return;
+							}
+						}
+
+						if (RouteStrategy.World_request != null && ClientPacket.loadWorlds()) {
+							Login.worldSelectOpen = true;
+							Login.worldSelectPage = 0;
+							Login.worldSelectPagesCount = 0;
+						}
 					}
 
-					if (!var10.isIf3 || var15 < var17 && var16 < var18) {
-						if (var10.contentType != 0) {
-							if (var10.contentType == 1336) {
-								if (Client.displayFps) {
-									var13 += 15;
-									class169.fontPlain12.drawRightAligned("Fps:" + GameShell.fps, var12 + var10.width, var13, 16776960, -1);
-									var13 += 15;
-									Runtime var42 = Runtime.getRuntime();
-									var20 = (int)((var42.totalMemory() - var42.freeMemory()) / 1024L);
-									var21 = 16776960;
-									if (var20 > 327680 && !Client.isLowDetail) {
-										var21 = 16711680;
-									}
+					var4 = MouseHandler.MouseHandler_lastButton;
+					int var25 = MouseHandler.MouseHandler_lastPressedX;
+					int var18 = MouseHandler.MouseHandler_lastPressedY;
+					if (var4 == 0) {
+						var25 = MouseHandler.MouseHandler_x;
+						var18 = MouseHandler.MouseHandler_y;
+					}
 
-									class169.fontPlain12.drawRightAligned("Mem:" + var20 + "k", var12 + var10.width, var13, var21, -1);
-									var13 += 15;
-								}
-								continue;
-							}
+					if (!WorldMapSection1.mouseCam && var4 == 4) {
+						var4 = 1;
+					}
 
-							if (var10.contentType == 1337) {
-								Client.field803 = var12;
-								Client.field804 = var13;
-								class4.drawEntities(var12, var13, var10.width, var10.height);
-								Client.field843[var10.rootIndex] = true;
-								Rasterizer2D.Rasterizer2D_setClip(var2, var3, var4, var5);
-								continue;
-							}
+					int var8;
+					short var9;
+					if (Login.loginIndex == 0) {
+						boolean var19 = false;
 
-							if (var10.contentType == 1338) {
-								ArchiveLoader.drawMinimap(var10, var12, var13, var11);
-								Rasterizer2D.Rasterizer2D_setClip(var2, var3, var4, var5);
-								continue;
-							}
-
-							if (var10.contentType == 1339) {
-								WorldMapIcon_0.drawCompass(var10, var12, var13, var11);
-								Rasterizer2D.Rasterizer2D_setClip(var2, var3, var4, var5);
-								continue;
-							}
-
-							if (var10.contentType == 1400) {
-								BoundaryObject.worldMap.draw(var12, var13, var10.width, var10.height, Client.cycle);
-							}
-
-							if (var10.contentType == 1401) {
-								BoundaryObject.worldMap.drawOverview(var12, var13, var10.width, var10.height);
-							}
-
-							if (var10.contentType == 1402) {
-								Ignored.loginScreenRunesAnimation.draw(var12, Client.cycle);
+						while (AbstractUserComparator.isKeyDown()) {
+							if (class43.field361 == 84) {
+								var19 = true;
 							}
 						}
 
-						if (var10.type == 0) {
-							if (!var10.isIf3 && ScriptEvent.isComponentHidden(var10) && var10 != LoginScreenAnimation.mousedOverWidgetIf1) {
-								continue;
-							}
-
-							if (!var10.isIf3) {
-								if (var10.scrollY > var10.scrollHeight - var10.height) {
-									var10.scrollY = var10.scrollHeight - var10.height;
-								}
-
-								if (var10.scrollY < 0) {
-									var10.scrollY = 0;
-								}
-							}
-
-							drawInterface(var0, var10.id, var15, var16, var17, var18, var12 - var10.scrollX, var13 - var10.scrollY, var11);
-							if (var10.children != null) {
-								drawInterface(var10.children, var10.id, var15, var16, var17, var18, var12 - var10.scrollX, var13 - var10.scrollY, var11);
-							}
-
-							InterfaceParent var30 = (InterfaceParent)Client.interfaceParents.get((long)var10.id);
-							if (var30 != null) {
-								class191.drawWidgets(var30.group, var15, var16, var17, var18, var12, var13, var11);
-							}
-
-							Rasterizer2D.Rasterizer2D_setClip(var2, var3, var4, var5);
-							Rasterizer3D.Rasterizer3D_setClipFromRasterizer2D();
+						var8 = VarcInt.loginBoxCenter - 80;
+						var9 = 291;
+						if (var4 == 1 && var25 >= var8 - 75 && var25 <= var8 + 75 && var18 >= var9 - 20 && var18 <= var9 + 20) {
+							WorldMapIcon_0.openURL(GrandExchangeEvents.method67("secure", true) + "m=account-creation/g=oldscape/create_account_funnel.ws", true, false);
 						}
 
-						if (Client.isResizable || Client.field862[var11] || Client.gameDrawingMode > 1) {
-							if (var10.type == 0 && !var10.isIf3 && var10.scrollHeight > var10.height) {
-								NetFileRequest.method4139(var12 + var10.width, var13, var10.scrollY, var10.height, var10.scrollHeight);
-							}
-
-							if (var10.type != 1) {
-								int var23;
-								int var24;
-								int var25;
-								int var26;
-								if (var10.type == 2) {
-									var19 = 0;
-
-									for (var20 = 0; var20 < var10.rawHeight; ++var20) {
-										for (var21 = 0; var21 < var10.rawWidth; ++var21) {
-											var22 = var12 + var21 * (var10.paddingX + 32);
-											var23 = var13 + var20 * (var10.paddingY + 32);
-											if (var19 < 20) {
-												var22 += var10.inventoryXOffsets[var19];
-												var23 += var10.inventoryYOffsets[var19];
-											}
-
-											if (var10.itemIds[var19] <= 0) {
-												if (var10.inventorySprites != null && var19 < 20) {
-													Sprite var46 = var10.getInventorySprite(var19);
-													if (var46 != null) {
-														var46.drawAt2(var22, var23);
-													} else if (Widget.field2562) {
-														Strings.method4120(var10);
-													}
-												}
-											} else {
-												boolean var37 = false;
-												boolean var38 = false;
-												var26 = var10.itemIds[var19] - 1;
-												if (var22 + 32 > var2 && var22 < var4 && var23 + 32 > var3 && var23 < var5 || var10 == WorldMapIcon_0.dragInventoryWidget && var19 == Client.dragItemSlotSource) {
-													Sprite var27;
-													if (Client.isItemSelected == 1 && var19 == WorldMapIcon_1.selectedItemSlot && var10.id == MouseRecorder.selectedItemWidget) {
-														var27 = WorldMapSection0.getItemSprite(var26, var10.itemQuantities[var19], 2, 0, 2, false);
-													} else {
-														var27 = WorldMapSection0.getItemSprite(var26, var10.itemQuantities[var19], 1, 3153952, 2, false);
-													}
-
-													if (var27 != null) {
-														if (var10 == WorldMapIcon_0.dragInventoryWidget && var19 == Client.dragItemSlotSource) {
-															var24 = MouseHandler.MouseHandler_x - Client.field654;
-															var25 = MouseHandler.MouseHandler_y - Client.field763;
-															if (var24 < 5 && var24 > -5) {
-																var24 = 0;
-															}
-
-															if (var25 < 5 && var25 > -5) {
-																var25 = 0;
-															}
-
-															if (Client.itemDragDuration < 5) {
-																var24 = 0;
-																var25 = 0;
-															}
-
-															var27.method6129(var24 + var22, var25 + var23, 128);
-															if (var1 != -1) {
-																Widget var28 = var0[var1 & 65535];
-																int var29;
-																if (var23 + var25 < Rasterizer2D.Rasterizer2D_yClipStart && var28.scrollY > 0) {
-																	var29 = (Rasterizer2D.Rasterizer2D_yClipStart - var23 - var25) * Client.field718 / 3;
-																	if (var29 > Client.field718 * 10) {
-																		var29 = Client.field718 * 10;
-																	}
-
-																	if (var29 > var28.scrollY) {
-																		var29 = var28.scrollY;
-																	}
-
-																	var28.scrollY -= var29;
-																	Client.field763 += var29;
-																	Strings.method4120(var28);
-																}
-
-																if (var25 + var23 + 32 > Rasterizer2D.Rasterizer2D_yClipEnd && var28.scrollY < var28.scrollHeight - var28.height) {
-																	var29 = (var25 + var23 + 32 - Rasterizer2D.Rasterizer2D_yClipEnd) * Client.field718 / 3;
-																	if (var29 > Client.field718 * 10) {
-																		var29 = Client.field718 * 10;
-																	}
-
-																	if (var29 > var28.scrollHeight - var28.height - var28.scrollY) {
-																		var29 = var28.scrollHeight - var28.height - var28.scrollY;
-																	}
-
-																	var28.scrollY += var29;
-																	Client.field763 -= var29;
-																	Strings.method4120(var28);
-																}
-															}
-														} else if (var10 == ItemContainer.field549 && var19 == Client.field698) {
-															var27.method6129(var22, var23, 128);
-														} else {
-															var27.drawAt2(var22, var23);
-														}
-													} else {
-														Strings.method4120(var10);
-													}
-												}
-											}
-
-											++var19;
-										}
-									}
-								} else if (var10.type == 3) {
-									if (ChatChannel.runCs1(var10)) {
-										var19 = var10.color2;
-										if (var10 == LoginScreenAnimation.mousedOverWidgetIf1 && var10.mouseOverColor2 != 0) {
-											var19 = var10.mouseOverColor2;
-										}
-									} else {
-										var19 = var10.color;
-										if (var10 == LoginScreenAnimation.mousedOverWidgetIf1 && var10.mouseOverColor != 0) {
-											var19 = var10.mouseOverColor;
-										}
-									}
-
-									if (var10.fill) {
-										switch(var10.fillMode.value) {
-										case 1:
-											Rasterizer2D.Rasterizer2D_fillRectangleGradient(var12, var13, var10.width, var10.height, var10.color, var10.color2);
-											break;
-										case 2:
-											Rasterizer2D.Rasterizer2D_fillRectangleGradientAlpha(var12, var13, var10.width, var10.height, var10.color, var10.color2, 255 - (var10.transparencyTop & 255), 255 - (var10.transparencyBot & 255));
-											break;
-										default:
-											if (var14 == 0) {
-												Rasterizer2D.Rasterizer2D_fillRectangle(var12, var13, var10.width, var10.height, var19);
-											} else {
-												Rasterizer2D.Rasterizer2D_fillRectangleAlpha(var12, var13, var10.width, var10.height, var19, 256 - (var14 & 255));
-											}
-										}
-									} else if (var14 == 0) {
-										Rasterizer2D.Rasterizer2D_drawRectangle(var12, var13, var10.width, var10.height, var19);
-									} else {
-										Rasterizer2D.Rasterizer2D_drawRectangleAlpha(var12, var13, var10.width, var10.height, var19, 256 - (var14 & 255));
-									}
+						var8 = VarcInt.loginBoxCenter + 80;
+						if (var4 == 1 && var25 >= var8 - 75 && var25 <= var8 + 75 && var18 >= var9 - 20 && var18 <= var9 + 20 || var19) {
+							if ((Client.worldProperties & 33554432) != 0) {
+								Login.Login_response0 = "";
+								Login.Login_response1 = "This is a <col=00ffff>Beta<col=ffffff> world.";
+								Login.Login_response2 = "Your normal account will not be affected.";
+								Login.Login_response3 = "";
+								Login.loginIndex = 1;
+								if (Client.Login_isUsernameRemembered && Login.Login_username != null && Login.Login_username.length() > 0) {
+									Login.currentLoginField = 1;
 								} else {
-									Font var39;
-									if (var10.type == 4) {
-										var39 = var10.getFont();
-										if (var39 == null) {
-											if (Widget.field2562) {
-												Strings.method4120(var10);
-											}
-										} else {
-											String var44 = var10.text;
-											if (ChatChannel.runCs1(var10)) {
-												var20 = var10.color2;
-												if (var10 == LoginScreenAnimation.mousedOverWidgetIf1 && var10.mouseOverColor2 != 0) {
-													var20 = var10.mouseOverColor2;
-												}
+									Login.currentLoginField = 0;
+								}
+							} else if ((Client.worldProperties & 4) != 0) {
+								if ((Client.worldProperties & 1024) != 0) {
+									Login.Login_response1 = "This is a <col=ffff00>High Risk <col=ff0000>PvP<col=ffffff> world.";
+									Login.Login_response2 = "Players can attack each other almost everywhere";
+									Login.Login_response3 = "and the Protect Item prayer won't work.";
+								} else {
+									Login.Login_response1 = "This is a <col=ff0000>PvP<col=ffffff> world.";
+									Login.Login_response2 = "Players can attack each other";
+									Login.Login_response3 = "almost everywhere.";
+								}
 
-												if (var10.text2.length() > 0) {
-													var44 = var10.text2;
-												}
-											} else {
-												var20 = var10.color;
-												if (var10 == LoginScreenAnimation.mousedOverWidgetIf1 && var10.mouseOverColor != 0) {
-													var20 = var10.mouseOverColor;
-												}
-											}
+								Login.Login_response0 = "Warning!";
+								Login.loginIndex = 1;
+								if (Client.Login_isUsernameRemembered && Login.Login_username != null && Login.Login_username.length() > 0) {
+									Login.currentLoginField = 1;
+								} else {
+									Login.currentLoginField = 0;
+								}
+							} else if ((Client.worldProperties & 1024) != 0) {
+								Login.Login_response1 = "This is a <col=ffff00>High Risk<col=ffffff> world.";
+								Login.Login_response2 = "The Protect Item prayer will";
+								Login.Login_response3 = "not work on this world.";
+								Login.Login_response0 = "Warning!";
+								Login.loginIndex = 1;
+								if (Client.Login_isUsernameRemembered && Login.Login_username != null && Login.Login_username.length() > 0) {
+									Login.currentLoginField = 1;
+								} else {
+									Login.currentLoginField = 0;
+								}
+							} else {
+								WorldMapID.method520(false);
+							}
+						}
+					} else {
+						int var20;
+						short var22;
+						if (Login.loginIndex != 1) {
+							boolean var10;
+							int var11;
+							short var21;
+							if (Login.loginIndex == 2) {
+								var21 = 201;
+								var20 = var21 + 52;
+								if (var4 == 1 && var18 >= var20 - 12 && var18 < var20 + 2) {
+									Login.currentLoginField = 0;
+								}
 
-											if (var10.isIf3 && var10.itemId != -1) {
-												ItemDefinition var45 = WorldMapArea.getItemDefinition(var10.itemId);
-												var44 = var45.name;
-												if (var44 == null) {
-													var44 = "null";
-												}
+								var20 += 15;
+								if (var4 == 1 && var18 >= var20 - 12 && var18 < var20 + 2) {
+									Login.currentLoginField = 1;
+								}
 
-												if ((var45.isStackable == 1 || var10.itemQuantity != 1) && var10.itemQuantity != -1) {
-													var44 = ClientPreferences.colorStartTag(16748608) + var44 + "</col>" + " " + 'x' + class188.method3631(var10.itemQuantity);
-												}
-											}
-
-											if (var10 == Client.field850) {
-												var44 = "Please wait...";
-												var20 = var10.color;
-											}
-
-											if (!var10.isIf3) {
-												var44 = GrandExchangeOfferTotalQuantityComparator.method92(var44, var10);
-											}
-
-											var39.drawLines(var44, var12, var13, var10.width, var10.height, var20, var10.textShadowed ? 0 : -1, var10.textXAlignment, var10.textYAlignment, var10.textLineHeight);
-										}
-									} else if (var10.type == 5) {
-										Sprite var40;
-										if (!var10.isIf3) {
-											var40 = var10.getSprite(ChatChannel.runCs1(var10));
-											if (var40 != null) {
-												var40.drawAt2(var12, var13);
-											} else if (Widget.field2562) {
-												Strings.method4120(var10);
-											}
-										} else {
-											if (var10.itemId != -1) {
-												var40 = WorldMapSection0.getItemSprite(var10.itemId, var10.itemQuantity, var10.outline, var10.spriteShadow, var10.itemQuantityMode, false);
-											} else {
-												var40 = var10.getSprite(false);
-											}
-
-											if (var40 == null) {
-												if (Widget.field2562) {
-													Strings.method4120(var10);
-												}
-											} else {
-												var20 = var40.width;
-												var21 = var40.height;
-												if (!var10.spriteTiling) {
-													var22 = var10.width * 4096 / var20;
-													if (var10.spriteAngle != 0) {
-														var40.method6186(var10.width / 2 + var12, var10.height / 2 + var13, var10.spriteAngle, var22);
-													} else if (var14 != 0) {
-														var40.method6131(var12, var13, var10.width, var10.height, 256 - (var14 & 255));
-													} else if (var20 == var10.width && var21 == var10.height) {
-														var40.drawAt2(var12, var13);
-													} else {
-														var40.method6125(var12, var13, var10.width, var10.height);
-													}
-												} else {
-													Rasterizer2D.Rasterizer2D_expandClip(var12, var13, var12 + var10.width, var13 + var10.height);
-													var22 = (var20 - 1 + var10.width) / var20;
-													var23 = (var21 - 1 + var10.height) / var21;
-
-													for (var24 = 0; var24 < var22; ++var24) {
-														for (var25 = 0; var25 < var23; ++var25) {
-															if (var10.spriteAngle != 0) {
-																var40.method6186(var20 / 2 + var12 + var24 * var20, var21 / 2 + var13 + var21 * var25, var10.spriteAngle, 4096);
-															} else if (var14 != 0) {
-																var40.method6129(var12 + var24 * var20, var13 + var25 * var21, 256 - (var14 & 255));
-															} else {
-																var40.drawAt2(var12 + var24 * var20, var13 + var21 * var25);
-															}
-														}
-													}
-
-													Rasterizer2D.Rasterizer2D_setClip(var2, var3, var4, var5);
-												}
-											}
-										}
-									} else {
-										ItemDefinition var33;
-										if (var10.type == 6) {
-											boolean var36 = ChatChannel.runCs1(var10);
-											if (var36) {
-												var20 = var10.sequenceId2;
-											} else {
-												var20 = var10.sequenceId;
-											}
-
-											Model var41 = null;
-											var22 = 0;
-											if (var10.itemId != -1) {
-												var33 = WorldMapArea.getItemDefinition(var10.itemId);
-												if (var33 != null) {
-													var33 = var33.getCountObj(var10.itemQuantity);
-													var41 = var33.getModel(1);
-													if (var41 != null) {
-														var41.calculateBoundsCylinder();
-														var22 = var41.height / 2;
-													} else {
-														Strings.method4120(var10);
-													}
-												}
-											} else if (var10.modelType == 5) {
-												if (var10.modelId == 0) {
-													var41 = Client.playerAppearance.getModel((SequenceDefinition)null, -1, (SequenceDefinition)null, -1);
-												} else {
-													var41 = Client.localPlayer.getModel();
-												}
-											} else if (var20 == -1) {
-												var41 = var10.getModel((SequenceDefinition)null, -1, var36, Client.localPlayer.appearance);
-												if (var41 == null && Widget.field2562) {
-													Strings.method4120(var10);
-												}
-											} else {
-												SequenceDefinition var47 = GrandExchangeEvent.getSequenceDefinition(var20);
-												var41 = var10.getModel(var47, var10.modelFrame, var36, Client.localPlayer.appearance);
-												if (var41 == null && Widget.field2562) {
-													Strings.method4120(var10);
-												}
-											}
-
-											Rasterizer3D.method2976(var10.width / 2 + var12, var10.height / 2 + var13);
-											var23 = Rasterizer3D.Rasterizer3D_sine[var10.modelAngleX] * var10.modelZoom >> 16;
-											var24 = Rasterizer3D.Rasterizer3D_cosine[var10.modelAngleX] * var10.modelZoom >> 16;
-											if (var41 != null) {
-												if (!var10.isIf3) {
-													var41.method2866(0, var10.modelAngleY, 0, var10.modelAngleX, 0, var23, var24);
-												} else {
-													var41.calculateBoundsCylinder();
-													if (var10.modelOrthog) {
-														var41.method2876(0, var10.modelAngleY, var10.modelAngleZ, var10.modelAngleX, var10.modelOffsetX, var22 + var23 + var10.modelOffsetY, var24 + var10.modelOffsetY, var10.modelZoom);
-													} else {
-														var41.method2866(0, var10.modelAngleY, var10.modelAngleZ, var10.modelAngleX, var10.modelOffsetX, var23 + var22 + var10.modelOffsetY, var24 + var10.modelOffsetY);
-													}
-												}
-											}
-
-											Rasterizer3D.Rasterizer3D_method3();
-										} else {
-											if (var10.type == 7) {
-												var39 = var10.getFont();
-												if (var39 == null) {
-													if (Widget.field2562) {
-														Strings.method4120(var10);
-													}
-													continue;
-												}
-
-												var20 = 0;
-
-												for (var21 = 0; var21 < var10.rawHeight; ++var21) {
-													for (var22 = 0; var22 < var10.rawWidth; ++var22) {
-														if (var10.itemIds[var20] > 0) {
-															var33 = WorldMapArea.getItemDefinition(var10.itemIds[var20] - 1);
-															String var34;
-															if (var33.isStackable != 1 && var10.itemQuantities[var20] == 1) {
-																var34 = ClientPreferences.colorStartTag(16748608) + var33.name + "</col>";
-															} else {
-																var34 = ClientPreferences.colorStartTag(16748608) + var33.name + "</col>" + " " + 'x' + class188.method3631(var10.itemQuantities[var20]);
-															}
-
-															var25 = var22 * (var10.paddingX + 115) + var12;
-															var26 = var21 * (var10.paddingY + 12) + var13;
-															if (var10.textXAlignment == 0) {
-																var39.draw(var34, var25, var26, var10.color, var10.textShadowed ? 0 : -1);
-															} else if (var10.textXAlignment == 1) {
-																var39.drawCentered(var34, var10.width / 2 + var25, var26, var10.color, var10.textShadowed ? 0 : -1);
-															} else {
-																var39.drawRightAligned(var34, var25 + var10.width - 1, var26, var10.color, var10.textShadowed ? 0 : -1);
-															}
-														}
-
-														++var20;
-													}
-												}
-											}
-
-											if (var10.type == 8 && var10 == class32.field284 && Client.field833 == Client.field840) {
-												var19 = 0;
-												var20 = 0;
-												Font var31 = class169.fontPlain12;
-												String var32 = var10.text;
-
-												String var43;
-												for (var32 = GrandExchangeOfferTotalQuantityComparator.method92(var32, var10); var32.length() > 0; var20 = var20 + var31.ascent + 1) {
-													var24 = var32.indexOf("<br>");
-													if (var24 != -1) {
-														var43 = var32.substring(0, var24);
-														var32 = var32.substring(var24 + 4);
-													} else {
-														var43 = var32;
-														var32 = "";
-													}
-
-													var25 = var31.stringWidth(var43);
-													if (var25 > var19) {
-														var19 = var25;
-													}
-												}
-
-												var19 += 6;
-												var20 += 7;
-												var24 = var12 + var10.width - 5 - var19;
-												var25 = var13 + var10.height + 5;
-												if (var24 < var12 + 5) {
-													var24 = var12 + 5;
-												}
-
-												if (var24 + var19 > var4) {
-													var24 = var4 - var19;
-												}
-
-												if (var20 + var25 > var5) {
-													var25 = var5 - var20;
-												}
-
-												Rasterizer2D.Rasterizer2D_fillRectangle(var24, var25, var19, var20, 16777120);
-												Rasterizer2D.Rasterizer2D_drawRectangle(var24, var25, var19, var20, 0);
-												var32 = var10.text;
-												var26 = var25 + var31.ascent + 2;
-
-												for (var32 = GrandExchangeOfferTotalQuantityComparator.method92(var32, var10); var32.length() > 0; var26 = var26 + var31.ascent + 1) {
-													int var35 = var32.indexOf("<br>");
-													if (var35 != -1) {
-														var43 = var32.substring(0, var35);
-														var32 = var32.substring(var35 + 4);
-													} else {
-														var43 = var32;
-														var32 = "";
-													}
-
-													var31.draw(var43, var24 + 3, var26, 0, -1);
-												}
-											}
-
-											if (var10.type == 9) {
-												if (var10.field2598) {
-													var19 = var12;
-													var20 = var13 + var10.height;
-													var21 = var12 + var10.width;
-													var22 = var13;
-												} else {
-													var19 = var12;
-													var20 = var13;
-													var21 = var12 + var10.width;
-													var22 = var13 + var10.height;
-												}
-
-												if (var10.lineWid == 1) {
-													Rasterizer2D.Rasterizer2D_drawLine(var19, var20, var21, var22, var10.color);
-												} else {
-													MusicPatchPcmStream.method3912(var19, var20, var21, var22, var10.color, var10.lineWid);
-												}
-											}
+								var20 += 15;
+								var21 = 361;
+								if (MusicPatchNode2.field2369 != null) {
+									var8 = MusicPatchNode2.field2369.highX / 2;
+									if (var4 == 1 && var25 >= MusicPatchNode2.field2369.lowX - var8 && var25 <= var8 + MusicPatchNode2.field2369.lowX && var18 >= var21 - 15 && var18 < var21) {
+										switch(Login.field1161) {
+										case 1:
+											Canvas.setLoginResponseString("Please enter your username.", "If you created your account after November", "2010, this will be the creation email address.");
+											Login.loginIndex = 5;
+											return;
+										case 2:
+											WorldMapIcon_0.openURL("https://support.runescape.com/hc/en-gb", true, false);
 										}
 									}
 								}
+
+								var8 = VarcInt.loginBoxCenter - 80;
+								var9 = 321;
+								if (var4 == 1 && var25 >= var8 - 75 && var25 <= var8 + 75 && var18 >= var9 - 20 && var18 <= var9 + 20) {
+									Login.Login_username = Login.Login_username.trim();
+									if (Login.Login_username.length() == 0) {
+										Canvas.setLoginResponseString("", "Please enter your username/email address.", "");
+										return;
+									}
+
+									if (Login.Login_password.length() == 0) {
+										Canvas.setLoginResponseString("", "Please enter your password.", "");
+										return;
+									}
+
+									Canvas.setLoginResponseString("", "Connecting to server...", "");
+									PacketWriter.method2238(false);
+									WorldMapIcon_0.updateGameState(20);
+									return;
+								}
+
+								var8 = Login.loginBoxX + 180 + 80;
+								if (var4 == 1 && var25 >= var8 - 75 && var25 <= var8 + 75 && var18 >= var9 - 20 && var18 <= var9 + 20) {
+									Login.loginIndex = 0;
+									Login.Login_username = "";
+									Login.Login_password = "";
+									class222.field2729 = 0;
+									class81.otp = "";
+									Login.field1183 = true;
+								}
+
+								var8 = VarcInt.loginBoxCenter + -117;
+								var9 = 277;
+								Login.field1169 = var25 >= var8 && var25 < var8 + class4.field17 && var18 >= var9 && var18 < var9 + class267.field3524;
+								if (var4 == 1 && Login.field1169) {
+									Client.Login_isUsernameRemembered = !Client.Login_isUsernameRemembered;
+									if (!Client.Login_isUsernameRemembered && Actor.clientPreferences.rememberedUsername != null) {
+										Actor.clientPreferences.rememberedUsername = null;
+										class296.savePreferences();
+									}
+								}
+
+								var8 = VarcInt.loginBoxCenter + 24;
+								var9 = 277;
+								Login.field1170 = var25 >= var8 && var25 < var8 + class4.field17 && var18 >= var9 && var18 < var9 + class267.field3524;
+								if (var4 == 1 && Login.field1170) {
+									Actor.clientPreferences.hideUsername = !Actor.clientPreferences.hideUsername;
+									if (!Actor.clientPreferences.hideUsername) {
+										Login.Login_username = "";
+										Actor.clientPreferences.rememberedUsername = null;
+										if (Client.Login_isUsernameRemembered && Login.Login_username != null && Login.Login_username.length() > 0) {
+											Login.currentLoginField = 1;
+										} else {
+											Login.currentLoginField = 0;
+										}
+									}
+
+									class296.savePreferences();
+								}
+
+								while (true) {
+									while (AbstractUserComparator.isKeyDown()) {
+										var10 = false;
+
+										for (var11 = 0; var11 < "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"£$%^&*()-_=+[{]};:'@#~,<.>/?\\| ".length(); ++var11) {
+											if (WorldMapIcon_0.field126 == "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"£$%^&*()-_=+[{]};:'@#~,<.>/?\\| ".charAt(var11)) {
+												var10 = true;
+												break;
+											}
+										}
+
+										if (class43.field361 == 13) {
+											Login.loginIndex = 0;
+											Login.Login_username = "";
+											Login.Login_password = "";
+											class222.field2729 = 0;
+											class81.otp = "";
+											Login.field1183 = true;
+										} else if (Login.currentLoginField == 0) {
+											if (class43.field361 == 85 && Login.Login_username.length() > 0) {
+												Login.Login_username = Login.Login_username.substring(0, Login.Login_username.length() - 1);
+											}
+
+											if (class43.field361 == 84 || class43.field361 == 80) {
+												Login.currentLoginField = 1;
+											}
+
+											if (var10 && Login.Login_username.length() < 320) {
+												Login.Login_username = Login.Login_username + WorldMapIcon_0.field126;
+											}
+										} else if (Login.currentLoginField == 1) {
+											if (class43.field361 == 85 && Login.Login_password.length() > 0) {
+												Login.Login_password = Login.Login_password.substring(0, Login.Login_password.length() - 1);
+											}
+
+											if (class43.field361 == 84 || class43.field361 == 80) {
+												Login.currentLoginField = 0;
+											}
+
+											if (class43.field361 == 84) {
+												Login.Login_username = Login.Login_username.trim();
+												if (Login.Login_username.length() == 0) {
+													Canvas.setLoginResponseString("", "Please enter your username/email address.", "");
+													return;
+												}
+
+												if (Login.Login_password.length() == 0) {
+													Canvas.setLoginResponseString("", "Please enter your password.", "");
+													return;
+												}
+
+												Canvas.setLoginResponseString("", "Connecting to server...", "");
+												PacketWriter.method2238(false);
+												WorldMapIcon_0.updateGameState(20);
+												return;
+											}
+
+											if (var10 && Login.Login_password.length() < 20) {
+												Login.Login_password = Login.Login_password + WorldMapIcon_0.field126;
+											}
+										}
+									}
+
+									return;
+								}
+							} else if (Login.loginIndex == 3) {
+								var20 = Login.loginBoxX + 180;
+								var22 = 276;
+								if (var4 == 1 && var25 >= var20 - 75 && var25 <= var20 + 75 && var18 >= var22 - 20 && var18 <= var22 + 20) {
+									WorldMapID.method520(false);
+								}
+
+								var20 = Login.loginBoxX + 180;
+								var22 = 326;
+								if (var4 == 1 && var25 >= var20 - 75 && var25 <= var20 + 75 && var18 >= var22 - 20 && var18 <= var22 + 20) {
+									Canvas.setLoginResponseString("Please enter your username.", "If you created your account after November", "2010, this will be the creation email address.");
+									Login.loginIndex = 5;
+									return;
+								}
+							} else {
+								int var24;
+								if (Login.loginIndex == 4) {
+									var20 = Login.loginBoxX + 180 - 80;
+									var22 = 321;
+									if (var4 == 1 && var25 >= var20 - 75 && var25 <= var20 + 75 && var18 >= var22 - 20 && var18 <= var22 + 20) {
+										class81.otp.trim();
+										if (class81.otp.length() != 6) {
+											Canvas.setLoginResponseString("", "Please enter a 6-digit PIN.", "");
+											return;
+										}
+
+										class222.field2729 = Integer.parseInt(class81.otp);
+										class81.otp = "";
+										PacketWriter.method2238(true);
+										Canvas.setLoginResponseString("", "Connecting to server...", "");
+										WorldMapIcon_0.updateGameState(20);
+										return;
+									}
+
+									if (var4 == 1 && var25 >= Login.loginBoxX + 180 - 9 && var25 <= Login.loginBoxX + 180 + 130 && var18 >= 263 && var18 <= 296) {
+										Login.field1183 = !Login.field1183;
+									}
+
+									if (var4 == 1 && var25 >= Login.loginBoxX + 180 - 34 && var25 <= Login.loginBoxX + 34 + 180 && var18 >= 351 && var18 <= 363) {
+										WorldMapIcon_0.openURL(GrandExchangeEvents.method67("secure", true) + "m=totp-authenticator/disableTOTPRequest", true, false);
+									}
+
+									var20 = Login.loginBoxX + 180 + 80;
+									if (var4 == 1 && var25 >= var20 - 75 && var25 <= var20 + 75 && var18 >= var22 - 20 && var18 <= var22 + 20) {
+										Login.loginIndex = 0;
+										Login.Login_username = "";
+										Login.Login_password = "";
+										class222.field2729 = 0;
+										class81.otp = "";
+									}
+
+									while (AbstractUserComparator.isKeyDown()) {
+										boolean var23 = false;
+
+										for (var24 = 0; var24 < "1234567890".length(); ++var24) {
+											if (WorldMapIcon_0.field126 == "1234567890".charAt(var24)) {
+												var23 = true;
+												break;
+											}
+										}
+
+										if (class43.field361 == 13) {
+											Login.loginIndex = 0;
+											Login.Login_username = "";
+											Login.Login_password = "";
+											class222.field2729 = 0;
+											class81.otp = "";
+										} else {
+											if (class43.field361 == 85 && class81.otp.length() > 0) {
+												class81.otp = class81.otp.substring(0, class81.otp.length() - 1);
+											}
+
+											if (class43.field361 == 84) {
+												class81.otp.trim();
+												if (class81.otp.length() != 6) {
+													Canvas.setLoginResponseString("", "Please enter a 6-digit PIN.", "");
+													return;
+												}
+
+												class222.field2729 = Integer.parseInt(class81.otp);
+												class81.otp = "";
+												PacketWriter.method2238(true);
+												Canvas.setLoginResponseString("", "Connecting to server...", "");
+												WorldMapIcon_0.updateGameState(20);
+												return;
+											}
+
+											if (var23 && class81.otp.length() < 6) {
+												class81.otp = class81.otp + WorldMapIcon_0.field126;
+											}
+										}
+									}
+								} else if (Login.loginIndex == 5) {
+									var20 = Login.loginBoxX + 180 - 80;
+									var22 = 321;
+									if (var4 == 1 && var25 >= var20 - 75 && var25 <= var20 + 75 && var18 >= var22 - 20 && var18 <= var22 + 20) {
+										WorldMapDecorationType.method4099();
+										return;
+									}
+
+									var20 = Login.loginBoxX + 180 + 80;
+									if (var4 == 1 && var25 >= var20 - 75 && var25 <= var20 + 75 && var18 >= var22 - 20 && var18 <= var22 + 20) {
+										WorldMapID.method520(true);
+									}
+
+									var9 = 361;
+									if (class51.field411 != null) {
+										var24 = class51.field411.highX / 2;
+										if (var4 == 1 && var25 >= class51.field411.lowX - var24 && var25 <= var24 + class51.field411.lowX && var18 >= var9 - 15 && var18 < var9) {
+											WorldMapIcon_0.openURL(GrandExchangeEvents.method67("secure", true) + "m=weblogin/g=oldscape/cant_log_in", true, false);
+										}
+									}
+
+									while (AbstractUserComparator.isKeyDown()) {
+										var10 = false;
+
+										for (var11 = 0; var11 < "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"£$%^&*()-_=+[{]};:'@#~,<.>/?\\| ".length(); ++var11) {
+											if (WorldMapIcon_0.field126 == "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"£$%^&*()-_=+[{]};:'@#~,<.>/?\\| ".charAt(var11)) {
+												var10 = true;
+												break;
+											}
+										}
+
+										if (class43.field361 == 13) {
+											WorldMapID.method520(true);
+										} else {
+											if (class43.field361 == 85 && Login.Login_username.length() > 0) {
+												Login.Login_username = Login.Login_username.substring(0, Login.Login_username.length() - 1);
+											}
+
+											if (class43.field361 == 84) {
+												WorldMapDecorationType.method4099();
+												return;
+											}
+
+											if (var10 && Login.Login_username.length() < 320) {
+												Login.Login_username = Login.Login_username + WorldMapIcon_0.field126;
+											}
+										}
+									}
+								} else if (Login.loginIndex == 6) {
+									while (true) {
+										do {
+											if (!AbstractUserComparator.isKeyDown()) {
+												var21 = 321;
+												if (var4 == 1 && var18 >= var21 - 20 && var18 <= var21 + 20) {
+													WorldMapID.method520(true);
+												}
+
+												return;
+											}
+										} while(class43.field361 != 84 && class43.field361 != 13);
+
+										WorldMapID.method520(true);
+									}
+								} else if (Login.loginIndex == 7) {
+									var20 = Login.loginBoxX + 180 - 80;
+									var22 = 321;
+									if (var4 == 1 && var25 >= var20 - 75 && var25 <= var20 + 75 && var18 >= var22 - 20 && var18 <= var22 + 20) {
+										WorldMapIcon_0.openURL(GrandExchangeEvents.method67("secure", true) + "m=dob/set_dob.ws", true, false);
+										Canvas.setLoginResponseString("", "Page has opened in a new window.", "(Please check your popup blocker.)");
+										Login.loginIndex = 6;
+										return;
+									}
+
+									var20 = Login.loginBoxX + 180 + 80;
+									if (var4 == 1 && var25 >= var20 - 75 && var25 <= var20 + 75 && var18 >= var22 - 20 && var18 <= var22 + 20) {
+										WorldMapID.method520(true);
+									}
+								} else if (Login.loginIndex == 8) {
+									var20 = Login.loginBoxX + 180 - 80;
+									var22 = 321;
+									if (var4 == 1 && var25 >= var20 - 75 && var25 <= var20 + 75 && var18 >= var22 - 20 && var18 <= var22 + 20) {
+										WorldMapIcon_0.openURL("https://www.jagex.com/terms/privacy/#eight", true, false);
+										Canvas.setLoginResponseString("", "Page has opened in a new window.", "(Please check your popup blocker.)");
+										Login.loginIndex = 6;
+										return;
+									}
+
+									var20 = Login.loginBoxX + 180 + 80;
+									if (var4 == 1 && var25 >= var20 - 75 && var25 <= var20 + 75 && var18 >= var22 - 20 && var18 <= var22 + 20) {
+										WorldMapID.method520(true);
+									}
+								} else if (Login.loginIndex == 12) {
+									String var15 = "";
+									switch(Login.field1156) {
+									case 0:
+										var15 = "https://support.runescape.com/hc/en-gb/articles/115002238729-Account-Bans";
+										break;
+									case 1:
+										var15 = "https://support.runescape.com/hc/en-gb/articles/206103939-My-account-is-locked";
+										break;
+									default:
+										WorldMapID.method520(false);
+									}
+
+									var8 = Login.loginBoxX + 180;
+									var9 = 276;
+									if (var4 == 1 && var25 >= var8 - 75 && var25 <= var8 + 75 && var18 >= var9 - 20 && var18 <= var9 + 20) {
+										WorldMapIcon_0.openURL(var15, true, false);
+										Canvas.setLoginResponseString("", "Page has opened in a new window.", "(Please check your popup blocker.)");
+										Login.loginIndex = 6;
+										return;
+									}
+
+									var8 = Login.loginBoxX + 180;
+									var9 = 326;
+									if (var4 == 1 && var25 >= var8 - 75 && var25 <= var8 + 75 && var18 >= var9 - 20 && var18 <= var9 + 20) {
+										WorldMapID.method520(false);
+									}
+								} else if (Login.loginIndex == 24) {
+									var20 = Login.loginBoxX + 180;
+									var22 = 301;
+									if (var4 == 1 && var25 >= var20 - 75 && var25 <= var20 + 75 && var18 >= var22 - 20 && var18 <= var22 + 20) {
+										WorldMapID.method520(false);
+									}
+								}
+							}
+						} else {
+							while (AbstractUserComparator.isKeyDown()) {
+								if (class43.field361 == 84) {
+									WorldMapID.method520(false);
+								} else if (class43.field361 == 13) {
+									Login.loginIndex = 0;
+								}
+							}
+
+							var20 = VarcInt.loginBoxCenter - 80;
+							var22 = 321;
+							if (var4 == 1 && var25 >= var20 - 75 && var25 <= var20 + 75 && var18 >= var22 - 20 && var18 <= var22 + 20) {
+								WorldMapID.method520(false);
+							}
+
+							var20 = VarcInt.loginBoxCenter + 80;
+							if (var4 == 1 && var25 >= var20 - 75 && var25 <= var20 + 75 && var18 >= var22 - 20 && var18 <= var22 + 20) {
+								Login.loginIndex = 0;
 							}
 						}
 					}
+
 				}
 			}
 		}
-
 	}
 
-	@ObfuscatedName("ka")
+	@ObfuscatedName("hw")
 	@ObfuscatedSignature(
-		signature = "(Lhj;B)Ljava/lang/String;",
-		garbageValue = "70"
+		signature = "(Ljava/lang/String;Ljava/lang/String;IIIII)V",
+		garbageValue = "-1882548128"
 	)
-	static String method5318(Widget var0) {
-		if (HealthBar.method1957(class268.getWidgetClickMask(var0)) == 0) {
+	@Export("insertMenuItemNoShift")
+	public static final void insertMenuItemNoShift(String var0, String var1, int var2, int var3, int var4, int var5) {
+		Decimator.insertMenuItem(var0, var1, var2, var3, var4, var5, false);
+	}
+
+	@ObfuscatedName("ku")
+	@ObfuscatedSignature(
+		signature = "(Lhy;I)Lhy;",
+		garbageValue = "1031312756"
+	)
+	static Widget method5290(Widget var0) {
+		int var1 = ScriptFrame.method1086(class60.getWidgetClickMask(var0));
+		if (var1 == 0) {
 			return null;
+		} else {
+			for (int var2 = 0; var2 < var1; ++var2) {
+				var0 = Player.getWidget(var0.parentId);
+				if (var0 == null) {
+					return null;
+				}
+			}
+
+			return var0;
 		}
-		return var0.spellActionName != null && var0.spellActionName.trim().length() != 0 ? var0.spellActionName : null;
 	}
 }

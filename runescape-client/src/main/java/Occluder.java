@@ -4,117 +4,146 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eg")
+@ObfuscatedName("ek")
 @Implements("Occluder")
 public final class Occluder {
-	@ObfuscatedName("gy")
-	@ObfuscatedSignature(
-		signature = "[Lly;"
-	)
-	@Export("crossSprites")
-	static Sprite[] crossSprites;
-	@ObfuscatedName("q")
+	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		intValue = 62165825
+		intValue = 362641763
 	)
 	@Export("minTileX")
 	int minTileX;
-	@ObfuscatedName("w")
+	@ObfuscatedName("x")
 	@ObfuscatedGetter(
-		intValue = -469210933
+		intValue = 1829777649
 	)
 	@Export("maxTileX")
 	int maxTileX;
-	@ObfuscatedName("e")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = -1760688667
+		intValue = -990403321
 	)
 	@Export("minTileY")
 	int minTileY;
-	@ObfuscatedName("p")
+	@ObfuscatedName("g")
 	@ObfuscatedGetter(
-		intValue = 830025567
+		intValue = 2788625
 	)
 	@Export("maxTileY")
 	int maxTileY;
-	@ObfuscatedName("k")
+	@ObfuscatedName("l")
 	@ObfuscatedGetter(
-		intValue = 414289255
+		intValue = 2035384345
 	)
 	@Export("type")
 	int type;
-	@ObfuscatedName("l")
+	@ObfuscatedName("u")
 	@ObfuscatedGetter(
-		intValue = -1048961917
+		intValue = -37921347
 	)
 	@Export("minX")
 	int minX;
-	@ObfuscatedName("b")
+	@ObfuscatedName("j")
 	@ObfuscatedGetter(
-		intValue = 425957683
+		intValue = -774956393
 	)
 	@Export("maxX")
 	int maxX;
-	@ObfuscatedName("i")
+	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = -876693447
+		intValue = -1495961471
 	)
 	@Export("minZ")
 	int minZ;
-	@ObfuscatedName("c")
+	@ObfuscatedName("d")
 	@ObfuscatedGetter(
-		intValue = 2097243889
+		intValue = -1326985595
 	)
 	@Export("maxZ")
 	int maxZ;
-	@ObfuscatedName("f")
+	@ObfuscatedName("z")
 	@ObfuscatedGetter(
-		intValue = -1445457591
+		intValue = -790456829
 	)
 	@Export("minY")
 	int minY;
-	@ObfuscatedName("m")
+	@ObfuscatedName("n")
 	@ObfuscatedGetter(
-		intValue = 2060107965
+		intValue = -1754197059
 	)
 	@Export("maxY")
 	int maxY;
-	@ObfuscatedName("u")
+	@ObfuscatedName("h")
 	@ObfuscatedGetter(
-		intValue = -1501659665
+		intValue = 1722833995
 	)
-	int field1910;
-	@ObfuscatedName("x")
+	int field1872;
+	@ObfuscatedName("f")
 	@ObfuscatedGetter(
-		intValue = -816168961
+		intValue = -112821165
 	)
-	int field1907;
-	@ObfuscatedName("r")
+	int field1873;
+	@ObfuscatedName("s")
 	@ObfuscatedGetter(
-		intValue = -861104415
+		intValue = -226733423
 	)
-	int field1909;
-	@ObfuscatedName("v")
+	int field1861;
+	@ObfuscatedName("p")
 	@ObfuscatedGetter(
-		intValue = 841128039
+		intValue = 387341237
 	)
-	int field1900;
-	@ObfuscatedName("y")
+	int field1879;
+	@ObfuscatedName("e")
 	@ObfuscatedGetter(
-		intValue = 828344139
+		intValue = 1097243593
 	)
-	int field1911;
-	@ObfuscatedName("g")
+	int field1876;
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = -596652187
+		intValue = 1639828993
 	)
-	int field1912;
-	@ObfuscatedName("a")
+	int field1871;
+	@ObfuscatedName("q")
 	@ObfuscatedGetter(
-		intValue = 566478077
+		intValue = 218753559
 	)
-	int field1913;
+	int field1878;
 
 	Occluder() {
+	}
+
+	@ObfuscatedName("go")
+	@ObfuscatedSignature(
+		signature = "(B)V",
+		garbageValue = "8"
+	)
+	static final void method3253() {
+		Client.field735 = 0;
+		int var0 = class4.baseX * 64 + (Varps.localPlayer.x * -78439701 >> 7);
+		int var1 = (Varps.localPlayer.y >> 7) + ScriptEvent.baseY;
+		if (var0 >= 3053 && var0 <= 3156 && var1 >= 3056 && var1 <= 3136) {
+			Client.field735 = 1;
+		}
+
+		if (var0 >= 3072 && var0 <= 3118 && var1 >= 9492 && var1 <= 9535) {
+			Client.field735 = 1;
+		}
+
+		if (Client.field735 == 1 && var0 >= 3139 && var0 <= 3199 && var1 >= 3008 && var1 <= 3062) {
+			Client.field735 = 0;
+		}
+
+	}
+
+	@ObfuscatedName("ix")
+	@ObfuscatedSignature(
+		signature = "(IIIZB)V",
+		garbageValue = "48"
+	)
+	@Export("resizeComponents")
+	static final void resizeComponents(int var0, int var1, int var2, boolean var3) {
+		if (TaskHandler.loadInterface(var0)) {
+			class80.resizeInterface(class289.Widget_interfaceComponents[var0], -1, var1, var2, var3);
+		}
 	}
 }

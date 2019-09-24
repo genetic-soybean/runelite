@@ -1,48 +1,26 @@
-import java.io.File;
-import java.io.RandomAccessFile;
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gs")
+@ObfuscatedName("gu")
 public class class186 {
-	@ObfuscatedName("e")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(Ljava/io/File;ZS)Z",
-		garbageValue = "25650"
+		signature = "(II)Lih;",
+		garbageValue = "727235164"
 	)
-	static boolean method3618(File var0, boolean var1) {
-		try {
-			RandomAccessFile var2 = new RandomAccessFile(var0, "rw");
-			int var3 = var2.read();
-			var2.seek(0L);
-			var2.write(var3);
-			var2.seek(0L);
-			var2.close();
-			if (var1) {
-				var0.delete();
+	public static VarcInt method3609(int var0) {
+		VarcInt var1 = (VarcInt)VarcInt.VarcInt_cached.get((long)var0);
+		if (var1 != null) {
+			return var1;
+		} else {
+			byte[] var2 = VarcInt.VarcInt_archive.takeFile(19, var0);
+			var1 = new VarcInt();
+			if (var2 != null) {
+				var1.method4394(new Buffer(var2));
 			}
 
-			return true;
-		} catch (Exception var4) {
-			return false;
+			VarcInt.VarcInt_cached.put(var1, (long)var0);
+			return var1;
 		}
-	}
-
-	@ObfuscatedName("fz")
-	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "33"
-	)
-	@Export("playPcmPlayers")
-	static final void playPcmPlayers() {
-		if (Language.pcmPlayer1 != null) {
-			Language.pcmPlayer1.run();
-		}
-
-		if (class80.pcmPlayer0 != null) {
-			class80.pcmPlayer0.run();
-		}
-
 	}
 }

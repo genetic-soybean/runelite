@@ -1,55 +1,129 @@
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("cn")
+@ObfuscatedName("cv")
 @Implements("MenuAction")
 public class MenuAction {
-	@ObfuscatedName("x")
-	@ObfuscatedGetter(
-		intValue = 1339211825
+	@ObfuscatedName("sc")
+	@ObfuscatedSignature(
+		signature = "Lir;"
 	)
-	static int field1160;
-	@ObfuscatedName("q")
+	public static class237 field1133;
+	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		intValue = 627171033
+		intValue = -957076537
 	)
 	@Export("argument1")
 	int argument1;
-	@ObfuscatedName("w")
+	@ObfuscatedName("x")
 	@ObfuscatedGetter(
-		intValue = -1724157347
+		intValue = 1185532013
 	)
 	@Export("argument2")
 	int argument2;
-	@ObfuscatedName("e")
+	@ObfuscatedName("t")
+	@Export("action")
+	String action;
+	@ObfuscatedName("g")
 	@ObfuscatedGetter(
-		intValue = -748556303
+		intValue = -1890178357
 	)
 	@Export("opcode")
 	int opcode;
-	@ObfuscatedName("p")
+	@ObfuscatedName("l")
 	@ObfuscatedGetter(
-		intValue = 641907059
+		intValue = -1424798217
 	)
 	@Export("argument0")
 	int argument0;
-	@ObfuscatedName("k")
-	@Export("action")
-	String action;
 
 	MenuAction() {
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/CharSequence;Ljava/lang/CharSequence;Lgu;B)I",
-		garbageValue = "-1"
+		signature = "(CI)B",
+		garbageValue = "1656481861"
 	)
-	public static int method1993(CharSequence var0, CharSequence var1, Language var2) {
+	@Export("charToByteCp1252")
+	public static byte charToByteCp1252(char var0) {
+		byte var1;
+		if (var0 > 0 && var0 < 128 || var0 >= 160 && var0 <= 255) {
+			var1 = (byte)var0;
+		} else if (var0 == 8364) {
+			var1 = -128;
+		} else if (var0 == 8218) {
+			var1 = -126;
+		} else if (var0 == 402) {
+			var1 = -125;
+		} else if (var0 == 8222) {
+			var1 = -124;
+		} else if (var0 == 8230) {
+			var1 = -123;
+		} else if (var0 == 8224) {
+			var1 = -122;
+		} else if (var0 == 8225) {
+			var1 = -121;
+		} else if (var0 == 710) {
+			var1 = -120;
+		} else if (var0 == 8240) {
+			var1 = -119;
+		} else if (var0 == 352) {
+			var1 = -118;
+		} else if (var0 == 8249) {
+			var1 = -117;
+		} else if (var0 == 338) {
+			var1 = -116;
+		} else if (var0 == 381) {
+			var1 = -114;
+		} else if (var0 == 8216) {
+			var1 = -111;
+		} else if (var0 == 8217) {
+			var1 = -110;
+		} else if (var0 == 8220) {
+			var1 = -109;
+		} else if (var0 == 8221) {
+			var1 = -108;
+		} else if (var0 == 8226) {
+			var1 = -107;
+		} else if (var0 == 8211) {
+			var1 = -106;
+		} else if (var0 == 8212) {
+			var1 = -105;
+		} else if (var0 == 732) {
+			var1 = -104;
+		} else if (var0 == 8482) {
+			var1 = -103;
+		} else if (var0 == 353) {
+			var1 = -102;
+		} else if (var0 == 8250) {
+			var1 = -101;
+		} else if (var0 == 339) {
+			var1 = -100;
+		} else if (var0 == 382) {
+			var1 = -98;
+		} else if (var0 == 376) {
+			var1 = -97;
+		} else {
+			var1 = 63;
+		}
+
+		return var1;
+	}
+
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/CharSequence;Ljava/lang/CharSequence;Lgf;I)I",
+		garbageValue = "2140897413"
+	)
+	@Export("compareStrings")
+	public static int compareStrings(CharSequence var0, CharSequence var1, Language var2) {
 		int var3 = var0.length();
 		int var4 = var1.length();
 		int var5 = 0;
@@ -114,13 +188,13 @@ public class MenuAction {
 			}
 
 			var8 = var12;
-			var9 = PacketBufferNode.method3623(var9, var2);
-			var10 = PacketBufferNode.method3623(var10, var2);
-			if (var10 != var9 && Character.toUpperCase(var9) != Character.toUpperCase(var10)) {
+			var9 = ScriptEvent.standardizeChar(var9, var2);
+			var10 = ScriptEvent.standardizeChar(var10, var2);
+			if (var9 != var10 && Character.toUpperCase(var9) != Character.toUpperCase(var10)) {
 				var9 = Character.toLowerCase(var9);
 				var10 = Character.toLowerCase(var10);
-				if (var10 != var9) {
-					return WorldMapArea.method387(var9, var2) - WorldMapArea.method387(var10, var2);
+				if (var9 != var10) {
+					return class286.lowercaseChar(var9, var2) - class286.lowercaseChar(var10, var2);
 				}
 			}
 		}
@@ -144,7 +218,7 @@ public class MenuAction {
 				var18 = Character.toLowerCase(var18);
 				var20 = Character.toLowerCase(var20);
 				if (var18 != var20) {
-					return WorldMapArea.method387(var18, var2) - WorldMapArea.method387(var20, var2);
+					return class286.lowercaseChar(var18, var2) - class286.lowercaseChar(var20, var2);
 				}
 			}
 		}
@@ -152,95 +226,82 @@ public class MenuAction {
 		var17 = var3 - var4;
 		if (var17 != 0) {
 			return var17;
-		}
-		for (int var19 = 0; var19 < var16; ++var19) {
-			var20 = var0.charAt(var19);
-			char var13 = var1.charAt(var19);
-			if (var13 != var20) {
-				return WorldMapArea.method387(var20, var2) - WorldMapArea.method387(var13, var2);
+		} else {
+			for (int var19 = 0; var19 < var16; ++var19) {
+				var20 = var0.charAt(var19);
+				char var13 = var1.charAt(var19);
+				if (var13 != var20) {
+					return class286.lowercaseChar(var20, var2) - class286.lowercaseChar(var13, var2);
+				}
 			}
-		}
 
-		return 0;
+			return 0;
+		}
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "([Ljava/lang/String;[SS)V",
-		garbageValue = "-2750"
+		signature = "(Lgw;Lld;I)Lgj;",
+		garbageValue = "-1868071262"
 	)
-	@Export("startSortingItemsByName")
-	public static void startSortingItemsByName(String[] var0, short[] var1) {
-		GrandExchangeOffer.sortItemsByName(var0, var1, 0, var0.length - 1);
+	@Export("getPacketBufferNode")
+	public static PacketBufferNode getPacketBufferNode(ClientPacket var0, IsaacCipher var1) {
+		PacketBufferNode var2 = Skills.method4100();
+		var2.clientPacket = var0;
+		var2.clientPacketLength = var0.length;
+		if (var2.clientPacketLength == -1) {
+			var2.packetBuffer = new PacketBuffer(260);
+		} else if (var2.clientPacketLength == -2) {
+			var2.packetBuffer = new PacketBuffer(10000);
+		} else if (var2.clientPacketLength <= 18) {
+			var2.packetBuffer = new PacketBuffer(20);
+		} else if (var2.clientPacketLength <= 98) {
+			var2.packetBuffer = new PacketBuffer(100);
+		} else {
+			var2.packetBuffer = new PacketBuffer(260);
+		}
+
+		var2.packetBuffer.setIsaacCipher(var1);
+		var2.packetBuffer.writeByteIsaac(var2.clientPacket.id);
+		var2.index = 0;
+		return var2;
 	}
 
-	@ObfuscatedName("y")
+	@ObfuscatedName("l")
 	@ObfuscatedSignature(
-		signature = "(ILcx;ZI)I",
-		garbageValue = "-426931132"
+		signature = "(I)V",
+		garbageValue = "1306167256"
 	)
-	static int method1992(int var0, Script var1, boolean var2) {
-		Widget var3 = var2 ? Interpreter.field1111 : Calendar.field2507;
-		if (var0 == ScriptOpcodes.CC_GETSCROLLX) {
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.scrollX;
-			return 1;
+	static void method2034() {
+		try {
+			File var0 = new File(Message.userHomeDirectory, "random.dat");
+			int var2;
+			if (var0.exists()) {
+				JagexCache.JagexCache_randomDat = new BufferedFile(new AccessFile(var0, "rw", 25L), 24, 0);
+			} else {
+				label39:
+				for (int var1 = 0; var1 < NetFileRequest.field3096.length; ++var1) {
+					for (var2 = 0; var2 < GrandExchangeOfferWorldComparator.field30.length; ++var2) {
+						File var3 = new File(GrandExchangeOfferWorldComparator.field30[var2] + NetFileRequest.field3096[var1] + File.separatorChar + "random.dat");
+						if (var3.exists()) {
+							JagexCache.JagexCache_randomDat = new BufferedFile(new AccessFile(var3, "rw", 25L), 24, 0);
+							break label39;
+						}
+					}
+				}
+			}
+
+			if (JagexCache.JagexCache_randomDat == null) {
+				RandomAccessFile var4 = new RandomAccessFile(var0, "rw");
+				var2 = var4.read();
+				var4.seek(0L);
+				var4.write(var2);
+				var4.seek(0L);
+				var4.close();
+				JagexCache.JagexCache_randomDat = new BufferedFile(new AccessFile(var0, "rw", 25L), 24, 0);
+			}
+		} catch (IOException var5) {
 		}
-		if (var0 == ScriptOpcodes.CC_GETSCROLLY) {
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.scrollY;
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CC_GETTEXT) {
-			Interpreter.Interpreter_stringStack[++Skills.Interpreter_stringStackSize - 1] = var3.text;
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CC_GETSCROLLWIDTH) {
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.scrollWidth;
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CC_GETSCROLLHEIGHT) {
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.scrollHeight;
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CC_GETMODELZOOM) {
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.modelZoom;
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CC_GETMODELANGLE_X) {
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.modelAngleX;
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CC_GETMODELANGLE_Z) {
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.modelAngleZ;
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CC_GETMODELANGLE_Y) {
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.modelAngleY;
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CC_GETTRANSTOP) {
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.transparencyTop;
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CC_GETTRANSBOT) {
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.transparencyBot;
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CC_GETCOLOUR) {
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.color;
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CC_GETFILLCOLOUR) {
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.color2;
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CC_GETFILLMODE) {
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.fillMode.rsOrdinal();
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CC_GETMODELTRANSPARENT) {
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.modelTransparency ? 1 : 0;
-			return 1;
-		}
-		return 2;
+
 	}
 }

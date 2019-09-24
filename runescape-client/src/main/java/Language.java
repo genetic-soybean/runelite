@@ -5,214 +5,186 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gu")
+@ObfuscatedName("gf")
 @Implements("Language")
 public class Language implements Enumerated {
-	@ObfuscatedName("qk")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "Ldn;"
-	)
-	@Export("pcmPlayer1")
-	static PcmPlayer pcmPlayer1;
-	@ObfuscatedName("qb")
-	@ObfuscatedGetter(
-		intValue = -429347521
-	)
-	static int field2345;
-	@ObfuscatedName("q")
-	@ObfuscatedSignature(
-		signature = "Lgu;"
+		signature = "Lgf;"
 	)
 	@Export("Language_EN")
 	public static final Language Language_EN;
-	@ObfuscatedName("w")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "Lgu;"
+		signature = "Lgf;"
 	)
 	@Export("Language_DE")
 	static final Language Language_DE;
-	@ObfuscatedName("e")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "Lgu;"
+		signature = "Lgf;"
 	)
 	@Export("Language_FR")
 	public static final Language Language_FR;
-	@ObfuscatedName("p")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "Lgu;"
+		signature = "Lgf;"
 	)
 	@Export("Language_PT")
 	static final Language Language_PT;
-	@ObfuscatedName("k")
+	@ObfuscatedName("l")
 	@ObfuscatedSignature(
-		signature = "Lgu;"
+		signature = "Lgf;"
 	)
 	@Export("Language_NL")
 	static final Language Language_NL;
-	@ObfuscatedName("l")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "Lgu;"
+		signature = "Lgf;"
 	)
 	@Export("Language_ES")
 	public static final Language Language_ES;
-	@ObfuscatedName("b")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "Lgu;"
+		signature = "Lgf;"
 	)
 	@Export("Language_ES_MX")
 	static final Language Language_ES_MX;
-	@ObfuscatedName("m")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "[Lgu;"
+		signature = "[Lgf;"
 	)
 	@Export("Language_valuesOrdered")
 	public static final Language[] Language_valuesOrdered;
-	@ObfuscatedName("eg")
-	@ObfuscatedGetter(
-		intValue = -1179519055
+	@ObfuscatedName("f")
+	@ObfuscatedSignature(
+		signature = "Ldy;"
 	)
-	@Export("port1")
-	static int port1;
-	@ObfuscatedName("i")
-	final String field2346;
-	@ObfuscatedName("c")
+	@Export("soundCache")
+	public static SoundCache soundCache;
+	@ObfuscatedName("v")
+	final String field2325;
+	@ObfuscatedName("d")
 	@Export("language")
 	final String language;
-	@ObfuscatedName("f")
+	@ObfuscatedName("z")
 	@ObfuscatedGetter(
-		intValue = 1003386863
+		intValue = 1512457825
 	)
 	@Export("id")
 	final int id;
 
 	static {
-		Language_EN = new Language("EN", "en", "English", class192.field2375, 0, "GB");
-		Language_DE = new Language("DE", "de", "German", class192.field2375, 1, "DE");
-		Language_FR = new Language("FR", "fr", "French", class192.field2375, 2, "FR");
-		Language_PT = new Language("PT", "pt", "Portuguese", class192.field2375, 3, "BR");
-		Language_NL = new Language("NL", "nl", "Dutch", class192.field2381, 4, "NL");
-		Language_ES = new Language("ES", "es", "Spanish", class192.field2381, 5, "ES");
-		Language_ES_MX = new Language("ES_MX", "es-mx", "Spanish (Latin American)", class192.field2375, 6, "MX");
-		Language[] var0 = Language_values();
+		Language_EN = new Language("EN", "en", "English", class192.field2345, 0, "GB");
+		Language_DE = new Language("DE", "de", "German", class192.field2345, 1, "DE");
+		Language_FR = new Language("FR", "fr", "French", class192.field2345, 2, "FR");
+		Language_PT = new Language("PT", "pt", "Portuguese", class192.field2345, 3, "BR");
+		Language_NL = new Language("NL", "nl", "Dutch", class192.field2340, 4, "NL");
+		Language_ES = new Language("ES", "es", "Spanish", class192.field2340, 5, "ES");
+		Language_ES_MX = new Language("ES_MX", "es-mx", "Spanish (Latin American)", class192.field2345, 6, "MX");
+		Language[] var0 = new Language[]{Language_ES_MX, Language_PT, Language_NL, Language_EN, Language_FR, Language_DE, Language_ES};
 		Language_valuesOrdered = new Language[var0.length];
-		Language[] var1 = var0;
+		Language[] var2 = var0;
 
-		for (int var2 = 0; var2 < var1.length; ++var2) {
-			Language var3 = var1[var2];
-			if (Language_valuesOrdered[var3.id] != null) {
+		for (int var3 = 0; var3 < var2.length; ++var3) {
+			Language var4 = var2[var3];
+			if (Language_valuesOrdered[var4.id] != null) {
 				throw new IllegalStateException();
 			}
 
-			Language_valuesOrdered[var3.id] = var3;
+			Language_valuesOrdered[var4.id] = var4;
 		}
 
 	}
 
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lgd;ILjava/lang/String;)V"
+		signature = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lgh;ILjava/lang/String;)V"
 	)
-	Language(String var1, String language, String var3, class192 var4, int var5, String country) {
-		this.field2346 = var1;
-		this.language = language;
+	Language(String var1, String var2, String var3, class192 var4, int var5, String var6) {
+		this.field2325 = var1;
+		this.language = var2;
 		this.id = var5;
-		if (country != null) {
-			new Locale(language.substring(0, 2), country);
+		if (var6 != null) {
+			new Locale(var2.substring(0, 2), var6);
 		} else {
-			new Locale(language.substring(0, 2));
+			new Locale(var2.substring(0, 2));
 		}
 
 	}
 
-	@ObfuscatedName("w")
-	@ObfuscatedSignature(
-		signature = "(I)Ljava/lang/String;",
-		garbageValue = "1097353533"
-	)
-	@Export("getLanguage")
-	String getLanguage() {
-		return this.language;
-	}
-
-	@ObfuscatedName("e")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
 		signature = "(I)I",
-		garbageValue = "320353268"
+		garbageValue = "-1410702910"
 	)
 	@Export("rsOrdinal")
 	public int rsOrdinal() {
 		return this.id;
 	}
 
+	@ObfuscatedName("x")
+	@ObfuscatedSignature(
+		signature = "(B)Ljava/lang/String;",
+		garbageValue = "109"
+	)
+	@Export("getLanguage")
+	String getLanguage() {
+		return this.language;
+	}
+
 	public String toString() {
 		return this.getLanguage().toLowerCase(Locale.ENGLISH);
 	}
 
-	@ObfuscatedName("q")
-	@ObfuscatedSignature(
-		signature = "(B)[Lgu;",
-		garbageValue = "99"
-	)
-	@Export("Language_values")
-	static Language[] Language_values() {
-		return new Language[]{Language_DE, Language_NL, Language_FR, Language_ES, Language_EN, Language_ES_MX, Language_PT};
+	public String aai() {
+		return this.getLanguage().toLowerCase(Locale.ENGLISH);
 	}
 
-	@ObfuscatedName("i")
-	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "-1942171448"
-	)
-	public static final void method3665() {
-		ViewportMouse.ViewportMouse_isInViewport = false;
-		ViewportMouse.ViewportMouse_entityCount = 0;
+	public String aan() {
+		return this.getLanguage().toLowerCase(Locale.ENGLISH);
 	}
 
-	@ObfuscatedName("ep")
-	@ObfuscatedSignature(
-		signature = "(I)Z",
-		garbageValue = "1477910272"
-	)
-	static boolean method3667() {
-		if (Client.archiveLoaders != null && Client.archiveLoaderArchive < Client.archiveLoaders.size()) {
-			while (Client.archiveLoaderArchive < Client.archiveLoaders.size()) {
-				ArchiveLoader var0 = (ArchiveLoader)Client.archiveLoaders.get(Client.archiveLoaderArchive);
-				if (!var0.isLoaded()) {
-					return false;
-				}
+	public String aar() {
+		return this.getLanguage().toLowerCase(Locale.ENGLISH);
+	}
 
-				++Client.archiveLoaderArchive;
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		signature = "(II)Lit;",
+		garbageValue = "120634659"
+	)
+	public static VarbitDefinition method3627(int var0) {
+		VarbitDefinition var1 = (VarbitDefinition)VarbitDefinition.VarbitDefinition_cached.get((long)var0);
+		if (var1 != null) {
+			return var1;
+		} else {
+			byte[] var2 = VarbitDefinition.VarbitDefinition_archive.takeFile(14, var0);
+			var1 = new VarbitDefinition();
+			if (var2 != null) {
+				var1.decode(new Buffer(var2));
 			}
 
-			return true;
+			VarbitDefinition.VarbitDefinition_cached.put(var1, (long)var0);
+			return var1;
 		}
-		return true;
 	}
 
-	@ObfuscatedName("ko")
+	@ObfuscatedName("x")
+	@Export("ViewportMouse_unpackX")
+	public static int ViewportMouse_unpackX(long var0) {
+		return (int)(var0 >>> 7 & 127L);
+	}
+
+	@ObfuscatedName("d")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;ZI)Ljava/lang/String;",
-		garbageValue = "-1044311329"
+		signature = "(IIII)I",
+		garbageValue = "1883889552"
 	)
-	static String method3666(String var0, boolean var1) {
-		String var2 = var1 ? "https://" : "http://";
-		if (Client.gameBuild == 1) {
-			var0 = var0 + "-wtrc";
-		} else if (Client.gameBuild == 2) {
-			var0 = var0 + "-wtqa";
-		} else if (Client.gameBuild == 3) {
-			var0 = var0 + "-wtwip";
-		} else if (Client.gameBuild == 5) {
-			var0 = var0 + "-wti";
-		} else if (Client.gameBuild == 4) {
-			var0 = "local";
+	static int method3634(int var0, int var1, int var2) {
+		if ((Tiles.Tiles_renderFlags[var0][var1][var2] & 8) != 0) {
+			return 0;
+		} else {
+			return var0 > 0 && (Tiles.Tiles_renderFlags[1][var1][var2] & 2) != 0 ? var0 - 1 : var0;
 		}
-
-		String var3 = "";
-		if (class294.field3695 != null) {
-			var3 = "/p=" + class294.field3695;
-		}
-
-		String var4 = "runescape.com";
-		return var2 + var0 + "." + var4 + "/l=" + ScriptFrame.clientLanguage + "/a=" + InvDefinition.field3199 + var3 + "/";
 	}
 }

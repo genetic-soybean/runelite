@@ -1,29 +1,21 @@
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.Reflection;
 
 @ObfuscatedName("cs")
 @Implements("ChatChannel")
 public class ChatChannel {
-	@ObfuscatedName("gr")
-	@ObfuscatedGetter(
-		intValue = 1055466439
-	)
-	static int field1306;
-	@ObfuscatedName("w")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
 		signature = "[Lbj;"
 	)
 	@Export("messages")
 	Message[] messages;
-	@ObfuscatedName("e")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = 754027225
+		intValue = 26719133
 	)
 	@Export("count")
 	int count;
@@ -32,10 +24,10 @@ public class ChatChannel {
 		this.messages = new Message[100];
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
 		signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;B)Lbj;",
-		garbageValue = "0"
+		garbageValue = "2"
 	)
 	@Export("addMessage")
 	Message addMessage(int var1, String var2, String var3, String var4) {
@@ -63,198 +55,159 @@ public class ChatChannel {
 		return var5;
 	}
 
-	@ObfuscatedName("w")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
 		signature = "(II)Lbj;",
-		garbageValue = "-55997964"
+		garbageValue = "-1600519730"
 	)
 	@Export("getMessage")
 	Message getMessage(int var1) {
 		return var1 >= 0 && var1 < this.count ? this.messages[var1] : null;
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(I)I",
-		garbageValue = "-410884165"
+		signature = "(S)I",
+		garbageValue = "255"
 	)
 	@Export("size")
 	int size() {
 		return this.count;
 	}
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(Lkf;IB)V",
-		garbageValue = "67"
+		signature = "(Lhz;Lhz;Lhz;B)V",
+		garbageValue = "-105"
 	)
-	public static void method2213(Buffer var0, int var1) {
-		ReflectionCheck var2 = new ReflectionCheck();
-		var2.size = var0.readUnsignedByte();
-		var2.id = var0.readInt();
-		var2.operations = new int[var2.size];
-		var2.creationErrors = new int[var2.size];
-		var2.fields = new Field[var2.size];
-		var2.intReplaceValues = new int[var2.size];
-		var2.methods = new Method[var2.size];
-		var2.arguments = new byte[var2.size][][];
+	public static void method2220(AbstractArchive var0, AbstractArchive var1, AbstractArchive var2) {
+		HitSplatDefinition.HitSplatDefinition_archive = var0;
+		HitSplatDefinition.field3300 = var1;
+		class189.HitSplatDefinition_fontsArchive = var2;
+	}
 
-		for (int var3 = 0; var3 < var2.size; ++var3) {
-			try {
-				int var4 = var0.readUnsignedByte();
-				String var5;
-				String var6;
-				int var7;
-				if (var4 != 0 && var4 != 1 && var4 != 2) {
-					if (var4 == 3 || var4 == 4) {
-						var5 = var0.readStringCp1252NullTerminated();
-						var6 = var0.readStringCp1252NullTerminated();
-						var7 = var0.readUnsignedByte();
-						String[] var8 = new String[var7];
+	@ObfuscatedName("g")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/CharSequence;I)[B",
+		garbageValue = "1945232856"
+	)
+	public static byte[] method2212(CharSequence var0) {
+		int var1 = var0.length();
+		byte[] var2 = new byte[var1];
 
-						for (int var9 = 0; var9 < var7; ++var9) {
-							var8[var9] = var0.readStringCp1252NullTerminated();
-						}
+		for (int var3 = 0; var3 < var1; ++var3) {
+			char var4 = var0.charAt(var3);
+			if (var4 > 0 && var4 < 128 || var4 >= 160 && var4 <= 255) {
+				var2[var3] = (byte)var4;
+			} else if (var4 == 8364) {
+				var2[var3] = -128;
+			} else if (var4 == 8218) {
+				var2[var3] = -126;
+			} else if (var4 == 402) {
+				var2[var3] = -125;
+			} else if (var4 == 8222) {
+				var2[var3] = -124;
+			} else if (var4 == 8230) {
+				var2[var3] = -123;
+			} else if (var4 == 8224) {
+				var2[var3] = -122;
+			} else if (var4 == 8225) {
+				var2[var3] = -121;
+			} else if (var4 == 710) {
+				var2[var3] = -120;
+			} else if (var4 == 8240) {
+				var2[var3] = -119;
+			} else if (var4 == 352) {
+				var2[var3] = -118;
+			} else if (var4 == 8249) {
+				var2[var3] = -117;
+			} else if (var4 == 338) {
+				var2[var3] = -116;
+			} else if (var4 == 381) {
+				var2[var3] = -114;
+			} else if (var4 == 8216) {
+				var2[var3] = -111;
+			} else if (var4 == 8217) {
+				var2[var3] = -110;
+			} else if (var4 == 8220) {
+				var2[var3] = -109;
+			} else if (var4 == 8221) {
+				var2[var3] = -108;
+			} else if (var4 == 8226) {
+				var2[var3] = -107;
+			} else if (var4 == 8211) {
+				var2[var3] = -106;
+			} else if (var4 == 8212) {
+				var2[var3] = -105;
+			} else if (var4 == 732) {
+				var2[var3] = -104;
+			} else if (var4 == 8482) {
+				var2[var3] = -103;
+			} else if (var4 == 353) {
+				var2[var3] = -102;
+			} else if (var4 == 8250) {
+				var2[var3] = -101;
+			} else if (var4 == 339) {
+				var2[var3] = -100;
+			} else if (var4 == 382) {
+				var2[var3] = -98;
+			} else if (var4 == 376) {
+				var2[var3] = -97;
+			} else {
+				var2[var3] = 63;
+			}
+		}
 
-						String var20 = var0.readStringCp1252NullTerminated();
-						byte[][] var10 = new byte[var7][];
-						int var12;
-						if (var4 == 3) {
-							for (int var11 = 0; var11 < var7; ++var11) {
-								var12 = var0.readInt();
-								var10[var11] = new byte[var12];
-								var0.readBytes(var10[var11], 0, var12);
-							}
-						}
+		return var2;
+	}
 
-						var2.operations[var3] = var4;
-						Class[] var21 = new Class[var7];
+	@ObfuscatedName("v")
+	@ObfuscatedSignature(
+		signature = "(I)Lli;",
+		garbageValue = "1800491151"
+	)
+	static Sprite method2218() {
+		Sprite var0 = new Sprite();
+		var0.width = class325.SpriteBuffer_spriteWidth;
+		var0.height = class325.SpriteBuffer_spriteHeight;
+		var0.xOffset = class325.SpriteBuffer_xOffsets[0];
+		var0.yOffset = SecureRandomCallable.SpriteBuffer_yOffsets[0];
+		var0.subWidth = class325.SpriteBuffer_spriteWidths[0];
+		var0.subHeight = SoundSystem.SpriteBuffer_spriteHeights[0];
+		int var1 = var0.subWidth * var0.subHeight;
+		byte[] var2 = InvDefinition.SpriteBuffer_pixels[0];
+		var0.pixels = new int[var1];
 
-						for (var12 = 0; var12 < var7; ++var12) {
-							var21[var12] = User.loadClassFromDescriptor(var8[var12]);
-						}
+		for (int var3 = 0; var3 < var1; ++var3) {
+			var0.pixels[var3] = class325.SpriteBuffer_spritePalette[var2[var3] & 255];
+		}
 
-						Class var22 = User.loadClassFromDescriptor(var20);
-						if (User.loadClassFromDescriptor(var5).getClassLoader() == null) {
-							throw new SecurityException();
-						}
+		class192.SpriteBuffer_clear();
+		return var0;
+	}
 
-						Method[] var13 = User.loadClassFromDescriptor(var5).getDeclaredMethods();
-						Method[] var14 = var13;
-
-						for (int var15 = 0; var15 < var14.length; ++var15) {
-							Method var16 = var14[var15];
-							if (Reflection.getMethodName(var16).equals(var6)) {
-								Class[] var17 = Reflection.getParameterTypes(var16);
-								if (var17.length == var21.length) {
-									boolean var18 = true;
-
-									for (int var19 = 0; var19 < var21.length; ++var19) {
-										if (var17[var19] != var21[var19]) {
-											var18 = false;
-											break;
-										}
-									}
-
-									if (var18 && var22 == var16.getReturnType()) {
-										var2.methods[var3] = var16;
-									}
-								}
-							}
-						}
-
-						var2.arguments[var3] = var10;
-					}
+	@ObfuscatedName("jx")
+	@ObfuscatedSignature(
+		signature = "(IIIILli;Lhi;I)V",
+		garbageValue = "219480869"
+	)
+	@Export("drawSpriteOnMinimap")
+	static final void drawSpriteOnMinimap(int var0, int var1, int var2, int var3, Sprite var4, SpriteMask var5) {
+		if (var4 != null) {
+			int var6 = Client.camAngleY & 2047;
+			int var7 = var3 * var3 + var2 * var2;
+			if (var7 <= 6400) {
+				int var8 = Rasterizer3D.Rasterizer3D_sine[var6];
+				int var9 = Rasterizer3D.Rasterizer3D_cosine[var6];
+				int var10 = var9 * var2 + var3 * var8 >> 16;
+				int var11 = var3 * var9 - var8 * var2 >> 16;
+				if (var7 > 2500) {
+					var4.method6102(var10 + var5.width / 2 - var4.width / 2, var5.height / 2 - var11 - var4.height / 2, var0, var1, var5.width, var5.height, var5.xStarts, var5.xWidths);
 				} else {
-					var5 = var0.readStringCp1252NullTerminated();
-					var6 = var0.readStringCp1252NullTerminated();
-					var7 = 0;
-					if (var4 == 1) {
-						var7 = var0.readInt();
-					}
-
-					var2.operations[var3] = var4;
-					var2.intReplaceValues[var3] = var7;
-					if (User.loadClassFromDescriptor(var5).getClassLoader() == null) {
-						throw new SecurityException();
-					}
-
-					var2.fields[var3] = Reflection.findField(User.loadClassFromDescriptor(var5), var6);
+					var4.drawTransBgAt(var0 + var10 + var5.width / 2 - var4.width / 2, var5.height / 2 + var1 - var11 - var4.height / 2);
 				}
-			} catch (ClassNotFoundException var24) {
-				var2.creationErrors[var3] = -1;
-			} catch (SecurityException var25) {
-				var2.creationErrors[var3] = -2;
-			} catch (NullPointerException var26) {
-				var2.creationErrors[var3] = -3;
-			} catch (Exception var27) {
-				var2.creationErrors[var3] = -4;
-			} catch (Throwable var28) {
-				var2.creationErrors[var3] = -5;
+
 			}
 		}
-
-		class96.reflectionChecks.addFirst(var2);
-	}
-
-	@ObfuscatedName("r")
-	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "-4"
-	)
-	static void method2214() {
-		if (UserComparator3.loadWorlds()) {
-			Login.worldSelectOpen = true;
-			Login.worldSelectPage = 0;
-			Login.worldSelectPagesCount = 0;
-		}
-
-	}
-
-	@ObfuscatedName("hh")
-	@ObfuscatedSignature(
-		signature = "(IIIII)V",
-		garbageValue = "-2069013220"
-	)
-	static final void method2215(int var0, int var1, int var2, int var3) {
-		for (int var4 = 0; var4 < Client.rootWidgetCount; ++var4) {
-			if (Client.rootWidgetXs[var4] + Client.rootWidgetWidths[var4] > var0 && Client.rootWidgetXs[var4] < var0 + var2 && Client.rootWidgetHeights[var4] + Client.rootWidgetYs[var4] > var1 && Client.rootWidgetYs[var4] < var3 + var1) {
-				Client.field843[var4] = true;
-			}
-		}
-
-	}
-
-	@ObfuscatedName("ie")
-	@ObfuscatedSignature(
-		signature = "(Lhj;I)Z",
-		garbageValue = "-1045685499"
-	)
-	@Export("runCs1")
-	static final boolean runCs1(Widget var0) {
-		if (var0.cs1Comparisons == null) {
-			return false;
-		}
-		for (int var1 = 0; var1 < var0.cs1Comparisons.length; ++var1) {
-			int var2 = Varps.method3969(var0, var1);
-			int var3 = var0.cs1ComparisonValues[var1];
-			if (var0.cs1Comparisons[var1] == 2) {
-				if (var2 >= var3) {
-					return false;
-				}
-			} else if (var0.cs1Comparisons[var1] == 3) {
-				if (var2 <= var3) {
-					return false;
-				}
-			} else if (var0.cs1Comparisons[var1] == 4) {
-				if (var2 == var3) {
-					return false;
-				}
-			} else if (var2 != var3) {
-				return false;
-			}
-		}
-
-		return true;
 	}
 }
