@@ -13,13 +13,13 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 
-	<repositories>
+	<distributionManagement>
 		<repository>
-			<id>runelite</id>
-			<name>RuneLite</name>
-			<url>http://repo.runelite.net</url>
+			<id>github</id>
+			<name>GitHub runelite-extended Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/runelite-extended/runelite</url>
 		</repository>
-	</repositories>
+	</distributionManagement>
 
 	<dependencies>
 		<dependency>

@@ -75,7 +75,7 @@ public class GauntletInfoBox extends Overlay
 			return null;
 		}
 
-		Prayer prayer = plugin.getNextPrayer();
+		Prayer prayer = null;
 
 		if (prayer == null)
 		{

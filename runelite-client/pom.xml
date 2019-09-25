@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.5.30-SNAPSHOT</version>
+		<version>1.5.34-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>client</artifactId>
@@ -42,13 +42,13 @@
 		<jarsigner.skip>true</jarsigner.skip>
 	</properties>
 
-	<repositories>
+	<distributionManagement>
 		<repository>
-			<id>RuneLit</id>
-			<name>RuneLit</name>
-			<url>https://raw.githubusercontent.com/runelite-extended/maven-repo/master</url>
+			<id>github</id>
+			<name>GitHub runelite-extended Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/runelite-extended/runelite</url>
 		</repository>
-	</repositories>
+	</distributionManagement>
 
 	<dependencies>
 		<dependency>
@@ -302,6 +302,43 @@
 			<artifactId>rxrelay</artifactId>
 			<version>2.1.0</version>
 		</dependency>
+		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>javax.annotation-api</artifactId>
+			<version>1.3.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>1.4.199</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jooq</groupId>
+			<artifactId>jooq</artifactId>
+			<version>3.12.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jooq</groupId>
+			<artifactId>jooq-meta</artifactId>
+			<version>3.12.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jooq</groupId>
+			<artifactId>jooq-codegen</artifactId>
+			<version>3.12.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.8.3</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>3.0.0</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -457,6 +494,38 @@
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+
+			<groupId>org.jooq</groupId>
+			<artifactId>jooq-codegen-maven</artifactId>
+			<version>3.12.1</version>
+
+			<!-- Manage the plugin dependency -->
+			<dependencies>
+				<dependency>
+					<groupId>javax.xml.bind</groupId>
+					<artifactId>jaxb-api</artifactId>
+					<version>2.4.0-b180830.0359</version>
+				</dependency>
+
+				<!-- Add these: -->
+				<dependency>
+					<groupId>org.jooq</groupId>
+					<artifactId>jooq</artifactId>
+					<version>3.12.1</version>
+				</dependency>
+				<dependency>
+					<groupId>org.jooq</groupId>
+					<artifactId>jooq-meta</artifactId>
+					<version>3.12.1</version>
+				</dependency>
+				<dependency>
+					<groupId>org.jooq</groupId>
+					<artifactId>jooq-codegen</artifactId>
+					<version>3.12.1</version>
+				</dependency>
+			</dependencies>
 			</plugin>
 		</plugins>
 	</build>
