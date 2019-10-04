@@ -71,7 +71,6 @@ public class OverlayUtil
 		graphics.fillPolygon(poly);
 		graphics.setStroke(originalStroke);
 	}
-
 	public static void renderPolygonThin(Graphics2D graphics, Polygon poly, Color color)
 	{
 		graphics.setColor(color);
@@ -80,6 +79,48 @@ public class OverlayUtil
 		graphics.drawPolygon(poly);
 		graphics.setColor(new Color(0, 0, 0, 50));
 		graphics.fillPolygon(poly);
+		graphics.setStroke(originalStroke);
+	}
+	public static void renderOutlinePolygon(Graphics2D graphics, Polygon poly, Color color)
+	{
+		graphics.setColor(color);
+		final Stroke originalStroke = graphics.getStroke();
+		graphics.setStroke(new BasicStroke(2));
+		graphics.drawPolygon(poly);
+		graphics.setStroke(originalStroke);
+	}
+
+	public static void renderFilledPolygon(Graphics2D graphics, Polygon poly, Color color)
+	{
+		graphics.setColor(color);
+		final Stroke originalStroke = graphics.getStroke();
+		graphics.setStroke(new BasicStroke(2));
+		graphics.drawPolygon(poly);
+		graphics.fillPolygon(poly);
+		graphics.setStroke(originalStroke);
+	}
+
+	public static void renderAreaTilePolygon(Graphics2D graphics, Polygon poly, Color color)
+	{
+		graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 10));
+		graphics.fillPolygon(poly);
+	}
+
+	public static void renderFullLine(Graphics2D graphics, int[][] line, Color color)
+	{
+		graphics.setColor(color);
+		final Stroke originalStroke = graphics.getStroke();
+		graphics.setStroke(new BasicStroke(2));
+		graphics.drawLine(line[0][0], line[0][1], line[1][0], line[1][1]);
+		graphics.setStroke(originalStroke);
+	}
+
+	public static void renderDashedLine(Graphics2D graphics, int[][] line, Color color)
+	{
+		graphics.setColor(color);
+		final Stroke originalStroke = graphics.getStroke();
+		graphics.setStroke(new BasicStroke(2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0));
+		graphics.drawLine(line[0][0], line[0][1], line[1][0], line[1][1]);
 		graphics.setStroke(originalStroke);
 	}
 
@@ -297,14 +338,14 @@ public class OverlayUtil
 
 	public static void renderActorTextAndImage(Graphics2D graphics, Actor actor, String text, Color color, BufferedImage image, int yOffset, int xOffset)
 	{
-		Point textLocation = actor.getCanvasTextLocation(graphics, text, actor.getLogicalHeight() + yOffset);
+		Point textLocation = new Point(actor.getConvexHull().getBounds().x + xOffset,
+				actor.getConvexHull().getBounds().y + yOffset);
 
-		if (textLocation != null)
-		{
-			renderImageLocation(graphics, textLocation, image);
-			textLocation = new Point(textLocation.getX() + xOffset, textLocation.getY());
-			renderTextLocation(graphics, textLocation, text, color);
-		}
+		renderImageLocation(graphics, textLocation, image);
+		xOffset = image.getWidth() + 1;
+		yOffset = (image.getHeight() - (int) graphics.getFontMetrics().getStringBounds(text, graphics).getHeight());
+		textLocation = new Point(textLocation.getX() + xOffset, textLocation.getY() + image.getHeight() - yOffset);
+		renderTextLocation(graphics, textLocation, text, color);
 	}
 
 	public static void renderTextLocation(Graphics2D graphics, String txtString, int fontSize, int fontStyle, Color fontColor, Point canvasPoint, boolean shadows, int yOffset)
@@ -313,11 +354,11 @@ public class OverlayUtil
 		if (canvasPoint != null)
 		{
 			final Point canvasCenterPoint = new Point(
-				canvasPoint.getX(),
-				canvasPoint.getY() + yOffset);
+					canvasPoint.getX(),
+					canvasPoint.getY() + yOffset);
 			final Point canvasCenterPoint_shadow = new Point(
-				canvasPoint.getX() + 1,
-				canvasPoint.getY() + 1);
+					canvasPoint.getX() + 1,
+					canvasPoint.getY() + 1);
 			if (shadows)
 			{
 				renderTextLocation(graphics, canvasCenterPoint_shadow, txtString, Color.BLACK);
@@ -426,23 +467,23 @@ public class OverlayUtil
 		graphics.setStroke(new BasicStroke(2));
 		graphics.setColor(colorIconBackground);
 		graphics.fillOval(
-			point.getX() - totalWidth / 2 + currentPosX - bgPadding,
-			point.getY() - currentPhaseIcon.getHeight() / 2 - overlayIconDistance - bgPadding,
-			currentPhaseIcon.getWidth() + bgPadding * 2,
-			currentPhaseIcon.getHeight() + bgPadding * 2);
+				point.getX() - totalWidth / 2 + currentPosX - bgPadding,
+				point.getY() - currentPhaseIcon.getHeight() / 2 - overlayIconDistance - bgPadding,
+				currentPhaseIcon.getWidth() + bgPadding * 2,
+				currentPhaseIcon.getHeight() + bgPadding * 2);
 
 		graphics.setColor(colorIconBorder);
 		graphics.drawOval(
-			point.getX() - totalWidth / 2 + currentPosX - bgPadding,
-			point.getY() - currentPhaseIcon.getHeight() / 2 - overlayIconDistance - bgPadding,
-			currentPhaseIcon.getWidth() + bgPadding * 2,
-			currentPhaseIcon.getHeight() + bgPadding * 2);
+				point.getX() - totalWidth / 2 + currentPosX - bgPadding,
+				point.getY() - currentPhaseIcon.getHeight() / 2 - overlayIconDistance - bgPadding,
+				currentPhaseIcon.getWidth() + bgPadding * 2,
+				currentPhaseIcon.getHeight() + bgPadding * 2);
 
 		graphics.drawImage(
-			currentPhaseIcon,
-			point.getX() - totalWidth / 2 + currentPosX,
-			point.getY() - currentPhaseIcon.getHeight() / 2 - overlayIconDistance,
-			null);
+				currentPhaseIcon,
+				point.getX() - totalWidth / 2 + currentPosX,
+				point.getY() - currentPhaseIcon.getHeight() / 2 - overlayIconDistance,
+				null);
 
 		graphics.setColor(colorIconBorderFill);
 	}
